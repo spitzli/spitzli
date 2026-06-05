@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spitzli development — Work in Progress</title>
+  <meta name="description" content="spitzli development — crafting something. Check back soon." />
+  <meta name="theme-color" content="#0a0a0f" />
+
+  <!-- Open Graph / social previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="spitzli development" />
+  <meta property="og:description" content="Crafting something. Check back soon." />
+  <meta property="og:image" content="https://spitzli.dev/assets/logo.png" />
+  <meta property="og:url" content="https://spitzli.dev" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            violetbrand: {
+              DEFAULT: '#6321E8',
+              light: '#8B5CF6',
+              glow: '#7C3AED',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root { color-scheme: dark; }
+
+    html, body { height: 100%; }
+    body {
+      background-color: #0a0a0f;
+      overflow-x: hidden;
+    }
+
+    /* ---- Animated gradient mesh background ---- */
+    .mesh {
+      position: fixed;
+      inset: -25%;
+      z-index: 0;
+      background:
+        radial-gradient(40% 40% at 20% 25%, rgba(99, 33, 232, 0.38), transparent 70%),
+        radial-gradient(35% 35% at 80% 20%, rgba(124, 58, 237, 0.30), transparent 70%),
+        radial-gradient(45% 45% at 75% 80%, rgba(56, 12, 156, 0.34), transparent 70%),
+        radial-gradient(35% 35% at 25% 85%, rgba(139, 92, 246, 0.22), transparent 70%);
+      filter: blur(40px) saturate(120%);
+      animation: meshDrift 24s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes meshDrift {
+      0%   { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      50%  { transform: translate3d(2%, -1.5%, 0) scale(1.08) rotate(2deg); }
+      100% { transform: translate3d(-2%, 1.5%, 0) scale(1.04) rotate(-2deg); }
+    }
+
+    /* ---- Floating glow orbs ---- */
+    .orb {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(70px);
+      z-index: 0;
+      opacity: 0.55;
+      will-change: transform;
+    }
+    .orb-1 { width: 420px; height: 420px; top: -8%;  left: -6%;  background: #6321E8; animation: float1 18s ease-in-out infinite; }
+    .orb-2 { width: 380px; height: 380px; bottom: -10%; right: -8%; background: #7C3AED; animation: float2 22s ease-in-out infinite; }
+    .orb-3 { width: 300px; height: 300px; top: 40%; right: 18%; background: #4311a8; opacity: 0.4; animation: float3 26s ease-in-out infinite; }
+    @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, 60px); } }
+    @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px, -40px); } }
+    @keyframes float3 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-30px, 40px); } }
+
+    /* ---- Fine grid overlay (dev aesthetic) ---- */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(124, 58, 237, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124, 58, 237, 0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 80%);
+    }
+
+    /* ---- Logo glow pulse ---- */
+    .logo-glow {
+      filter: drop-shadow(0 0 28px rgba(124, 58, 237, 0.55));
+      animation: glowPulse 4s ease-in-out infinite;
+      will-change: filter, transform;
+    }
+    @keyframes glowPulse {
+      0%, 100% { filter: drop-shadow(0 0 22px rgba(124, 58, 237, 0.45)); transform: translateY(0); }
+      50%      { filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.75)); transform: translateY(-6px); }
+    }
+
+    /* ---- Entrance ---- */
+    .rise { opacity: 0; transform: translateY(18px); animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.2s; }
+    .d3 { animation-delay: 0.35s; } .d4 { animation-delay: 0.5s; } .d5 { animation-delay: 0.65s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    /* ---- WiP badge shimmer ---- */
+    .shimmer { position: relative; overflow: hidden; }
+    .shimmer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+      transform: translateX(-120%);
+      animation: shimmer 3.2s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0% { transform: translateX(-120%); } 60%, 100% { transform: translateX(120%); } }
+
+    /* ---- Blinking status dot ---- */
+    .status-dot { animation: blink 1.6s steps(1, end) infinite; }
+    @keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+
+    /* ---- Gradient text ---- */
+    .grad-text {
+      background: linear-gradient(120deg, #ffffff 0%, #c4b5fd 45%, #8B5CF6 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+
+    /* ---- Pixel-dissolve drifting squares (echoes the logo) ---- */
+    .pixels { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .px {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: #7C3AED;
+      opacity: 0;
+      border-radius: 2px;
+      animation: pxRise linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes pxRise {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.4; }
+      100% { opacity: 0; transform: translateY(-120vh) scale(0.3); }
+    }
+
+    /* ---- Reduced motion: keep it calm ---- */
+    @media (prefers-reduced-motion: reduce) {
+      .mesh, .orb, .logo-glow, .shimmer::after, .status-dot, .px, .rise {
+        animation: none !important;
+      }
+      .rise { opacity: 1; transform: none; }
+      .pixels { display: none; }
+    }
+  </style>
+</head>
+
+<body class="font-sans text-slate-200 antialiased selection:bg-violet-500/40">
+  <!-- Background layers -->
+  <div class="mesh"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+  <div class="pixels" id="pixels" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
+
+    <img src="assets/logo.png" alt="spitzli development logo"
+         width="120" height="120"
+         class="logo-glow rise d1 w-24 h-24 md:w-28 md:h-28 mb-8" />
+
+    <h1 class="rise d2 grad-text text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+      spitzli<span class="text-violetbrand-light">.</span>development
+    </h1>
+
+    <p class="rise d3 mt-5 max-w-md text-base sm:text-lg text-slate-400 leading-relaxed">
+      Crafting something. Check back soon.
+    </p>
+
+    <!-- WiP badge -->
+    <div class="rise d4 mt-8">
+      <span class="shimmer inline-flex items-center gap-2.5 rounded-full border border-violet-500/30 bg-violet-500/10 px-5 py-2 text-sm font-medium text-violet-200 backdrop-blur-sm">
+        <span class="status-dot inline-block w-2 h-2 rounded-full bg-violet-400 shadow-[0_0_8px_2px_rgba(139,92,246,0.7)]"></span>
+        <span class="font-mono uppercase tracking-wider text-xs">Work in Progress</span>
+      </span>
+    </div>
+
+    <!-- Code-fragment tagline (dev flavor) -->
+    <p class="rise d5 mt-10 font-mono text-xs sm:text-sm text-slate-600">
+      <span class="text-violet-400/70">{</span>
+      status: <span class="text-slate-400">"building"</span>
+      <span class="text-violet-400/70">}</span>
+    </p>
+
+    <!-- Footer -->
+    <footer class="rise d5 absolute bottom-6 left-0 right-0 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-600">
+      <a href="mailto:dominik@spitzli.dev"
+         class="font-mono transition-colors hover:text-violet-300">dominik@spitzli.dev</a>
+      <span class="hidden sm:inline text-slate-700">·</span>
+      <a href="https://github.com/spitzli" target="_blank" rel="noopener"
+         class="font-mono transition-colors hover:text-violet-300">github.com/spitzli</a>
+    </footer>
+  </main>
+
+  <script>
+    // Generate the drifting pixel field, mirroring the logo's pixel-dissolve motif.
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const field = document.getElementById('pixels');
+      const COUNT = 26;
+      let html = '';
+      for (let i = 0; i < COUNT; i++) {
+        const left = (i * 3.85 + (i % 5) * 4) % 100;     // deterministic spread, no Math.random reliance
+        const size = 4 + (i % 4) * 3;                     // 4–13px
+        const dur = 9 + (i % 7) * 2.5;                    // 9–24s
+        const delay = (i % 11) * 1.4;                     // staggered
+        const opacity = 0.25 + (i % 4) * 0.12;
+        html += `<span class="px" style="left:${left}%;bottom:-20px;width:${size}px;height:${size}px;`
+              + `animation-duration:${dur}s;animation-delay:-${delay}s;--o:${opacity}"></span>`;
+      }
+      field.innerHTML = html;
+    })();
+  </script>
+</body>
+</html>
