@@ -20,6 +20,14 @@ export default buildConfig({
     importMap: { baseDir: dirname },
     meta: { titleSuffix: "— Spitzli Development" },
   },
+  localization: {
+    locales: [
+      { label: "English", code: "en" },
+      { label: "Deutsch", code: "de" },
+    ],
+    defaultLocale: "en",
+    fallback: true,
+  },
   collections: [Users, Clients, Projects, Media, ContactLimits],
   db: postgresAdapter({
     pool: {

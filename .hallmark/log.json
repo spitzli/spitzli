@@ -1,6 +1,18 @@
 [
   {
     "date": "2026-09-19",
+    "scope": "app",
+    "macrostructure": "Map / Diagram",
+    "theme": "custom",
+    "theme_axes": "dark / mono / cool",
+    "vibe": "personal technical connected approachable",
+    "nav": "N3 readable side rail",
+    "footer": "Ft6 personal close",
+    "enrichment": "semantic interactive system layers",
+    "brief": "Spitzli Development — Google Cloud focus, Gettext EN/DE, visible contact form"
+  },
+  {
+    "date": "2026-09-19",
     "macrostructure": "Portfolio Grid",
     "theme": "custom",
     "theme_axes": "dark / geometric-sans / cool",

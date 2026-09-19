@@ -6,7 +6,7 @@ Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwick
 
 Der Auftritt enthält vier bestätigte Referenzen: turboSMTP / serverSMTP, Stall Eichenbruch, Imke Folkerts und Luninora. Keine erfundenen Beschäftigungszeiträume, Kennzahlen oder Kundenlogo-Freigaben. Keine fremden Logos oder Screenshots sind eingebunden.
 
-**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Der Vercel-Produktionsbuild wird ohne diese Angaben abgebrochen. Nichtproduktive Deployments sind `noindex`; bei fehlender Freigabe wird das Formular durch einen direkten E-Mail-Kontakt ersetzt.
+**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Der Vercel-Produktionsbuild wird ohne diese Angaben abgebrochen. Nichtproduktive Deployments sind `noindex`. Das Kontaktformular bleibt sichtbar; ohne Versand-/Datenschutzfreigabe sind die Eingaben und der Versand mit einem eindeutigen Hinweis deaktiviert. Der direkte E-Mail-Kontakt bleibt verfügbar.
 
 Die bisherigen Dateien `index.html`, `CNAME`, `.nojekyll` und `assets/logo.png` bleiben bis zur Domainumstellung erhalten. Next.js liefert die alte HTML-Seite nicht aus. GitHub Pages bedient bis zum geplanten Hosting-Wechsel weiterhin den Platzhalter. Kein DNS-Wechsel durch dieses Projekt.
 
@@ -56,6 +56,16 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 
 `cms:seed` ist wiederholbar: Es erstellt nur fehlende Einträge und überschreibt keine CMS-Änderungen oder Veröffentlichungsentscheidungen.
 
+## Sprachen und Gettext
+
+- Öffentliche URLs: `/en`, `/de`, `/en/projects/<slug>`, `/de/projekte/<slug>`, `/en/legal-notice`, `/de/impressum`, `/en/privacy`, `/de/datenschutz`.
+- Alte unpräfixierte Links bleiben erhalten und führen zur passenden Sprachfassung. Die erste Auswahl richtet sich nach `Accept-Language` (einschließlich Gewichtung); nicht unterstützte Sprachen fallen auf Englisch zurück.
+- Die sichtbaren DE-/EN-Links wechseln die aktuelle Seite. Erst eine ausdrückliche Auswahl setzt das notwendige Cookie `spitzli_locale` (ein Jahr, nur `en`/`de`). Ein erster Besuch setzt kein Sprachcookie.
+- UI-, Formular-, Fehler- und Rechtstexte liegen in **`locales/en.po` und `locales/de.po`**. Nach Änderungen `npm run i18n:compile`; Dev/Build kompiliert automatisch. Generierte JSON-Dateien nicht direkt ändern. CI prüft beide Kataloge, Pluralformen, Platzhalter und Synchronität.
+- Das CMS hat native englische/deutsche Inhaltsvarianten für Projektbeschreibungen, zusätzliche Linkbeschriftungen und Bild-Alternativtexte. Englisch ist die CMS-Standardsprache und inhaltliche Rückfallsprache. Fehlt auch die englische Beschreibung, zeigt die Website das ausdrücklich an, statt zu scheitern oder Inhalte zu erfinden.
+- `cms:seed` legt beide Fassungen an oder ergänzt nur fehlende englische Übersetzungen unveränderter, bereits veröffentlichter Startreferenzen. Redaktionelle Änderungen und Entwürfe bleiben unangetastet.
+- Die Lokalisierungsmigration kopiert vorhandene deutsche Texte, Linktitel, Alt-Texte und historische Versionen vor der Schemaumstellung. Vor Anwendung ein Backup erstellen. Ein verlustbehaftetes `down` ist gesperrt; für einen Rollback das geprüfte Backup wiederherstellen.
+
 ## Kontakt und Datenschutz
 
 - POST `/api/contact`: Origin-Prüfung, JSON- und Größenprüfung (16 KiB, auch bei gestreamtem Body), serverseitige Feldvalidierung und Honeypot.
@@ -103,7 +113,9 @@ DOMPurify und das alte esbuild aus Drizzles Loader sind auf gepatchte transitive
 
 ## Struktur
 
-- `src/app/(site)/`: öffentliche Seiten und Kontakt-Endpoint
+- `src/app/(site)/`: öffentliche Seiten, native Locale-Einstiegsroute und Kontakt-Endpoint
+- `src/i18n/`, `locales/`, `src/proxy.ts`: Gettext, Sprachpräferenz, Locale-URLs und Metadaten
+- `design.md`, `src/app/(site)/refinement.css`: gemeinsame Gestaltungsrichtung und nichtdestruktive Design-Erweiterung
 - `src/app/(payload)/`: Payload-Admin und REST-API
 - `src/collections/`: Administratoren, Kunden, Projekte, Medien, interne Limit-Zähler
 - `src/lib/`: Inhalte, URL-Validierung, Kontaktschutz und Konfiguration

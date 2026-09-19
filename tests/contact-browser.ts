@@ -50,7 +50,7 @@ try {
     await delay(250);
   }
   assert.ok(ready, "isolated contact test server started");
-  const context = await browser.newContext();
+  const context = await browser.newContext({ locale: "de-DE" });
   const page = await context.newPage();
   for (const width of [320, 375, 414, 768]) {
     await page.setViewportSize({ width, height: 900 });

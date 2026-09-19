@@ -80,6 +80,7 @@ export const Projects: CollectionConfig = {
       name: "summary",
       label: "Kurzbeschreibung",
       type: "textarea",
+      localized: true,
       required: true,
       maxLength: 300,
     },
@@ -87,6 +88,7 @@ export const Projects: CollectionConfig = {
       name: "description",
       label: "Ausführliche Beschreibung",
       type: "textarea",
+      localized: true,
       maxLength: 12000,
       admin: { description: "Absätze mit Leerzeile trennen. Keine HTML-Eingabe." },
     },
@@ -120,7 +122,14 @@ export const Projects: CollectionConfig = {
       type: "array",
       maxRows: 16,
       fields: [
-        { name: "label", label: "Bezeichnung", type: "text", required: true, maxLength: 48 },
+        {
+          name: "label",
+          label: "Bezeichnung",
+          type: "text",
+          required: true,
+          maxLength: 48,
+          localized: true,
+        },
         { ...urlField("url", "URL"), required: true },
       ],
     },
@@ -162,7 +171,14 @@ export const Media: CollectionConfig = {
     adminThumbnail: "card",
   },
   fields: [
-    { name: "alt", label: "Alternativtext", type: "text", required: true, maxLength: 240 },
+    {
+      name: "alt",
+      label: "Alternativtext",
+      type: "text",
+      required: true,
+      maxLength: 240,
+      localized: true,
+    },
     {
       name: "rightsConfirmed",
       label: "Ich darf dieses Bild / Logo öffentlich verwenden.",

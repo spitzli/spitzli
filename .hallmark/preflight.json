@@ -1,9 +1,15 @@
 {
-  "source": "index.html",
-  "framework": "Static HTML migrated to Next.js at user request",
+  "source": "src/app/(site)/layout.tsx, tokens.css",
+  "framework": "Next.js 16 + Payload 3",
   "fonts": ["Space Grotesk", "JetBrains Mono"],
-  "palette": "Dark graphite with existing violet brand accent",
-  "preserved": ["Brand logo", "Fonts", "Dark primary appearance"],
-  "removedFromNewUI": ["Gradient mesh", "Floating orbs", "CDN Tailwind", "External font requests"],
-  "motion": "Button press only, reduced-motion supported"
+  "palette": "Dark graphite / restrained violet; light cloud-expertise section",
+  "preserved": [
+    "Brand logo",
+    "Local fonts",
+    "Dark primary appearance",
+    "Public routes and CMS ownership"
+  ],
+  "motion": "Button press only; system map changes are immediate; reduced-motion supported",
+  "direction": "Readable side rail, monospace hero, interactive system layers, typographic work index",
+  "languages": ["en", "de"]
 }

@@ -18,6 +18,7 @@ const context = await browser.newContext();
 const page = await context.newPage();
 let userID: number | undefined;
 let projectID: number | undefined;
+let germanOnlyID: number | undefined;
 let mediaID: number | undefined;
 let failure: unknown;
 try {
@@ -72,6 +73,27 @@ try {
     await page.getByRole("link", { name: "Repository" }).getAttribute("href"),
     "https://github.com/spitzli/spitzli",
   );
+  const germanOnly = await context.request.post(`${base}/api/projects?locale=de`, {
+    headers: { Origin: base },
+    data: {
+      name: "German-only test",
+      slug: `${slug}-de`,
+      summary: "Nur deutsche Beschreibung",
+      category: "Webapps",
+      _status: "published",
+      links: [{ label: "Dokumentation", url: "https://example.com/docs" }],
+    },
+  });
+  assert.equal(germanOnly.status(), 201);
+  germanOnlyID = (await germanOnly.json()).doc.id;
+  assert.equal((await page.goto(`${base}/en/projects/${slug}-de`))?.status(), 200);
+  await page
+    .getByText("A description is not yet available in this language.", { exact: true })
+    .first()
+    .waitFor();
+  assert.equal(await page.getByRole("link", { name: "example.com" }).count(), 1);
+  assert.equal((await page.goto(`${base}/de/projekte/${slug}`))?.status(), 200);
+  await page.getByText("Temporary local CRUD test", { exact: true }).first().waitFor();
   const png = await sharp({ create: { width: 24, height: 24, channels: 3, background: "#cccccc" } })
     .png()
     .toBuffer();
@@ -96,6 +118,7 @@ try {
   failure = error;
 } finally {
   if (projectID) await payload.delete({ collection: "projects", id: projectID });
+  if (germanOnlyID) await payload.delete({ collection: "projects", id: germanOnlyID });
   if (mediaID) await payload.delete({ collection: "media", id: mediaID });
   if (userID) await payload.delete({ collection: "users", id: userID });
   await browser.close();

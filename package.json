@@ -10,9 +10,9 @@
     "dev": "next dev",
     "build": "node --env-file-if-exists=.env.local scripts/check-env.mjs && next build",
     "start": "next start",
-    "check": "biome check . && tsc --noEmit",
+    "check": "node scripts/compile-messages.mjs --check && biome check . && tsc --noEmit",
     "format": "biome check --write .",
-    "test": "tsx --test tests/core.test.ts",
+    "test": "tsx --test tests/*.test.ts",
     "test:integration": "tsx --env-file-if-exists=.env.local tests/integration.ts",
     "test:browser": "tsx --env-file-if-exists=.env.local tests/browser.ts",
     "test:cms": "tsx --env-file-if-exists=.env.local tests/cms-browser.ts",
@@ -23,7 +23,10 @@
     "cms:seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
     "cms:bootstrap": "node --env-file-if-exists=.env.local --import tsx scripts/bootstrap.ts",
     "check:production": "node --env-file-if-exists=.env.local scripts/check-env.mjs --production",
-    "test:contact-ui": "tsx --env-file-if-exists=.env.local tests/contact-browser.ts"
+    "test:contact-ui": "tsx --env-file-if-exists=.env.local tests/contact-browser.ts",
+    "i18n:compile": "node scripts/compile-messages.mjs",
+    "prebuild": "npm run i18n:compile",
+    "predev": "npm run i18n:compile"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
@@ -45,6 +48,7 @@
     "@types/node": "^22.19.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "gettext-parser": "^9.1.1",
     "playwright": "^1.58.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

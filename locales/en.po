@@ -1,0 +1,822 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Spitzli Development\n"
+"Language: en\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Spitzli Development — Software, APIs & Cloud"
+msgstr "Spitzli Development — Software, APIs & Cloud"
+
+msgid ""
+"I develop web applications, APIs and cloud infrastructure. Dominik Spitzli "
+"— independent software developer and system architect."
+msgstr ""
+"I develop web applications, APIs and cloud infrastructure. Dominik Spitzli "
+"— independent software developer and system architect."
+
+msgid "Skip to content"
+msgstr "Skip to content"
+
+msgid "Spitzli Development — home"
+msgstr "Spitzli Development — home"
+
+msgid "Main navigation"
+msgstr "Main navigation"
+
+msgid "Work"
+msgstr "Work"
+
+msgid "Expertise"
+msgstr "Expertise"
+
+msgid "About me"
+msgstr "About me"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Independent developer."
+msgstr "Independent developer."
+
+msgid "Connected thinking."
+msgstr "Connected thinking."
+
+msgid "Language"
+msgstr "Language"
+
+msgid ""
+"Preview — legal and privacy information is being reviewed before "
+"publication."
+msgstr ""
+"Preview — legal and privacy information is being reviewed before "
+"publication."
+
+msgid "One project. Direct contact."
+msgstr "One project. Direct contact."
+
+msgid "Legal information"
+msgstr "Legal information"
+
+msgid "Legal notice"
+msgstr "Legal notice"
+
+msgid "Privacy"
+msgstr "Privacy"
+
+msgid "Software developer & system architect"
+msgstr "Software developer & system architect"
+
+msgid "Software."
+msgstr "Software."
+
+msgid "Connected."
+msgstr "Connected."
+
+msgid ""
+"I build web applications, APIs and the infrastructure behind them. From the "
+"first interface to the system in operation."
+msgstr ""
+"I build web applications, APIs and the infrastructure behind them. From the "
+"first interface to the system in operation."
+
+msgid "You work directly with me — the developer who actually builds your project."
+msgstr "You work directly with me — the developer who actually builds your project."
+
+msgid "Discuss a project"
+msgstr "Discuss a project"
+
+msgid "Explore my work"
+msgstr "Explore my work"
+
+msgid "Not just a service."
+msgstr "Not just a service."
+
+msgid "The whole system."
+msgstr "The whole system."
+
+msgid ""
+"Google Cloud is a focus of my work. I bring broad knowledge of the "
+"platform, beyond individual products."
+msgstr ""
+"Google Cloud is a focus of my work. I bring broad knowledge of the "
+"platform, beyond individual products."
+
+msgid ""
+"Architecture, applications, identities, data and deployment belong "
+"together. I connect these pieces — with Cloud Run and Firebase, and with an "
+"eye on permissions, maintainability and day-to-day operation."
+msgstr ""
+"Architecture, applications, identities, data and deployment belong "
+"together. I connect these pieces — with Cloud Run and Firebase, and with an "
+"eye on permissions, maintainability and day-to-day operation."
+
+msgid "Architecture"
+msgstr "Architecture"
+
+msgid "Permissions"
+msgstr "Permissions"
+
+msgid "Deployment & operation"
+msgstr "Deployment & operation"
+
+msgid "Work, not promises."
+msgstr "Work, not promises."
+
+msgid ""
+"A selection of websites, platform work and developer tools. The projects "
+"differ. Thinking beyond a single component is the common thread."
+msgstr ""
+"A selection of websites, platform work and developer tools. The projects "
+"differ. Thinking beyond a single component is the common thread."
+
+msgid "Where I can help."
+msgstr "Where I can help."
+
+msgid ""
+"Bring a concrete task or an idea that still needs structure. I think about "
+"the interface, the backend and the operation together."
+msgstr ""
+"Bring a concrete task or an idea that still needs structure. I think about "
+"the interface, the backend and the operation together."
+
+msgid "Websites & frontends"
+msgstr "Websites & frontends"
+
+msgid ""
+"Company websites, portfolios and custom frontends. Fast, accessible and "
+"focused on content — with CMS, SEO and performance in mind."
+msgstr ""
+"Company websites, portfolios and custom frontends. Fast, accessible and "
+"focused on content — with CMS, SEO and performance in mind."
+
+msgid "Web apps & internal tools"
+msgstr "Web apps & internal tools"
+
+msgid ""
+"Dashboards, admin panels, customer portals and SaaS applications. Software "
+"that fits your workflow, not the other way around."
+msgstr ""
+"Dashboards, admin panels, customer portals and SaaS applications. Software "
+"that fits your workflow, not the other way around."
+
+msgid "Backends & APIs"
+msgstr "Backends & APIs"
+
+msgid ""
+"API design, data models, authentication and permissions. Interfaces other "
+"developers can understand and use."
+msgstr ""
+"API design, data models, authentication and permissions. Interfaces other "
+"developers can understand and use."
+
+msgid "Cloud & infrastructure"
+msgstr "Cloud & infrastructure"
+
+msgid ""
+"Broad Google Cloud knowledge, from architecture to deployment and "
+"operation. Cloud Run, Firebase, Docker, Kubernetes and self-hosting where "
+"they fit."
+msgstr ""
+"Broad Google Cloud knowledge, from architecture to deployment and "
+"operation. Cloud Run, Firebase, Docker, Kubernetes and self-hosting where "
+"they fit."
+
+msgid "Automation & integrations"
+msgstr "Automation & integrations"
+
+msgid ""
+"Connect systems, move data and automate recurring work with APIs and the "
+"right tools."
+msgstr ""
+"Connect systems, move data and automate recurring work with APIs and the "
+"right tools."
+
+msgid "Maintenance & development"
+msgstr "Maintenance & development"
+
+msgid ""
+"Understand existing projects, take them over and modernise them "
+"deliberately. Improve the right things instead of rebuilding everything."
+msgstr ""
+"Understand existing projects, take them over and modernise them "
+"deliberately. Improve the right things instead of rebuilding everything."
+
+msgid "Hi, I’m Dominik."
+msgstr "Hi, I’m Dominik."
+
+msgid "I build this myself."
+msgstr "I build this myself."
+
+msgid ""
+"Spitzli Development is my sole proprietorship. I’m an independent software "
+"developer and system architect — not an agency team."
+msgstr ""
+"Spitzli Development is my sole proprietorship. I’m an independent software "
+"developer and system architect — not an agency team."
+
+msgid ""
+"I work on web applications, APIs, internal tools and cloud infrastructure. "
+"What interests me is how everything connects: what the interface needs, "
+"where the data lives and how the software runs reliably."
+msgstr ""
+"I work on web applications, APIs, internal tools and cloud infrastructure. "
+"What interests me is how everything connects: what the interface needs, "
+"where the data lives and how the software runs reliably."
+
+msgid ""
+"My experience includes website projects, backend and platform work for "
+"Luninora, and developer experience around turboSMTP. Google Cloud, "
+"understandable APIs and maintainable systems are particular interests."
+msgstr ""
+"My experience includes website projects, backend and platform work for "
+"Luninora, and developer experience around turboSMTP. Google Cloud, "
+"understandable APIs and maintainable systems are particular interests."
+
+msgid "My GitHub profile"
+msgstr "My GitHub profile"
+
+msgid "Tools I work with"
+msgstr "Tools I work with"
+
+msgid "Applications"
+msgstr "Applications"
+
+msgid "Backend & data"
+msgstr "Backend & data"
+
+msgid "Infrastructure"
+msgstr "Infrastructure"
+
+msgid "Also on my workbench"
+msgstr "Also on my workbench"
+
+msgid "TypeScript / JavaScript"
+msgstr "TypeScript / JavaScript"
+
+msgid "React / Next.js"
+msgstr "React / Next.js"
+
+msgid "Svelte / SvelteKit"
+msgstr "Svelte / SvelteKit"
+
+msgid "Bun / Node.js / Rust"
+msgstr "Bun / Node.js / Rust"
+
+msgid "PostgreSQL / Firebase"
+msgstr "PostgreSQL / Firebase"
+
+msgid "REST APIs / Auth"
+msgstr "REST APIs / Auth"
+
+msgid "Google Cloud / Cloud Run"
+msgstr "Google Cloud / Cloud Run"
+
+msgid "Docker / Kubernetes / K3s"
+msgstr "Docker / Kubernetes / K3s"
+
+msgid "Linux / CI/CD / Vercel"
+msgstr "Linux / CI/CD / Vercel"
+
+msgid "Developer Experience"
+msgstr "Developer Experience"
+
+msgid "IoT / AI"
+msgstr "IoT / AI"
+
+msgid "API platforms / Self-hosting"
+msgstr "API platforms / Self-hosting"
+
+msgid "What are you planning?"
+msgstr "What are you planning?"
+
+msgid ""
+"A new application, an API that needs attention, or a website that should do "
+"more? Tell me what you have in mind. A few sentences are enough to start."
+msgstr ""
+"A new application, an API that needs attention, or a website that should do "
+"more? Tell me what you have in mind. A few sentences are enough to start."
+
+msgid "Your message goes straight to me."
+msgstr "Your message goes straight to me."
+
+msgid "How I connect the layers"
+msgstr "How I connect the layers"
+
+msgid "A system is more than its parts."
+msgstr "A system is more than its parts."
+
+msgid "Interface"
+msgstr "Interface"
+
+msgid "Websites & applications"
+msgstr "Websites & applications"
+
+msgid ""
+"The part people use: clear interfaces, accessible websites and applications "
+"that fit the task."
+msgstr ""
+"The part people use: clear interfaces, accessible websites and applications "
+"that fit the task."
+
+msgid "APIs & data"
+msgstr "APIs & data"
+
+msgid "Logic & connections"
+msgstr "Logic & connections"
+
+msgid ""
+"The connections underneath: APIs, data models, authentication and "
+"integrations that work together."
+msgstr ""
+"The connections underneath: APIs, data models, authentication and "
+"integrations that work together."
+
+msgid "Google Cloud"
+msgstr "Google Cloud"
+
+msgid ""
+"The system in operation: cloud architecture, Cloud Run, Firebase, access "
+"control and deployment. I keep the whole picture in view."
+msgstr ""
+"The system in operation: cloud architecture, Cloud Run, Firebase, access "
+"control and deployment. I keep the whole picture in view."
+
+msgid "Choose a layer to explore."
+msgstr "Choose a layer to explore."
+
+msgid "Discipline"
+msgstr "Discipline"
+
+msgid "Company"
+msgstr "Company"
+
+msgid "All disciplines"
+msgstr "All disciplines"
+
+msgid "All companies"
+msgstr "All companies"
+
+msgid "Web development"
+msgstr "Web development"
+
+msgid "Web apps"
+msgstr "Web apps"
+
+msgid "APIs & platforms"
+msgstr "APIs & platforms"
+
+msgid "Developer experience"
+msgstr "Developer experience"
+
+msgid "Open source"
+msgstr "Open source"
+
+msgid "View project"
+msgstr "View project"
+
+msgid "Website"
+msgstr "Website"
+
+msgid "Repository"
+msgstr "Repository"
+
+msgid "{project}: open website in a new tab"
+msgstr "{project}: open website in a new tab"
+
+msgid "No projects have been published for this selection yet."
+msgstr "No projects have been published for this selection yet."
+
+msgid "Show all projects"
+msgstr "Show all projects"
+
+msgid "Contact form"
+msgstr "Contact form"
+
+msgid "Your project enquiry"
+msgstr "Your project enquiry"
+
+msgid ""
+"Email delivery is still being configured. For now, please contact me "
+"directly:"
+msgstr ""
+"Email delivery is still being configured. For now, please contact me "
+"directly:"
+
+msgid "Your name"
+msgstr "Your name"
+
+msgid "Email address"
+msgstr "Email address"
+
+msgid "What would you like to build?"
+msgstr "What would you like to build?"
+
+msgid "What is the project about? What exists already? What should happen next?"
+msgstr "What is the project about? What exists already? What should happen next?"
+
+msgid "Please leave this field empty"
+msgstr "Please leave this field empty"
+
+msgid ""
+"I use your details to respond to your enquiry. Messages are not stored in "
+"the CMS."
+msgstr ""
+"I use your details to respond to your enquiry. Messages are not stored in "
+"the CMS."
+
+msgid "Privacy policy"
+msgstr "Privacy policy"
+
+msgid "Sending …"
+msgstr "Sending …"
+
+msgid "Send enquiry"
+msgstr "Send enquiry"
+
+msgid "This form requires JavaScript. You can also contact me directly by email."
+msgstr "This form requires JavaScript. You can also contact me directly by email."
+
+msgid "The message could not be sent. Please email me directly."
+msgstr "The message could not be sent. Please email me directly."
+
+msgid "Thank you. Your message has been sent. I’ll get back to you."
+msgstr "Thank you. Your message has been sent. I’ll get back to you."
+
+msgid ""
+"Delivery could not be confirmed. Please check your connection or email me "
+"directly."
+msgstr ""
+"Delivery could not be confirmed. Please check your connection or email me "
+"directly."
+
+msgid "Invalid request."
+msgstr "Invalid request."
+
+msgid "Please enter a name with 2–100 characters."
+msgstr "Please enter a name with 2–100 characters."
+
+msgid "Please enter a valid email address."
+msgstr "Please enter a valid email address."
+
+msgid "Please write a message with 20–5,000 characters."
+msgstr "Please write a message with 20–5,000 characters."
+
+msgid "Requests from this origin are not allowed."
+msgstr "Requests from this origin are not allowed."
+
+msgid "JSON is required."
+msgstr "JSON is required."
+
+msgid "The form is currently unavailable. Please email {email} directly."
+msgstr "The form is currently unavailable. Please email {email} directly."
+
+msgid "The request is too large."
+msgstr "The request is too large."
+
+msgid "The request could not be read."
+msgstr "The request could not be read."
+
+msgid "Please check the highlighted fields."
+msgstr "Please check the highlighted fields."
+
+msgid "The request could not be verified. Please contact me by email."
+msgstr "The request could not be verified. Please contact me by email."
+
+msgid "Too many requests. Please try again in 15 minutes."
+msgstr "Too many requests. Please try again in 15 minutes."
+
+msgid "The message could not be sent. Please email {email} directly."
+msgstr "The message could not be sent. Please email {email} directly."
+
+msgid "Project not found"
+msgstr "Project not found"
+
+msgid "In development"
+msgstr "In development"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Archived"
+msgstr "Archived"
+
+msgid "All projects"
+msgstr "All projects"
+
+msgid "Period"
+msgstr "Period"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "My contribution"
+msgstr "My contribution"
+
+msgid "Technologies"
+msgstr "Technologies"
+
+msgid "Project links"
+msgstr "Project links"
+
+msgid ""
+"External links open in a new tab. Website links include source parameters "
+"(UTM)."
+msgstr ""
+"External links open in a new tab. Website links include source parameters "
+"(UTM)."
+
+msgid "Working on something similar?"
+msgstr "Working on something similar?"
+
+msgid "No project here."
+msgstr "No project here."
+
+msgid "This page does not exist, or the project has not been published yet."
+msgstr "This page does not exist, or the project has not been published yet."
+
+msgid "This page could not be loaded."
+msgstr "This page could not be loaded."
+
+msgid "Please try again or email me directly."
+msgstr "Please try again or email me directly."
+
+msgid "Try again"
+msgstr "Try again"
+
+msgid ""
+"Draft — not yet approved for publication. The final review of the mandatory "
+"information and privacy notice is still pending."
+msgstr ""
+"Draft — not yet approved for publication. The final review of the mandatory "
+"information and privacy notice is still pending."
+
+msgid "Information under section 5 DDG"
+msgstr "Information under section 5 DDG"
+
+msgid "Owner: Dominik Spitzli"
+msgstr "Owner: Dominik Spitzli"
+
+msgid "Sole proprietor"
+msgstr "Sole proprietor"
+
+msgid "[Business address to be added]"
+msgstr "[Business address to be added]"
+
+msgid "[City]"
+msgstr "[City]"
+
+msgid "Germany"
+msgstr "Germany"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "VAT identification number"
+msgstr "VAT identification number"
+
+msgid "VAT identification number under section 27a UStG: {number}"
+msgstr "VAT identification number under section 27a UStG: {number}"
+
+msgid "Business identification number"
+msgstr "Business identification number"
+
+msgid "Register information"
+msgstr "Register information"
+
+msgid "Content and project references"
+msgstr "Content and project references"
+
+msgid ""
+"Dominik Spitzli is responsible for this website’s content. Project and "
+"company names describe my work. Linked websites are operated by their "
+"respective providers."
+msgstr ""
+"Dominik Spitzli is responsible for this website’s content. Project and "
+"company names describe my work. Linked websites are operated by their "
+"respective providers."
+
+msgid ""
+"Draft for the planned Vercel deployment. Address, providers, data "
+"processing agreements, retention periods and international transfers must "
+"be reviewed before publication."
+msgstr ""
+"Draft for the planned Vercel deployment. Address, providers, data "
+"processing agreements, retention periods and international transfers must "
+"be reviewed before publication."
+
+msgid "1. Controller"
+msgstr "1. Controller"
+
+msgid "Full legal notice"
+msgstr "Full legal notice"
+
+msgid "2. Website hosting"
+msgstr "2. Website hosting"
+
+msgid ""
+"This website is hosted on Vercel. Requests involve technically necessary "
+"data, including IP address, time, requested URL, browser/device information "
+"and technical error data. Processing serves delivery, stability and "
+"security under Article 6(1)(f) GDPR."
+msgstr ""
+"This website is hosted on Vercel. Requests involve technically necessary "
+"data, including IP address, time, requested URL, browser/device information "
+"and technical error data. Processing serves delivery, stability and "
+"security under Article 6(1)(f) GDPR."
+
+msgid "Hosting and image storage: Vercel Inc. (Vercel and Vercel Blob)."
+msgstr "Hosting and image storage: Vercel Inc. (Vercel and Vercel Blob)."
+
+msgid "Vercel privacy policy"
+msgstr "Vercel privacy policy"
+
+msgid "Hosting log retention: {retention}"
+msgstr "Hosting log retention: {retention}"
+
+msgid "[To be confirmed before publication]"
+msgstr "[To be confirmed before publication]"
+
+msgid "[Provider to be added]"
+msgstr "[Provider to be added]"
+
+msgid "[Region to be added]"
+msgstr "[Region to be added]"
+
+msgid ""
+"CMS database: {provider}. Region: {region}. The database stores project "
+"content, administration data and the abuse-prevention counters described "
+"below, not contact messages."
+msgstr ""
+"CMS database: {provider}. Region: {region}. The database stores project "
+"content, administration data and the abuse-prevention counters described "
+"below, not contact messages."
+
+msgid "3. Contact by email and form"
+msgstr "3. Contact by email and form"
+
+msgid ""
+"When you contact me, I process your name, email address and message to "
+"handle your enquiry. The legal basis is Article 6(1)(b) GDPR for "
+"contractual or pre-contractual enquiries and Article 6(1)(f) GDPR for other "
+"enquiries. Please do not send particularly sensitive data through the form."
+msgstr ""
+"When you contact me, I process your name, email address and message to "
+"handle your enquiry. The legal basis is Article 6(1)(b) GDPR for "
+"contractual or pre-contractual enquiries and Article 6(1)(f) GDPR for other "
+"enquiries. Please do not send particularly sensitive data through the form."
+
+msgid ""
+"The form uses turboSMTP for delivery. Messages are received and handled in "
+"my mailbox with {provider}. Enquiries are not stored in the CMS. Emails are "
+"retained for as long as processing or statutory retention requirements "
+"demand, then deleted."
+msgstr ""
+"The form uses turboSMTP for delivery. Messages are received and handled in "
+"my mailbox with {provider}. Enquiries are not stored in the CMS. Emails are "
+"retained for as long as processing or statutory retention requirements "
+"demand, then deleted."
+
+msgid "[Mailbox provider to be added]"
+msgstr "[Mailbox provider to be added]"
+
+msgid "4. Abuse prevention"
+msgstr "4. Abuse prevention"
+
+msgid ""
+"The form uses a hidden check field (honeypot) and a limit of five requests "
+"per 15 minutes. A keyed hash of the IP address is stored with a counter and "
+"expiry time. The IP address itself is not stored in the CMS database for "
+"this purpose. Expired counters are deleted on the next form request. "
+"Hosting logs are separate."
+msgstr ""
+"The form uses a hidden check field (honeypot) and a limit of five requests "
+"per 15 minutes. A keyed hash of the IP address is stored with a counter and "
+"expiry time. The IP address itself is not stored in the CMS database for "
+"this purpose. Expired counters are deleted on the next form request. "
+"Hosting logs are separate."
+
+msgid ""
+"The legal basis is Article 6(1)(f) GDPR. My legitimate interest is "
+"protecting the form and mail delivery from spam and overload. No external "
+"CAPTCHA provider is used."
+msgstr ""
+"The legal basis is Article 6(1)(f) GDPR. My legitimate interest is "
+"protecting the form and mail delivery from spam and overload. No external "
+"CAPTCHA provider is used."
+
+msgid "5. Cookies, fonts and administration"
+msgstr "5. Cookies, fonts and administration"
+
+msgid ""
+"The public website uses no analytics or marketing cookies and no visitor "
+"tracking. Fonts are served locally, not fetched from Google Fonts. Images "
+"may be loaded from Vercel Blob."
+msgstr ""
+"The public website uses no analytics or marketing cookies and no visitor "
+"tracking. Fonts are served locally, not fetched from Google Fonts. Images "
+"may be loaded from Vercel Blob."
+
+msgid ""
+"The initial language follows your browser preferences, with English as the "
+"fallback. When you explicitly choose a language, the technically necessary "
+"spitzli_locale cookie remembers that choice for one year. It contains only "
+"en or de, no visitor identifier. Storage is based on section 25(2)(2) "
+"TDDDG; processing serves the requested language setting under Article "
+"6(1)(f) GDPR."
+msgstr ""
+"The initial language follows your browser preferences, with English as the "
+"fallback. When you explicitly choose a language, the technically necessary "
+"spitzli_locale cookie remembers that choice for one year. It contains only "
+"en or de, no visitor identifier. Storage is based on section 25(2)(2) "
+"TDDDG; processing serves the requested language setting under Article "
+"6(1)(f) GDPR."
+
+msgid ""
+"Signing into the protected CMS uses a technically necessary session cookie "
+"lasting up to two hours. Administrator accounts and login information are "
+"processed for secure site management. Storage is based on section 25(2)(2) "
+"TDDDG and processing on the legitimate interest in secure administration "
+"under Article 6(1)(f) GDPR."
+msgstr ""
+"Signing into the protected CMS uses a technically necessary session cookie "
+"lasting up to two hours. Administrator accounts and login information are "
+"processed for secure site management. Storage is based on section 25(2)(2) "
+"TDDDG and processing on the legitimate interest in secure administration "
+"under Article 6(1)(f) GDPR."
+
+msgid "6. External links and UTM parameters"
+msgstr "6. External links and UTM parameters"
+
+msgid ""
+"Project links may include utm_source=spitzli.dev, utm_medium=portfolio and "
+"utm_campaign=reference. These identify the source of a link, not an "
+"individual visitor, and do not trigger visitor measurement on this website. "
+"Data is transferred to a linked provider only when you open its link. That "
+"provider’s privacy policy then applies."
+msgstr ""
+"Project links may include utm_source=spitzli.dev, utm_medium=portfolio and "
+"utm_campaign=reference. These identify the source of a link, not an "
+"individual visitor, and do not trigger visitor measurement on this website. "
+"Data is transferred to a linked provider only when you open its link. That "
+"provider’s privacy policy then applies."
+
+msgid "7. Providers and international transfers"
+msgstr "7. Providers and international transfers"
+
+msgid ""
+"Hosting, database and email providers receive the data needed for their "
+"tasks. Where they act as processors, processing must be governed by "
+"agreements under Article 28 GDPR. Transfers outside the EU or EEA must also "
+"meet Articles 44 et seq. GDPR."
+msgstr ""
+"Hosting, database and email providers receive the data needed for their "
+"tasks. Where they act as processors, processing must be governed by "
+"agreements under Article 28 GDPR. Transfers outside the EU or EEA must also "
+"meet Articles 44 et seq. GDPR."
+
+msgid "Transfer safeguards agreed for this website: {safeguards}"
+msgstr "Transfer safeguards agreed for this website: {safeguards}"
+
+msgid "[Providers, locations and agreed safeguards to be confirmed]"
+msgstr "[Providers, locations and agreed safeguards to be confirmed]"
+
+msgid "8. Your rights"
+msgstr "8. Your rights"
+
+msgid ""
+"Subject to the legal requirements, you have rights of access, "
+"rectification, erasure, restriction and data portability (Articles 15–20 "
+"GDPR). You may object to processing based on legitimate interests for "
+"reasons relating to your particular situation (Article 21 GDPR). Any "
+"consent may be withdrawn for the future."
+msgstr ""
+"Subject to the legal requirements, you have rights of access, "
+"rectification, erasure, restriction and data portability (Articles 15–20 "
+"GDPR). You may object to processing based on legitimate interests for "
+"reasons relating to your particular situation (Article 21 GDPR). Any "
+"consent may be withdrawn for the future."
+
+msgid "Contact:"
+msgstr "Contact:"
+
+msgid ""
+"You may also complain to a data protection authority, particularly where "
+"you live, work or believe an infringement occurred (Article 77 GDPR)."
+msgstr ""
+"You may also complain to a data protection authority, particularly where "
+"you live, work or believe an infringement occurred (Article 77 GDPR)."
+
+msgid "{count} project"
+msgid_plural "{count} projects"
+msgstr[0] "{count} project"
+msgstr[1] "{count} projects"
+
+msgid "A description is not yet available in this language."
+msgstr "A description is not yet available in this language."

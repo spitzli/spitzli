@@ -1,3 +1,4 @@
 src/migrations/** linguist-generated=true -whitespace
 src/payload-types.ts linguist-generated=true
+src/i18n/messages/*.json linguist-generated=true
 src/app/(payload)/admin/importMap.js linguist-generated=true

@@ -1,15 +1,17 @@
 "use client";
+import { useI18n } from "@/i18n/client";
 
 export default function ErrorPage({ reset }: { reset: () => void }) {
+  const { t } = useI18n();
   return (
     <main id="main" className="container legal-page">
-      <h1>Die Seite konnte nicht geladen werden.</h1>
+      <h1>{t("This page could not be loaded.")}</h1>
       <p>
-        Bitte versuche es erneut. Du kannst mich weiterhin unter{" "}
-        <a href="mailto:info@spitzli.dev">info@spitzli.dev</a> erreichen.
+        {t("Please try again or email me directly.")}{" "}
+        <a href="mailto:info@spitzli.dev">info@spitzli.dev</a>
       </p>
       <button className="button secondary" type="button" onClick={reset}>
-        Erneut versuchen
+        {t("Try again")}
       </button>
     </main>
   );

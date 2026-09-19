@@ -1,135 +1,134 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { languageAlternates, localizePath } from "@/i18n/locale";
+import { getI18n } from "@/i18n/server";
 import { legal, legalReady, site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Datenschutz",
-  alternates: { canonical: "/datenschutz" },
-};
-
-export default function Datenschutz() {
+export async function generateMetadata(): Promise<Metadata> {
+  const { locale, t } = await getI18n();
+  return { title: t("Privacy"), alternates: languageAlternates("/datenschutz", locale) };
+}
+export default async function Datenschutz() {
+  const { locale, t } = await getI18n();
   return (
     <main id="main" className="container legal-page">
-      <h1>Datenschutzerklärung</h1>
+      <h1>{t("Privacy policy")}</h1>
       {!legalReady && (
         <p className="legal-warning">
-          Entwurf für die geplante Vercel-Bereitstellung. Anschrift, eingesetzte Dienstleister,
-          Auftragsverarbeitungsverträge, Speicherfristen und Drittlandtransfers müssen vor dem
-          Livegang geprüft und bestätigt werden.
+          {t(
+            "Draft for the planned Vercel deployment. Address, providers, data processing agreements, retention periods and international transfers must be reviewed before publication.",
+          )}
         </p>
       )}
-      <h2>1. Verantwortlicher</h2>
+      <h2>{t("1. Controller")}</h2>
       <p>
         Dominik Spitzli, Spitzli Development
         <br />
-        {legal.street || "[Geschäftsanschrift ergänzen]"}
+        {legal.street || t("[Business address to be added]")}
         <br />
-        {legal.postcode || "[PLZ]"} {legal.city || "[Ort]"}, {legal.country}
+        {legal.postcode || "[ZIP]"} {legal.city || t("[City]")},{" "}
+        {legal.country === "Deutschland" ? t("Germany") : legal.country}
         <br />
-        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+        {t("Email")}: <a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
       <p>
-        Weitere Angaben stehen im <Link href="/impressum">Impressum</Link>.
+        <Link href={localizePath("/impressum", locale)}>{t("Full legal notice")}</Link>
       </p>
-      <h2>2. Bereitstellung der Website</h2>
+      <h2>{t("2. Website hosting")}</h2>
       <p>
-        Die Website wird auf Vercel bereitgestellt. Beim Abruf werden technisch notwendige Daten
-        verarbeitet, insbesondere IP-Adresse, Zeitpunkt, angefragte URL,
-        Browser-/Geräteinformationen und technische Fehlerdaten. Dies dient der Auslieferung,
-        Stabilität und Sicherheit der Website. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+        {t(
+          "This website is hosted on Vercel. Requests involve technically necessary data, including IP address, time, requested URL, browser/device information and technical error data. Processing serves delivery, stability and security under Article 6(1)(f) GDPR.",
+        )}
       </p>
       <p>
-        Hosting und Bildspeicher: Vercel Inc. (Vercel und Vercel Blob). Datenschutzhinweise:{" "}
+        {t("Hosting and image storage: Vercel Inc. (Vercel and Vercel Blob).")}{" "}
         <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
-          vercel.com/legal/privacy-policy
+          {t("Vercel privacy policy")}
         </a>
-        . Speicherfrist der Hosting-Protokolle:{" "}
-        {process.env.PRIVACY_LOG_RETENTION ||
-          "[vor Veröffentlichung mit dem Hosting-Anbieter klären]"}
-        .
       </p>
       <p>
-        CMS-Datenbank: {process.env.PRIVACY_DATABASE_PROVIDER || "[Datenbankanbieter ergänzen]"},
-        Region: {process.env.PRIVACY_DATABASE_REGION || "[Region ergänzen]"}. Die Datenbank enthält
-        Projektinhalte, Administrationsdaten und die nachfolgend beschriebenen
-        Missbrauchsschutzzähler, keine Kontaktanfragen.
-      </p>
-      <h2>3. Kontakt per E-Mail und Formular</h2>
-      <p>
-        Wenn du mich kontaktierst, verarbeite ich deinen Namen, deine E-Mail-Adresse und den Inhalt
-        deiner Nachricht zur Bearbeitung der Anfrage. Bei vorvertraglichen oder vertraglichen
-        Anfragen gilt Art. 6 Abs. 1 lit. b DSGVO, bei sonstigen Anfragen Art. 6 Abs. 1 lit. f DSGVO.
-        Bitte sende keine besonders sensiblen Daten über das Formular.
+        {t("Hosting log retention: {retention}", {
+          retention: process.env.PRIVACY_LOG_RETENTION || t("[To be confirmed before publication]"),
+        })}
       </p>
       <p>
-        Der Formularversand erfolgt über turboSMTP. Empfang und weitere Bearbeitung erfolgen in
-        meinem E-Mail-Postfach bei{" "}
-        {process.env.PRIVACY_MAIL_PROVIDER || "[E-Mail-Postfachanbieter ergänzen]"}. Anfragen werden
-        nicht im CMS gespeichert. E-Mails bewahre ich so lange auf, wie die Bearbeitung und
-        gegebenenfalls gesetzliche Aufbewahrungspflichten es erfordern; anschließend werden sie
-        gelöscht.
+        {t(
+          "CMS database: {provider}. Region: {region}. The database stores project content, administration data and the abuse-prevention counters described below, not contact messages.",
+          {
+            provider: process.env.PRIVACY_DATABASE_PROVIDER || t("[Provider to be added]"),
+            region: process.env.PRIVACY_DATABASE_REGION || t("[Region to be added]"),
+          },
+        )}
       </p>
-      <h2>4. Schutz vor Missbrauch</h2>
+      <h2>{t("3. Contact by email and form")}</h2>
       <p>
-        Das Formular verwendet ein unsichtbares Prüffeld (Honeypot) und eine Begrenzung auf fünf
-        Anfragen pro 15 Minuten. Dafür wird ein mit einem geheimen Schlüssel erzeugter Prüfwert der
-        IP-Adresse zusammen mit einem Zähler und einem Ablaufzeitpunkt gespeichert. Die IP-Adresse
-        selbst wird hierfür nicht in der CMS-Datenbank abgelegt. Abgelaufene Zähler werden bei der
-        nächsten Formularanfrage gelöscht. Die Hosting-Protokolle sind davon unabhängig.
-      </p>
-      <p>
-        Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Mein berechtigtes Interesse liegt im Schutz
-        des Formulars und des E-Mail-Versands vor Spam und Überlastung. Es wird kein externer
-        CAPTCHA-Dienst eingebunden.
-      </p>
-      <h2>5. Cookies, Schriftarten und Administration</h2>
-      <p>
-        Die öffentliche Website setzt keine eigenen Analyse- oder Marketing-Cookies und bindet kein
-        Besuchertracking ein. Schriftarten werden lokal mit der Website ausgeliefert; es findet kein
-        Abruf bei Google Fonts statt. Bilder können vom Vercel-Blob-Speicher geladen werden.
+        {t(
+          "When you contact me, I process your name, email address and message to handle your enquiry. The legal basis is Article 6(1)(b) GDPR for contractual or pre-contractual enquiries and Article 6(1)(f) GDPR for other enquiries. Please do not send particularly sensitive data through the form.",
+        )}
       </p>
       <p>
-        Nur bei der Anmeldung im geschützten CMS wird ein technisch notwendiges Sitzungscookie
-        verwendet (Sitzungslaufzeit bis zu zwei Stunden). Administrationskonten und
-        Anmeldeinformationen werden zur sicheren Verwaltung der Website verarbeitet. Die technische
-        Speicherung erfolgt auf Grundlage von § 25 Abs. 2 Nr. 2 TDDDG; die Verarbeitung dient dem
-        berechtigten Interesse an einer sicheren Administration nach Art. 6 Abs. 1 lit. f DSGVO.
+        {t(
+          "The form uses turboSMTP for delivery. Messages are received and handled in my mailbox with {provider}. Enquiries are not stored in the CMS. Emails are retained for as long as processing or statutory retention requirements demand, then deleted.",
+          { provider: process.env.PRIVACY_MAIL_PROVIDER || t("[Mailbox provider to be added]") },
+        )}
       </p>
-      <h2>6. Externe Links und UTM-Parameter</h2>
+      <h2>{t("4. Abuse prevention")}</h2>
       <p>
-        Projektlinks können die Parameter utm_source=spitzli.dev, utm_medium=portfolio und
-        utm_campaign=reference enthalten. Sie kennzeichnen die Herkunft des Links, enthalten keine
-        von mir vergebene Besucherkennung und lösen auf dieser Website keine eigene Besuchsmessung
-        aus. Erst wenn du einen Link öffnest, werden Daten an den jeweiligen Zielanbieter
-        übertragen. Für dessen Verarbeitung gilt dessen Datenschutzerklärung.
-      </p>
-      <h2>7. Dienstleister und internationale Übermittlungen</h2>
-      <p>
-        Hosting-, Datenbank- und E-Mail-Dienstleister erhalten die für ihre Aufgabe erforderlichen
-        Daten. Soweit sie als Auftragsverarbeiter tätig sind, ist die Verarbeitung durch
-        Vereinbarungen nach Art. 28 DSGVO zu regeln. Bei einer Verarbeitung außerhalb der EU
-        beziehungsweise des EWR sind zusätzlich die Voraussetzungen der Art. 44 ff. DSGVO
-        einzuhalten.
+        {t(
+          "The form uses a hidden check field (honeypot) and a limit of five requests per 15 minutes. A keyed hash of the IP address is stored with a counter and expiry time. The IP address itself is not stored in the CMS database for this purpose. Expired counters are deleted on the next form request. Hosting logs are separate.",
+        )}
       </p>
       <p>
-        Die für diesen Auftritt vereinbarten Übermittlungsgarantien:{" "}
-        {process.env.PRIVACY_TRANSFERS ||
-          "[Anbieter, Verarbeitungsorte und tatsächlich vereinbarte Garantien vor Veröffentlichung ergänzen]"}
-        .
+        {t(
+          "The legal basis is Article 6(1)(f) GDPR. My legitimate interest is protecting the form and mail delivery from spam and overload. No external CAPTCHA provider is used.",
+        )}
       </p>
-      <h2>8. Deine Rechte</h2>
+      <h2>{t("5. Cookies, fonts and administration")}</h2>
       <p>
-        Du hast nach den gesetzlichen Voraussetzungen das Recht auf Auskunft, Berichtigung,
-        Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit (Art. 15–20 DSGVO). Bei
-        einer Verarbeitung auf Grundlage berechtigter Interessen kannst du aus Gründen deiner
-        besonderen Situation widersprechen (Art. 21 DSGVO). Eine gegebenenfalls erteilte
-        Einwilligung kannst du mit Wirkung für die Zukunft widerrufen.
+        {t(
+          "The public website uses no analytics or marketing cookies and no visitor tracking. Fonts are served locally, not fetched from Google Fonts. Images may be loaded from Vercel Blob.",
+        )}
       </p>
       <p>
-        Wende dich dazu an <a href={`mailto:${site.email}`}>{site.email}</a>. Außerdem kannst du
-        dich bei einer Datenschutzaufsichtsbehörde beschweren, insbesondere am Ort deines
-        gewöhnlichen Aufenthalts, deines Arbeitsplatzes oder des vermuteten Verstoßes (Art. 77
-        DSGVO).
+        {t(
+          "The initial language follows your browser preferences, with English as the fallback. When you explicitly choose a language, the technically necessary spitzli_locale cookie remembers that choice for one year. It contains only en or de, no visitor identifier. Storage is based on section 25(2)(2) TDDDG; processing serves the requested language setting under Article 6(1)(f) GDPR.",
+        )}
+      </p>
+      <p>
+        {t(
+          "Signing into the protected CMS uses a technically necessary session cookie lasting up to two hours. Administrator accounts and login information are processed for secure site management. Storage is based on section 25(2)(2) TDDDG and processing on the legitimate interest in secure administration under Article 6(1)(f) GDPR.",
+        )}
+      </p>
+      <h2>{t("6. External links and UTM parameters")}</h2>
+      <p>
+        {t(
+          "Project links may include utm_source=spitzli.dev, utm_medium=portfolio and utm_campaign=reference. These identify the source of a link, not an individual visitor, and do not trigger visitor measurement on this website. Data is transferred to a linked provider only when you open its link. That provider’s privacy policy then applies.",
+        )}
+      </p>
+      <h2>{t("7. Providers and international transfers")}</h2>
+      <p>
+        {t(
+          "Hosting, database and email providers receive the data needed for their tasks. Where they act as processors, processing must be governed by agreements under Article 28 GDPR. Transfers outside the EU or EEA must also meet Articles 44 et seq. GDPR.",
+        )}
+      </p>
+      <p>
+        {t("Transfer safeguards agreed for this website: {safeguards}", {
+          safeguards:
+            process.env.PRIVACY_TRANSFERS ||
+            t("[Providers, locations and agreed safeguards to be confirmed]"),
+        })}
+      </p>
+      <h2>{t("8. Your rights")}</h2>
+      <p>
+        {t(
+          "Subject to the legal requirements, you have rights of access, rectification, erasure, restriction and data portability (Articles 15–20 GDPR). You may object to processing based on legitimate interests for reasons relating to your particular situation (Article 21 GDPR). Any consent may be withdrawn for the future.",
+        )}
+      </p>
+      <p>
+        {t("Contact:")} <a href={`mailto:${site.email}`}>{site.email}</a>.{" "}
+        {t(
+          "You may also complain to a data protection authority, particularly where you live, work or believe an infringement occurred (Article 77 GDPR).",
+        )}
       </p>
     </main>
   );

@@ -62,6 +62,20 @@ try {
   });
   projectID = draft.id;
   const { getProject, getProjects } = await import("../src/lib/projects");
+  const { initialProjects } = await import("../src/lib/seed-data");
+  const { englishProjects } = await import("../src/lib/seed-translations");
+  for (const expected of initialProjects) {
+    assert.equal(
+      (await getProject(expected.slug, "de"))?.summary,
+      expected.summary,
+      "German seed content preserved",
+    );
+    assert.equal(
+      (await getProject(expected.slug, "en"))?.summary,
+      englishProjects[expected.slug].summary,
+      "English CMS translation",
+    );
+  }
   assert.equal(await getProject(slug), null);
   assert.equal(
     (await getProjects()).some((project) => project.slug === slug),
@@ -141,7 +155,18 @@ try {
   const localKey = rateLimitKey("127.0.0.1", process.env.PAYLOAD_SECRET || "");
   await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${localKey}`);
   assert.equal((await POST(request(valid, "https://other.example"))).status, 403);
-  assert.equal((await POST(request({ ...valid, message: "x" }))).status, 400);
+  const invalidEnglish = await POST(request({ ...valid, message: "x" }));
+  assert.equal(invalidEnglish.status, 400);
+  assert.equal(
+    (await invalidEnglish.json()).fields.message,
+    "Please write a message with 20–5,000 characters.",
+  );
+  const invalidGerman = request({ ...valid, message: "x" });
+  invalidGerman.headers.set("accept-language", "de");
+  assert.equal(
+    (await (await POST(invalidGerman)).json()).fields.message,
+    "Bitte eine Nachricht mit 20–5.000 Zeichen schreiben.",
+  );
   assert.equal((await POST(request({ ...valid, message: "x".repeat(17000) }))).status, 413);
   assert.equal((await POST(request({ ...valid, website: "spam" }))).status, 200);
   assert.equal(delivered, 0);

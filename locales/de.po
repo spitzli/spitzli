@@ -1,0 +1,847 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Spitzli Development\n"
+"Language: de\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Spitzli Development — Software, APIs & Cloud"
+msgstr "Spitzli Development — Software, APIs & Cloud"
+
+msgid ""
+"I develop web applications, APIs and cloud infrastructure. Dominik Spitzli "
+"— independent software developer and system architect."
+msgstr ""
+"Ich entwickle Webanwendungen, APIs und Cloud-Infrastruktur. Dominik Spitzli "
+"— selbstständiger Softwareentwickler und Systemarchitekt."
+
+msgid "Skip to content"
+msgstr "Zum Inhalt"
+
+msgid "Spitzli Development — home"
+msgstr "Spitzli Development — Startseite"
+
+msgid "Main navigation"
+msgstr "Hauptnavigation"
+
+msgid "Work"
+msgstr "Projekte"
+
+msgid "Expertise"
+msgstr "Leistungen"
+
+msgid "About me"
+msgstr "Über mich"
+
+msgid "Contact"
+msgstr "Kontakt"
+
+msgid "Independent developer."
+msgstr "Selbstständig. Direkt."
+
+msgid "Connected thinking."
+msgstr "Zusammen gedacht."
+
+msgid "Language"
+msgstr "Sprache"
+
+msgid ""
+"Preview — legal and privacy information is being reviewed before "
+"publication."
+msgstr ""
+"Vorschau — Impressum und Datenschutz werden vor der Veröffentlichung "
+"abschließend geprüft."
+
+msgid "One project. Direct contact."
+msgstr "Ein Projekt. Ein direkter Draht."
+
+msgid "Legal information"
+msgstr "Rechtliches"
+
+msgid "Legal notice"
+msgstr "Impressum"
+
+msgid "Privacy"
+msgstr "Datenschutz"
+
+msgid "Software developer & system architect"
+msgstr "Softwareentwickler & Systemarchitekt"
+
+msgid "Software."
+msgstr "Software."
+
+msgid "Connected."
+msgstr "Mit System."
+
+msgid ""
+"I build web applications, APIs and the infrastructure behind them. From the "
+"first interface to the system in operation."
+msgstr ""
+"Ich entwickle Webanwendungen, APIs und die Infrastruktur dahinter. Vom "
+"ersten Interface bis zum laufenden System."
+
+msgid "You work directly with me — the developer who actually builds your project."
+msgstr ""
+"Du arbeitest direkt mit mir — dem Entwickler, der dein Projekt tatsächlich "
+"umsetzt."
+
+msgid "Discuss a project"
+msgstr "Projekt anfragen"
+
+msgid "Explore my work"
+msgstr "Arbeit ansehen"
+
+msgid "Not just a service."
+msgstr "Nicht nur ein Dienst."
+
+msgid "The whole system."
+msgstr "Das ganze System."
+
+msgid ""
+"Google Cloud is a focus of my work. I bring broad knowledge of the "
+"platform, beyond individual products."
+msgstr ""
+"Google Cloud ist ein Schwerpunkt meiner Arbeit. Ich bringe breites Wissen "
+"über die Plattform mit — über einzelne Produkte hinaus."
+
+msgid ""
+"Architecture, applications, identities, data and deployment belong "
+"together. I connect these pieces — with Cloud Run and Firebase, and with an "
+"eye on permissions, maintainability and day-to-day operation."
+msgstr ""
+"Architektur, Anwendungen, Identitäten, Daten und Deployment gehören "
+"zusammen. Ich verbinde diese Teile — mit Cloud Run und Firebase und mit "
+"Blick auf Berechtigungen, Wartbarkeit und den laufenden Betrieb."
+
+msgid "Architecture"
+msgstr "Architektur"
+
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+msgid "Deployment & operation"
+msgstr "Deployment & Betrieb"
+
+msgid "Work, not promises."
+msgstr "Arbeit statt Versprechen."
+
+msgid ""
+"A selection of websites, platform work and developer tools. The projects "
+"differ. Thinking beyond a single component is the common thread."
+msgstr ""
+"Eine Auswahl an Websites, Plattformarbeit und Developer Tools. Die Projekte "
+"sind unterschiedlich. Der gemeinsame Nenner: über eine einzelne Komponente "
+"hinausdenken."
+
+msgid "Where I can help."
+msgstr "Wobei ich helfen kann."
+
+msgid ""
+"Bring a concrete task or an idea that still needs structure. I think about "
+"the interface, the backend and the operation together."
+msgstr ""
+"Komm mit einer konkreten Aufgabe oder einer Idee, die noch Struktur "
+"braucht. Ich denke Oberfläche, Backend und Betrieb zusammen."
+
+msgid "Websites & frontends"
+msgstr "Websites & Frontends"
+
+msgid ""
+"Company websites, portfolios and custom frontends. Fast, accessible and "
+"focused on content — with CMS, SEO and performance in mind."
+msgstr ""
+"Unternehmenswebsites, Portfolios und individuelle Frontends. Schnell, "
+"zugänglich und auf den Inhalt abgestimmt — mit CMS, SEO und Performance im "
+"Blick."
+
+msgid "Web apps & internal tools"
+msgstr "Webapps & interne Tools"
+
+msgid ""
+"Dashboards, admin panels, customer portals and SaaS applications. Software "
+"that fits your workflow, not the other way around."
+msgstr ""
+"Dashboards, Admin-Panels, Kundenportale und SaaS-Anwendungen. Software, die "
+"zu deinen Abläufen passt — statt umgekehrt."
+
+msgid "Backends & APIs"
+msgstr "Backends & APIs"
+
+msgid ""
+"API design, data models, authentication and permissions. Interfaces other "
+"developers can understand and use."
+msgstr ""
+"API-Design, Datenmodelle, Authentifizierung und Berechtigungen. "
+"Schnittstellen, die andere Entwickler verstehen und nutzen können."
+
+msgid "Cloud & infrastructure"
+msgstr "Cloud & Infrastruktur"
+
+msgid ""
+"Broad Google Cloud knowledge, from architecture to deployment and "
+"operation. Cloud Run, Firebase, Docker, Kubernetes and self-hosting where "
+"they fit."
+msgstr ""
+"Breites Google-Cloud-Wissen, von der Architektur bis zu Deployment und "
+"Betrieb. Cloud Run, Firebase, Docker, Kubernetes und Self-Hosting dort, wo "
+"sie passen."
+
+msgid "Automation & integrations"
+msgstr "Automatisierung & Integrationen"
+
+msgid ""
+"Connect systems, move data and automate recurring work with APIs and the "
+"right tools."
+msgstr ""
+"Systeme verbinden, Daten übertragen und wiederkehrende Arbeit mit APIs und "
+"passenden Werkzeugen automatisieren."
+
+msgid "Maintenance & development"
+msgstr "Wartung & Weiterentwicklung"
+
+msgid ""
+"Understand existing projects, take them over and modernise them "
+"deliberately. Improve the right things instead of rebuilding everything."
+msgstr ""
+"Bestehende Projekte verstehen, übernehmen und gezielt modernisieren. Das "
+"Richtige verbessern, statt alles neu zu bauen."
+
+msgid "Hi, I’m Dominik."
+msgstr "Hi, ich bin Dominik."
+
+msgid "I build this myself."
+msgstr "Ich baue das selbst."
+
+msgid ""
+"Spitzli Development is my sole proprietorship. I’m an independent software "
+"developer and system architect — not an agency team."
+msgstr ""
+"Spitzli Development ist mein Einzelunternehmen. Ich bin selbstständiger "
+"Softwareentwickler und Systemarchitekt — kein Agenturteam."
+
+msgid ""
+"I work on web applications, APIs, internal tools and cloud infrastructure. "
+"What interests me is how everything connects: what the interface needs, "
+"where the data lives and how the software runs reliably."
+msgstr ""
+"Ich arbeite an Webanwendungen, APIs, internen Tools und "
+"Cloud-Infrastruktur. Mich interessiert, wie alles zusammenhängt: was die "
+"Oberfläche braucht, wo die Daten liegen und wie die Software zuverlässig "
+"läuft."
+
+msgid ""
+"My experience includes website projects, backend and platform work for "
+"Luninora, and developer experience around turboSMTP. Google Cloud, "
+"understandable APIs and maintainable systems are particular interests."
+msgstr ""
+"Meine Erfahrung reicht von Website-Projekten über Backend- und "
+"Plattformarbeit für Luninora bis zur Developer Experience rund um "
+"turboSMTP. Google Cloud, verständliche APIs und wartbare Systeme sind "
+"besondere Schwerpunkte."
+
+msgid "My GitHub profile"
+msgstr "Mein GitHub-Profil"
+
+msgid "Tools I work with"
+msgstr "Womit ich arbeite"
+
+msgid "Applications"
+msgstr "Anwendungen"
+
+msgid "Backend & data"
+msgstr "Backend & Daten"
+
+msgid "Infrastructure"
+msgstr "Infrastruktur"
+
+msgid "Also on my workbench"
+msgstr "Außerdem auf meiner Werkbank"
+
+msgid "TypeScript / JavaScript"
+msgstr "TypeScript / JavaScript"
+
+msgid "React / Next.js"
+msgstr "React / Next.js"
+
+msgid "Svelte / SvelteKit"
+msgstr "Svelte / SvelteKit"
+
+msgid "Bun / Node.js / Rust"
+msgstr "Bun / Node.js / Rust"
+
+msgid "PostgreSQL / Firebase"
+msgstr "PostgreSQL / Firebase"
+
+msgid "REST APIs / Auth"
+msgstr "REST APIs / Auth"
+
+msgid "Google Cloud / Cloud Run"
+msgstr "Google Cloud / Cloud Run"
+
+msgid "Docker / Kubernetes / K3s"
+msgstr "Docker / Kubernetes / K3s"
+
+msgid "Linux / CI/CD / Vercel"
+msgstr "Linux / CI/CD / Vercel"
+
+msgid "Developer Experience"
+msgstr "Developer Experience"
+
+msgid "IoT / AI"
+msgstr "IoT / AI"
+
+msgid "API platforms / Self-hosting"
+msgstr "API-Plattformen / Self-Hosting"
+
+msgid "What are you planning?"
+msgstr "Was hast du vor?"
+
+msgid ""
+"A new application, an API that needs attention, or a website that should do "
+"more? Tell me what you have in mind. A few sentences are enough to start."
+msgstr ""
+"Eine neue Anwendung, eine API, die aufgeräumt werden muss, oder eine "
+"Website, die mehr können soll? Schreib mir, worum es geht. Ein paar Sätze "
+"reichen für den Anfang."
+
+msgid "Your message goes straight to me."
+msgstr "Deine Nachricht landet direkt bei mir."
+
+msgid "How I connect the layers"
+msgstr "Wie ich die Ebenen verbinde"
+
+msgid "A system is more than its parts."
+msgstr "Ein System ist mehr als seine Teile."
+
+msgid "Interface"
+msgstr "Interface"
+
+msgid "Websites & applications"
+msgstr "Websites & Anwendungen"
+
+msgid ""
+"The part people use: clear interfaces, accessible websites and applications "
+"that fit the task."
+msgstr ""
+"Der Teil, den Menschen nutzen: klare Oberflächen, zugängliche Websites und "
+"Anwendungen, die zur Aufgabe passen."
+
+msgid "APIs & data"
+msgstr "APIs & Daten"
+
+msgid "Logic & connections"
+msgstr "Logik & Verbindungen"
+
+msgid ""
+"The connections underneath: APIs, data models, authentication and "
+"integrations that work together."
+msgstr ""
+"Die Verbindungen darunter: APIs, Datenmodelle, Authentifizierung und "
+"Integrationen, die zusammenspielen."
+
+msgid "Google Cloud"
+msgstr "Google Cloud"
+
+msgid ""
+"The system in operation: cloud architecture, Cloud Run, Firebase, access "
+"control and deployment. I keep the whole picture in view."
+msgstr ""
+"Das System im Betrieb: Cloud-Architektur, Cloud Run, Firebase, "
+"Zugriffsrechte und Deployment. Ich behalte das Gesamtbild im Blick."
+
+msgid "Choose a layer to explore."
+msgstr "Wähle eine Ebene, um mehr zu erfahren."
+
+msgid "Discipline"
+msgstr "Bereich"
+
+msgid "Company"
+msgstr "Unternehmen"
+
+msgid "All disciplines"
+msgstr "Alle Bereiche"
+
+msgid "All companies"
+msgstr "Alle Unternehmen"
+
+msgid "Web development"
+msgstr "Webentwicklung"
+
+msgid "Web apps"
+msgstr "Webapps"
+
+msgid "APIs & platforms"
+msgstr "APIs & Plattformen"
+
+msgid "Developer experience"
+msgstr "Developer Experience"
+
+msgid "Open source"
+msgstr "Open Source"
+
+msgid "View project"
+msgstr "Zum Projekt"
+
+msgid "Website"
+msgstr "Website"
+
+msgid "Repository"
+msgstr "Repository"
+
+msgid "{project}: open website in a new tab"
+msgstr "{project}: Website öffnen (neuer Tab)"
+
+msgid "No projects have been published for this selection yet."
+msgstr "Für diese Auswahl sind noch keine Projekte veröffentlicht."
+
+msgid "Show all projects"
+msgstr "Alle Projekte zeigen"
+
+msgid "Contact form"
+msgstr "Kontaktformular"
+
+msgid "Your project enquiry"
+msgstr "Deine Projektanfrage"
+
+msgid ""
+"Email delivery is still being configured. For now, please contact me "
+"directly:"
+msgstr ""
+"Der E-Mail-Versand wird noch eingerichtet. Bis dahin erreichst du mich "
+"direkt:"
+
+msgid "Your name"
+msgstr "Dein Name"
+
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+msgid "What would you like to build?"
+msgstr "Was möchtest du entwickeln?"
+
+msgid "What is the project about? What exists already? What should happen next?"
+msgstr "Worum geht es? Was gibt es schon? Was soll entstehen?"
+
+msgid "Please leave this field empty"
+msgstr "Dieses Feld bitte leer lassen"
+
+msgid ""
+"I use your details to respond to your enquiry. Messages are not stored in "
+"the CMS."
+msgstr ""
+"Ich verwende deine Angaben, um deine Anfrage zu beantworten. Nachrichten "
+"werden nicht im CMS gespeichert."
+
+msgid "Privacy policy"
+msgstr "Datenschutzerklärung"
+
+msgid "Sending …"
+msgstr "Wird gesendet …"
+
+msgid "Send enquiry"
+msgstr "Anfrage senden"
+
+msgid "This form requires JavaScript. You can also contact me directly by email."
+msgstr "Das Formular benötigt JavaScript. Du erreichst mich auch direkt per E-Mail."
+
+msgid "The message could not be sent. Please email me directly."
+msgstr ""
+"Die Nachricht konnte nicht versendet werden. Bitte schreibe mir direkt per "
+"E-Mail."
+
+msgid "Thank you. Your message has been sent. I’ll get back to you."
+msgstr "Danke. Deine Nachricht wurde versendet. Ich melde mich bei dir."
+
+msgid ""
+"Delivery could not be confirmed. Please check your connection or email me "
+"directly."
+msgstr ""
+"Der Versand konnte nicht bestätigt werden. Bitte prüfe deine Verbindung "
+"oder schreibe mir direkt per E-Mail."
+
+msgid "Invalid request."
+msgstr "Ungültige Anfrage."
+
+msgid "Please enter a name with 2–100 characters."
+msgstr "Bitte einen Namen mit 2–100 Zeichen angeben."
+
+msgid "Please enter a valid email address."
+msgstr "Bitte eine gültige E-Mail-Adresse angeben."
+
+msgid "Please write a message with 20–5,000 characters."
+msgstr "Bitte eine Nachricht mit 20–5.000 Zeichen schreiben."
+
+msgid "Requests from this origin are not allowed."
+msgstr "Anfrage von dieser Herkunft nicht erlaubt."
+
+msgid "JSON is required."
+msgstr "JSON erwartet."
+
+msgid "The form is currently unavailable. Please email {email} directly."
+msgstr "Das Formular ist derzeit nicht verfügbar. Bitte direkt an {email} schreiben."
+
+msgid "The request is too large."
+msgstr "Die Anfrage ist zu groß."
+
+msgid "The request could not be read."
+msgstr "Die Anfrage konnte nicht gelesen werden."
+
+msgid "Please check the highlighted fields."
+msgstr "Bitte die markierten Felder prüfen."
+
+msgid "The request could not be verified. Please contact me by email."
+msgstr ""
+"Die Anfrage konnte nicht sicher zugeordnet werden. Bitte schreibe mir per "
+"E-Mail."
+
+msgid "Too many requests. Please try again in 15 minutes."
+msgstr "Zu viele Anfragen. Bitte in 15 Minuten erneut versuchen."
+
+msgid "The message could not be sent. Please email {email} directly."
+msgstr ""
+"Die Nachricht konnte nicht versendet werden. Bitte direkt an {email} "
+"schreiben."
+
+msgid "Project not found"
+msgstr "Projekt nicht gefunden"
+
+msgid "In development"
+msgstr "In Entwicklung"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+msgid "Archived"
+msgstr "Archiviert"
+
+msgid "All projects"
+msgstr "Alle Projekte"
+
+msgid "Period"
+msgstr "Zeitraum"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "My contribution"
+msgstr "Meine Arbeit"
+
+msgid "Technologies"
+msgstr "Technologien"
+
+msgid "Project links"
+msgstr "Links zum Projekt"
+
+msgid ""
+"External links open in a new tab. Website links include source parameters "
+"(UTM)."
+msgstr ""
+"Externe Links öffnen in einem neuen Tab. Website-Links enthalten "
+"Herkunftsparameter (UTM)."
+
+msgid "Working on something similar?"
+msgstr "Eine ähnliche Aufgabe?"
+
+msgid "No project here."
+msgstr "Hier ist kein Projekt."
+
+msgid "This page does not exist, or the project has not been published yet."
+msgstr "Die Seite existiert nicht oder das Projekt ist noch nicht veröffentlicht."
+
+msgid "This page could not be loaded."
+msgstr "Die Seite konnte nicht geladen werden."
+
+msgid "Please try again or email me directly."
+msgstr "Bitte versuche es erneut oder schreibe mir direkt per E-Mail."
+
+msgid "Try again"
+msgstr "Erneut versuchen"
+
+msgid ""
+"Draft — not yet approved for publication. The final review of the mandatory "
+"information and privacy notice is still pending."
+msgstr ""
+"Entwurf — noch nicht zur Veröffentlichung freigegeben. Die abschließende "
+"Prüfung der Pflichtangaben und der Datenschutzhinweise steht noch aus."
+
+msgid "Information under section 5 DDG"
+msgstr "Angaben nach § 5 DDG"
+
+msgid "Owner: Dominik Spitzli"
+msgstr "Inhaber: Dominik Spitzli"
+
+msgid "Sole proprietor"
+msgstr "Einzelunternehmer"
+
+msgid "[Business address to be added]"
+msgstr "[Geschäftsanschrift ergänzen]"
+
+msgid "[City]"
+msgstr "[Ort]"
+
+msgid "Germany"
+msgstr "Deutschland"
+
+msgid "Email"
+msgstr "E-Mail"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "VAT identification number"
+msgstr "Umsatzsteuer-Identifikationsnummer"
+
+msgid "VAT identification number under section 27a UStG: {number}"
+msgstr "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: {number}"
+
+msgid "Business identification number"
+msgstr "Wirtschafts-Identifikationsnummer"
+
+msgid "Register information"
+msgstr "Registerangaben"
+
+msgid "Content and project references"
+msgstr "Inhalt und Projektverweise"
+
+msgid ""
+"Dominik Spitzli is responsible for this website’s content. Project and "
+"company names describe my work. Linked websites are operated by their "
+"respective providers."
+msgstr ""
+"Verantwortlich für die Inhalte dieser Website ist Dominik Spitzli. Projekt- "
+"und Unternehmensnamen dienen der Beschreibung meiner Arbeit. Die verlinkten "
+"Websites werden von ihren jeweiligen Anbietern betrieben."
+
+msgid ""
+"Draft for the planned Vercel deployment. Address, providers, data "
+"processing agreements, retention periods and international transfers must "
+"be reviewed before publication."
+msgstr ""
+"Entwurf für die geplante Vercel-Bereitstellung. Anschrift, eingesetzte "
+"Dienstleister, Auftragsverarbeitungsverträge, Speicherfristen und "
+"Drittlandtransfers müssen vor der Veröffentlichung geprüft werden."
+
+msgid "1. Controller"
+msgstr "1. Verantwortlicher"
+
+msgid "Full legal notice"
+msgstr "Vollständiges Impressum"
+
+msgid "2. Website hosting"
+msgstr "2. Bereitstellung der Website"
+
+msgid ""
+"This website is hosted on Vercel. Requests involve technically necessary "
+"data, including IP address, time, requested URL, browser/device information "
+"and technical error data. Processing serves delivery, stability and "
+"security under Article 6(1)(f) GDPR."
+msgstr ""
+"Die Website wird auf Vercel bereitgestellt. Beim Abruf werden technisch "
+"notwendige Daten verarbeitet, insbesondere IP-Adresse, Zeitpunkt, "
+"angefragte URL, Browser-/Geräteinformationen und technische Fehlerdaten. "
+"Dies dient der Auslieferung, Stabilität und Sicherheit der Website. "
+"Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO."
+
+msgid "Hosting and image storage: Vercel Inc. (Vercel and Vercel Blob)."
+msgstr "Hosting und Bildspeicher: Vercel Inc. (Vercel und Vercel Blob)."
+
+msgid "Vercel privacy policy"
+msgstr "Datenschutzhinweise von Vercel"
+
+msgid "Hosting log retention: {retention}"
+msgstr "Speicherfrist der Hosting-Protokolle: {retention}"
+
+msgid "[To be confirmed before publication]"
+msgstr "[Vor Veröffentlichung klären]"
+
+msgid "[Provider to be added]"
+msgstr "[Anbieter ergänzen]"
+
+msgid "[Region to be added]"
+msgstr "[Region ergänzen]"
+
+msgid ""
+"CMS database: {provider}. Region: {region}. The database stores project "
+"content, administration data and the abuse-prevention counters described "
+"below, not contact messages."
+msgstr ""
+"CMS-Datenbank: {provider}. Region: {region}. Die Datenbank enthält "
+"Projektinhalte, Administrationsdaten und die nachfolgend beschriebenen "
+"Missbrauchsschutzzähler, keine Kontaktanfragen."
+
+msgid "3. Contact by email and form"
+msgstr "3. Kontakt per E-Mail und Formular"
+
+msgid ""
+"When you contact me, I process your name, email address and message to "
+"handle your enquiry. The legal basis is Article 6(1)(b) GDPR for "
+"contractual or pre-contractual enquiries and Article 6(1)(f) GDPR for other "
+"enquiries. Please do not send particularly sensitive data through the form."
+msgstr ""
+"Wenn du mich kontaktierst, verarbeite ich deinen Namen, deine "
+"E-Mail-Adresse und den Inhalt deiner Nachricht zur Bearbeitung der Anfrage. "
+"Bei vorvertraglichen oder vertraglichen Anfragen gilt Art. 6 Abs. 1 lit. b "
+"DSGVO, bei sonstigen Anfragen Art. 6 Abs. 1 lit. f DSGVO. Bitte sende keine "
+"besonders sensiblen Daten über das Formular."
+
+msgid ""
+"The form uses turboSMTP for delivery. Messages are received and handled in "
+"my mailbox with {provider}. Enquiries are not stored in the CMS. Emails are "
+"retained for as long as processing or statutory retention requirements "
+"demand, then deleted."
+msgstr ""
+"Der Formularversand erfolgt über turboSMTP. Empfang und weitere Bearbeitung "
+"erfolgen in meinem E-Mail-Postfach bei {provider}. Anfragen werden nicht im "
+"CMS gespeichert. E-Mails bewahre ich so lange auf, wie die Bearbeitung und "
+"gegebenenfalls gesetzliche Aufbewahrungspflichten es erfordern; "
+"anschließend werden sie gelöscht."
+
+msgid "[Mailbox provider to be added]"
+msgstr "[E-Mail-Postfachanbieter ergänzen]"
+
+msgid "4. Abuse prevention"
+msgstr "4. Schutz vor Missbrauch"
+
+msgid ""
+"The form uses a hidden check field (honeypot) and a limit of five requests "
+"per 15 minutes. A keyed hash of the IP address is stored with a counter and "
+"expiry time. The IP address itself is not stored in the CMS database for "
+"this purpose. Expired counters are deleted on the next form request. "
+"Hosting logs are separate."
+msgstr ""
+"Das Formular verwendet ein unsichtbares Prüffeld (Honeypot) und eine "
+"Begrenzung auf fünf Anfragen pro 15 Minuten. Dafür wird ein mit einem "
+"geheimen Schlüssel erzeugter Prüfwert der IP-Adresse zusammen mit einem "
+"Zähler und einem Ablaufzeitpunkt gespeichert. Die IP-Adresse selbst wird "
+"hierfür nicht in der CMS-Datenbank abgelegt. Abgelaufene Zähler werden bei "
+"der nächsten Formularanfrage gelöscht. Die Hosting-Protokolle sind davon "
+"unabhängig."
+
+msgid ""
+"The legal basis is Article 6(1)(f) GDPR. My legitimate interest is "
+"protecting the form and mail delivery from spam and overload. No external "
+"CAPTCHA provider is used."
+msgstr ""
+"Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Mein berechtigtes Interesse "
+"liegt im Schutz des Formulars und des E-Mail-Versands vor Spam und "
+"Überlastung. Es wird kein externer CAPTCHA-Dienst eingebunden."
+
+msgid "5. Cookies, fonts and administration"
+msgstr "5. Cookies, Schriftarten und Administration"
+
+msgid ""
+"The public website uses no analytics or marketing cookies and no visitor "
+"tracking. Fonts are served locally, not fetched from Google Fonts. Images "
+"may be loaded from Vercel Blob."
+msgstr ""
+"Die öffentliche Website setzt keine Analyse- oder Marketing-Cookies und "
+"bindet kein Besuchertracking ein. Schriftarten werden lokal ausgeliefert "
+"und nicht bei Google Fonts abgerufen. Bilder können vom "
+"Vercel-Blob-Speicher geladen werden."
+
+msgid ""
+"The initial language follows your browser preferences, with English as the "
+"fallback. When you explicitly choose a language, the technically necessary "
+"spitzli_locale cookie remembers that choice for one year. It contains only "
+"en or de, no visitor identifier. Storage is based on section 25(2)(2) "
+"TDDDG; processing serves the requested language setting under Article "
+"6(1)(f) GDPR."
+msgstr ""
+"Die anfängliche Sprache richtet sich nach deinen Browsereinstellungen; "
+"Englisch ist die Rückfallsprache. Wenn du eine Sprache ausdrücklich "
+"auswählst, merkt sich das technisch notwendige Cookie spitzli_locale diese "
+"Wahl für ein Jahr. Es enthält nur en oder de, keine Besucherkennung. Die "
+"Speicherung erfolgt nach § 25 Abs. 2 Nr. 2 TDDDG; die Verarbeitung dient "
+"der gewünschten Spracheinstellung nach Art. 6 Abs. 1 lit. f DSGVO."
+
+msgid ""
+"Signing into the protected CMS uses a technically necessary session cookie "
+"lasting up to two hours. Administrator accounts and login information are "
+"processed for secure site management. Storage is based on section 25(2)(2) "
+"TDDDG and processing on the legitimate interest in secure administration "
+"under Article 6(1)(f) GDPR."
+msgstr ""
+"Bei der Anmeldung im geschützten CMS wird ein technisch notwendiges "
+"Sitzungscookie mit einer Laufzeit von bis zu zwei Stunden verwendet. "
+"Administrationskonten und Anmeldeinformationen dienen der sicheren "
+"Verwaltung der Website. Die Speicherung erfolgt nach § 25 Abs. 2 Nr. 2 "
+"TDDDG; die Verarbeitung beruht auf dem berechtigten Interesse an einer "
+"sicheren Administration nach Art. 6 Abs. 1 lit. f DSGVO."
+
+msgid "6. External links and UTM parameters"
+msgstr "6. Externe Links und UTM-Parameter"
+
+msgid ""
+"Project links may include utm_source=spitzli.dev, utm_medium=portfolio and "
+"utm_campaign=reference. These identify the source of a link, not an "
+"individual visitor, and do not trigger visitor measurement on this website. "
+"Data is transferred to a linked provider only when you open its link. That "
+"provider’s privacy policy then applies."
+msgstr ""
+"Projektlinks können utm_source=spitzli.dev, utm_medium=portfolio und "
+"utm_campaign=reference enthalten. Diese Parameter kennzeichnen die Herkunft "
+"eines Links, keinen einzelnen Besucher, und lösen auf dieser Website keine "
+"Besuchsmessung aus. Erst beim Öffnen eines Links werden Daten an den "
+"Zielanbieter übertragen. Dafür gilt dessen Datenschutzerklärung."
+
+msgid "7. Providers and international transfers"
+msgstr "7. Dienstleister und internationale Übermittlungen"
+
+msgid ""
+"Hosting, database and email providers receive the data needed for their "
+"tasks. Where they act as processors, processing must be governed by "
+"agreements under Article 28 GDPR. Transfers outside the EU or EEA must also "
+"meet Articles 44 et seq. GDPR."
+msgstr ""
+"Hosting-, Datenbank- und E-Mail-Dienstleister erhalten die für ihre Aufgabe "
+"erforderlichen Daten. Soweit sie als Auftragsverarbeiter tätig sind, ist "
+"die Verarbeitung durch Vereinbarungen nach Art. 28 DSGVO zu regeln. Bei "
+"einer Verarbeitung außerhalb der EU beziehungsweise des EWR sind zusätzlich "
+"Art. 44 ff. DSGVO einzuhalten."
+
+msgid "Transfer safeguards agreed for this website: {safeguards}"
+msgstr "Die für diesen Auftritt vereinbarten Übermittlungsgarantien: {safeguards}"
+
+msgid "[Providers, locations and agreed safeguards to be confirmed]"
+msgstr ""
+"[Anbieter, Verarbeitungsorte und vereinbarte Garantien vor Veröffentlichung "
+"klären]"
+
+msgid "8. Your rights"
+msgstr "8. Deine Rechte"
+
+msgid ""
+"Subject to the legal requirements, you have rights of access, "
+"rectification, erasure, restriction and data portability (Articles 15–20 "
+"GDPR). You may object to processing based on legitimate interests for "
+"reasons relating to your particular situation (Article 21 GDPR). Any "
+"consent may be withdrawn for the future."
+msgstr ""
+"Du hast nach den gesetzlichen Voraussetzungen das Recht auf Auskunft, "
+"Berichtigung, Löschung, Einschränkung der Verarbeitung und "
+"Datenübertragbarkeit (Art. 15–20 DSGVO). Bei einer Verarbeitung auf "
+"Grundlage berechtigter Interessen kannst du aus Gründen deiner besonderen "
+"Situation widersprechen (Art. 21 DSGVO). Eine gegebenenfalls erteilte "
+"Einwilligung kannst du mit Wirkung für die Zukunft widerrufen."
+
+msgid "Contact:"
+msgstr "Kontakt:"
+
+msgid ""
+"You may also complain to a data protection authority, particularly where "
+"you live, work or believe an infringement occurred (Article 77 GDPR)."
+msgstr ""
+"Außerdem kannst du dich bei einer Datenschutzaufsichtsbehörde beschweren, "
+"insbesondere am Ort deines gewöhnlichen Aufenthalts, deines Arbeitsplatzes "
+"oder des vermuteten Verstoßes (Art. 77 DSGVO)."
+
+msgid "{count} project"
+msgid_plural "{count} projects"
+msgstr[0] "{count} Projekt"
+msgstr[1] "{count} Projekte"
+
+msgid "A description is not yet available in this language."
+msgstr "Für diese Sprache liegt noch keine Beschreibung vor."

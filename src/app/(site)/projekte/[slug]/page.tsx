@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { categoryMessage } from "@/i18n";
+import { languageAlternates, localizePath } from "@/i18n/locale";
+import { getI18n } from "@/i18n/server";
 import { referenceURL } from "@/lib/links";
 import { getProject } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const project = await getProject((await params).slug);
+  const { locale, t } = await getI18n();
+  const project = await getProject((await params).slug, locale);
   return project
     ? {
         title: project.name,
         description: project.summary,
-        alternates: { canonical: `/projekte/${project.slug}` },
+        alternates: languageAlternates(`/projekte/${project.slug}`, locale),
         openGraph: {
           title: project.name,
           description: project.summary,
-          url: `/projekte/${project.slug}`,
+          url: localizePath(`/projekte/${project.slug}`, locale),
           images: ["/og.png"],
         },
         twitter: {
@@ -27,84 +30,83 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           images: ["/og.png"],
         },
       }
-    : { title: "Projekt nicht gefunden" };
+    : { title: t("Project not found") };
 }
-
 const statuses = {
-  development: "In Entwicklung",
+  development: "In development",
   live: "Live",
-  completed: "Abgeschlossen",
-  archived: "Archiviert",
+  completed: "Completed",
+  archived: "Archived",
   unspecified: "",
 };
-
 export default async function ProjectPage({ params }: Props) {
-  const project = await getProject((await params).slug);
+  const { locale, t } = await getI18n();
+  const project = await getProject((await params).slug, locale);
   if (!project) notFound();
   const image = typeof project.image === "object" ? project.image : null;
   return (
     <main id="main" className="container project-detail">
-      <Link className="text-link" href="/#projekte">
-        ← Alle Projekte
+      <Link className="text-link" href={`${localizePath("/", locale)}#projekte`}>
+        ← {t("All projects")}
       </Link>
-      <p className="project-category">{project.category}</p>
+      <p className="project-category">{t(categoryMessage[project.category] || project.category)}</p>
       <h1>{project.name}</h1>
       <p className="lede">{project.summary}</p>
       <dl className="project-meta">
         {typeof project.client === "object" && project.client && (
           <div>
-            <dt>Unternehmen</dt>
+            <dt>{t("Company")}</dt>
             <dd>{project.client.name}</dd>
           </div>
         )}
         {project.period && (
           <div>
-            <dt>Zeitraum</dt>
+            <dt>{t("Period")}</dt>
             <dd>{project.period}</dd>
           </div>
         )}
         {project.projectStatus && statuses[project.projectStatus] && (
           <div>
-            <dt>Status</dt>
-            <dd>{statuses[project.projectStatus]}</dd>
+            <dt>{t("Status")}</dt>
+            <dd>{t(statuses[project.projectStatus])}</dd>
           </div>
         )}
       </dl>
       {image?.url && image.rightsConfirmed && (
         <figure className="detail-image">
-          {/* biome-ignore lint/performance/noImgElement: use the CMS derivative; no arbitrary remote image optimizer */}
+          {/* biome-ignore lint/performance/noImgElement: CMS-generated raster derivative */}
           <img
             src={image.sizes?.card?.url || image.url}
             alt={image.alt}
-            width={image.width || 1000}
-            height={image.height || 625}
+            width={image.sizes?.card?.width || image.width || 1000}
+            height={image.sizes?.card?.height || image.height || 625}
           />
         </figure>
       )}
       <div className="project-body">
         <div>
-          <h2>Meine Arbeit</h2>
+          <h2>{t("My contribution")}</h2>
           {(project.description || project.summary).split(/\n\s*\n/).map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
           {Boolean(project.technologies?.length) && (
             <>
-              <h2>Technologien</h2>
+              <h2>{t("Technologies")}</h2>
               <ul className="technology-list">
-                {project.technologies?.map((technology) => (
-                  <li key={technology.id || technology.name}>{technology.name}</li>
+                {project.technologies?.map((tech) => (
+                  <li key={tech.id || tech.name}>{tech.name}</li>
                 ))}
               </ul>
             </>
           )}
         </div>
         <aside>
-          <h2>Links zum Projekt</h2>
+          <h2>{t("Project links")}</h2>
           <ul className="project-links">
             {project.website && (
               <li>
                 <a href={referenceURL(project.website)} target="_blank" rel="noopener noreferrer">
-                  Website <span aria-hidden="true">↗</span>
+                  {t("Website")} <span aria-hidden="true">↗</span>
                 </a>
               </li>
             )}
@@ -115,7 +117,7 @@ export default async function ProjectPage({ params }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Repository <span aria-hidden="true">↗</span>
+                  {t("Repository")} <span aria-hidden="true">↗</span>
                 </a>
               </li>
             )}
@@ -128,15 +130,14 @@ export default async function ProjectPage({ params }: Props) {
             ))}
           </ul>
           <p className="small-copy">
-            Externe Links öffnen in einem neuen Tab. Website-Links enthalten Herkunftsparameter
-            (UTM).
+            {t("External links open in a new tab. Website links include source parameters (UTM).")}
           </p>
         </aside>
       </div>
       <div className="detail-contact">
-        <h2>Eine ähnliche Aufgabe?</h2>
-        <Link className="button" href="/#kontakt">
-          Projekt anfragen <span aria-hidden="true">↗</span>
+        <h2>{t("Working on something similar?")}</h2>
+        <Link className="button" href={`${localizePath("/", locale)}#kontakt`}>
+          {t("Discuss a project")} <span aria-hidden="true">↗</span>
         </Link>
       </div>
     </main>

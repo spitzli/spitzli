@@ -7,7 +7,7 @@ export type ContactErrors = Partial<Record<keyof ContactInput, string>>;
 export function validateContact(value: unknown): { data?: ContactInput; errors: ContactErrors } {
   const errors: ContactErrors = {};
   if (!value || typeof value !== "object" || Array.isArray(value))
-    return { errors: { message: "Ungültige Anfrage." } };
+    return { errors: { message: "Invalid request." } };
   const input = value as Record<string, unknown>;
   const text = (key: string) => (typeof input[key] === "string" ? input[key].trim() : "");
   const data = {
@@ -17,22 +17,22 @@ export function validateContact(value: unknown): { data?: ContactInput; errors: 
     website: text("website"),
   };
   if (data.name.length < 2 || data.name.length > 100 || /[\r\n\x00-\x1f\x7f]/.test(data.name))
-    errors.name = "Bitte einen Namen mit 2–100 Zeichen angeben.";
+    errors.name = "Please enter a name with 2–100 characters.";
   if (
     data.email.length > 254 ||
     !/^[^\s<>@,;\x00-\x1f\x7f]+@[^\s<>@,;\x00-\x1f\x7f]+\.[^\s<>@,;\x00-\x1f\x7f]+$/.test(
       data.email,
     )
   )
-    errors.email = "Bitte eine gültige E-Mail-Adresse angeben.";
+    errors.email = "Please enter a valid email address.";
   if (
     data.message.length < 20 ||
     data.message.length > 5000 ||
     /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(data.message)
   )
-    errors.message = "Bitte eine Nachricht mit 20–5.000 Zeichen schreiben.";
+    errors.message = "Please write a message with 20–5,000 characters.";
   if (input.website !== undefined && typeof input.website !== "string")
-    errors.website = "Ungültige Anfrage.";
+    errors.website = "Invalid request.";
   return Object.keys(errors).length ? { errors } : { data, errors };
 }
 
