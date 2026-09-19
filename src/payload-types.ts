@@ -220,6 +220,8 @@ export interface Media {
    * Bilder werden öffentlich gespeichert. Keine vertraulichen Dateien oder ungeklärten Kundenlogos hochladen.
    */
   rightsConfirmed: boolean;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -416,6 +418,8 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   rightsConfirmed?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

@@ -12,6 +12,7 @@ Object.assign(process.env, {
   VERCEL: "",
   VERCEL_ENV: "",
   CONTACT_ENABLED: "true",
+  CONTACT_EMAIL: "info@spitzli.dev",
   LEGAL_STREET: "Test",
   LEGAL_POSTCODE: "00000",
   LEGAL_CITY: "Test",
@@ -30,6 +31,12 @@ Object.assign(process.env, {
 });
 const { default: config } = await import("../payload.config");
 const payload = await getPayload({ config });
+assert.ok(
+  payload.config.collections
+    .find((collection) => collection.slug === "media")
+    ?.fields.some((field) => "name" in field && field.name === "_objectKey"),
+  "Blob schema fields must exist even without a storage token",
+);
 const slug = `test-${randomUUID()}`;
 const key = rateLimitKey(slug, "integration-test");
 let projectID: number | undefined;
@@ -114,7 +121,7 @@ try {
   let delivered = 0;
   const realSend = payload.sendEmail;
   payload.sendEmail = async (message) => {
-    assert.equal(message.to, "dominik@spitzli.dev");
+    assert.equal(message.to, "info@spitzli.dev");
     assert.equal(message.replyTo, "ada@example.com");
     assert.equal(message.html, undefined);
     delivered++;

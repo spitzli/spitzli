@@ -34,7 +34,7 @@ export default buildConfig({
   ...(smtp
     ? {
         email: nodemailerAdapter({
-          defaultFromAddress: process.env.SMTP_FROM || "dominik@spitzli.dev",
+          defaultFromAddress: process.env.SMTP_FROM || site.email,
           defaultFromName: "Spitzli Development",
           skipVerify: true,
           transportOptions: {
@@ -55,9 +55,13 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      // Keep migration fields identical with local storage and Vercel Blob.
+      alwaysInsertFields: true,
       token: process.env.BLOB_READ_WRITE_TOKEN,
-      addRandomSuffix: true,
-      collections: { media: true },
+      // Payload keeps originals and resized filenames in sync; Blob suffixes break that mapping.
+      addRandomSuffix: false,
+      // All uploads require public-use permission and already live in a public Blob store.
+      collections: { media: { disablePayloadAccessControl: true } },
     }),
   ],
   sharp,

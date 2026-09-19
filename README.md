@@ -6,13 +6,13 @@ Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwick
 
 Der Auftritt enthält vier bestätigte Referenzen: turboSMTP / serverSMTP, Stall Eichenbruch, Imke Folkerts und Luninora. Keine erfundenen Beschäftigungszeiträume, Kennzahlen oder Kundenlogo-Freigaben. Keine fremden Logos oder Screenshots sind eingebunden.
 
-**Noch nicht zum Livegang freigegeben:** Geschäftsanschrift, rechtliche Prüfung, tatsächliche Hosting-/Datenbank-/Mail-Anbieterangaben, Produktionsdatenbank, Blob-Speicher und SMTP-Zugang fehlen. Der Vercel-Produktionsbuild wird ohne diese Angaben abgebrochen. Nichtproduktive Deployments sind `noindex`; bei fehlender Freigabe wird das Formular durch einen direkten E-Mail-Kontakt ersetzt.
+**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Der Vercel-Produktionsbuild wird ohne diese Angaben abgebrochen. Nichtproduktive Deployments sind `noindex`; bei fehlender Freigabe wird das Formular durch einen direkten E-Mail-Kontakt ersetzt.
 
 Die bisherigen Dateien `index.html`, `CNAME`, `.nojekyll` und `assets/logo.png` bleiben bis zur Domainumstellung erhalten. Next.js liefert die alte HTML-Seite nicht aus. GitHub Pages bedient bis zum geplanten Hosting-Wechsel weiterhin den Platzhalter. Kein DNS-Wechsel durch dieses Projekt.
 
 ## Lokal starten
 
-Node.js 22.22+ und Docker. npm-Lockfile verwenden.
+Node.js 22.x (lokal geprüft mit 22.22.3) und Docker. npm-Lockfile verwenden.
 
 ```sh
 npm ci
@@ -71,15 +71,17 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 
 ## Vercel
 
-1. Repository im Team **Spitzli Development** importieren, nicht Luninora. Framework Next.js, Node 22.x, Build `npm run build`, Install `npm ci`.
-2. Eigenständige PostgreSQL-Datenbank (z.B. Neon in einer passenden EU-Region) und einen **öffentlichen** Vercel Blob Store anlegen. `DATABASE_URL`, `PAYLOAD_SECRET` und `BLOB_READ_WRITE_TOKEN` als geschützte Umgebungsvariablen hinterlegen. Previews brauchen eine eigene Datenbank und einen eigenen Blob Store; niemals untrusted Branches mit Produktionssecrets versorgen.
+1. Das bestehende Projekt **spitzli** im Team **Spitzli Development** ist mit `spitzli/spitzli` verbunden. Kein paralleles Projekt anlegen. Framework Next.js, Node 22.x, Build `npm run build`, Install `npm ci`; Functions laufen in `fra1`. Die Produktionsbranch bleibt `main`, der Umbau liegt bis zur Freigabe auf `feat/next-payload-portfolio`.
+2. Getrennte Ressourcen sind eingerichtet: `spitzli-db-production` / `spitzli-db-preview` (Neon Free, Frankfurt) und `spitzli-media-production` / `spitzli-media-preview` (öffentlicher Vercel Blob, Frankfurt). `DATABASE_URL` und `BLOB_READ_WRITE_TOKEN` sind ausschließlich mit dem jeweiligen Environment verbunden; unabhängige `PAYLOAD_SECRET`-Werte liegen als Vercel Secrets vor. Vercel Authentication schützt Previews. Niemals untrusted Branches mit Produktionssecrets versorgen.
 3. Alle Einträge aus `.env.example` prüfen. Produktions-`SITE_URL=https://spitzli.dev`, ohne Pfad. Preview-Deployments verwenden automatisch ihre `VERCEL_URL`; keine beliebigen Origin-Header werden akzeptiert.
 4. Migrationen vor dem ersten Start und vor Schemaänderungen aus einer vertrauenswürdigen Umgebung gegen die richtige Datenbank ausführen: `npm run cms:migrate`. Danach einmalig `cms:seed` und `cms:bootstrap`. Befehle funktionieren auch mit bereits gesetzten Umgebungsvariablen ohne lokale Env-Datei.
 5. Datenbank-Backups und Wiederherstellung einrichten, Auftragsverarbeitungsverträge und Verarbeitungsorte prüfen. Tatsächliche Anbieter, Log-Aufbewahrung, E-Mail-Postfachanbieter und Transfergarantien in den `PRIVACY_*`-Feldern eintragen.
 6. Impressum prüfen, fehlende Angaben ergänzen, `LEGAL_REVIEWED=true` und `PRIVACY_REVIEWED=true` erst nach Freigabe setzen. `npm run check:production` zeigt fehlende Werte, ohne Secrets auszugeben.
 7. Upload/Neustart-Persistenz und echten turboSMTP-Versand prüfen, dann `CONTACT_ENABLED=true`. Erst danach die Domain an Vercel anbinden und GitHub Pages abschalten. Das öffentliche Portfolio auf der endgültigen Domain einschließlich Impressum, Datenschutz und Sitemap prüfen.
 
-Migrationsdateien sind eingecheckt. Kein automatisches Schema-Push (`push: false`), kein Schemawechsel durch einen bloßen Seitenaufruf. Neue Migrationen: `npm run payload -- migrate:create beschreibung`; Review, Backup, Migration, Deployment. Keine Down-/Reset-Befehle gegen Produktion ohne gesonderten Wiederherstellungsplan.
+Migrationsdateien sind eingecheckt. `alwaysInsertFields: true` hält das Medienschema mit und ohne Blob-Token identisch. Dateinamen werden von Payload verwaltet; keine zusätzlichen Blob-Zufallssuffixe, da diese die Zuordnung generierter Bildgrößen zerstören. Freigegebene Bilder werden direkt aus dem öffentlichen Blob Store ausgeliefert. Original und Kartenvariante des eigenen Logos wurden in beiden Stores geprüft.
+
+Kein automatisches Schema-Push (`push: false`), kein Schemawechsel durch einen bloßen Seitenaufruf. Neue Migrationen: `npm run payload -- migrate:create beschreibung`; Review, Backup, Migration, Deployment. Keine Down-/Reset-Befehle gegen Produktion ohne gesonderten Wiederherstellungsplan.
 
 ## Checks
 

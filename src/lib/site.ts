@@ -5,7 +5,7 @@ export const site = {
     process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : process.env.SITE_URL || "http://localhost:3000",
-  email: process.env.CONTACT_EMAIL || "dominik@spitzli.dev",
+  email: process.env.CONTACT_EMAIL || "info@spitzli.dev",
   github: "https://github.com/NewtTheWolf",
   companyGithub: "https://github.com/spitzli",
   description:

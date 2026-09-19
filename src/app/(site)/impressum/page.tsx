@@ -9,8 +9,8 @@ export default function Impressum() {
       <h1>Impressum</h1>
       {!legalReady && (
         <p className="legal-warning">
-          Entwurf — noch nicht zur Veröffentlichung freigegeben. Insbesondere die vollständige
-          Geschäftsanschrift fehlt bzw. muss bestätigt werden.
+          Entwurf — noch nicht zur Veröffentlichung freigegeben. Die abschließende Prüfung der
+          Pflichtangaben und der Datenschutzhinweise steht noch aus.
         </p>
       )}
       <h2>Angaben nach § 5 DDG</h2>
