@@ -1,0 +1,44 @@
+name: Check portfolio
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: spitzli
+          POSTGRES_PASSWORD: ephemeral-ci-password
+          POSTGRES_DB: spitzli
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U spitzli -d spitzli"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://spitzli:ephemeral-ci-password@127.0.0.1:5432/spitzli
+      PAYLOAD_SECRET: ephemeral-ci-only-secret-not-used-in-any-deployment
+      SITE_URL: http://localhost:3000
+      CONTACT_ENABLED: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run check && npm test
+      - run: npm run cms:migrate && npm run cms:seed && npm run test:integration
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Browser and CMS checks
+        run: |
+          npm start > /tmp/spitzli-next.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://localhost:3000/icon.png > /dev/null && break || sleep 1; done
+          npm run test:browser
+          npm run test:cms
+          npm run test:contact-ui

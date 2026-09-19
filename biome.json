@@ -1,0 +1,22 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!!node_modules",
+      "!!.next",
+      "!!src/payload-types.ts",
+      "!!src/migrations",
+      "!!src/app/(payload)/admin/importMap.js",
+      "!!index.html",
+      "!!assets",
+      "!!public"
+    ]
+  },
+  "formatter": { "enabled": true, "indentStyle": "space", "lineWidth": 100 },
+  "linter": {
+    "enabled": true,
+    "rules": { "preset": "recommended", "style": { "noDescendingSpecificity": "off" } }
+  },
+  "css": { "parser": { "cssModules": false } }
+}

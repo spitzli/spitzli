@@ -1,0 +1,9 @@
+{
+  "source": "index.html",
+  "framework": "Static HTML migrated to Next.js at user request",
+  "fonts": ["Space Grotesk", "JetBrains Mono"],
+  "palette": "Dark graphite with existing violet brand accent",
+  "preserved": ["Brand logo", "Fonts", "Dark primary appearance"],
+  "removedFromNewUI": ["Gradient mesh", "Floating orbs", "CDN Tailwind", "External font requests"],
+  "motion": "Button press only, reduced-motion supported"
+}
