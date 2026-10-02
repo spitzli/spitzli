@@ -60,11 +60,9 @@ export default buildConfig({
         }),
       }
     : {}),
-  plugins: [
+  storage: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-      // Keep migration fields identical with local storage and Vercel Blob.
-      alwaysInsertFields: true,
       token: process.env.BLOB_READ_WRITE_TOKEN,
       // Payload keeps originals and resized filenames in sync; Blob suffixes break that mapping.
       addRandomSuffix: false,

@@ -7,6 +7,7 @@ const payload = await getPayload({ config });
 try {
   for (const { clientName, ...project } of initialProjects) {
     const existingClient = await payload.find({
+      overrideAccess: true,
       collection: "clients",
       where: { name: { equals: clientName } },
       limit: 1,
@@ -14,10 +15,12 @@ try {
     const client =
       existingClient.docs[0] ||
       (await payload.create({
+        overrideAccess: true,
         collection: "clients",
         data: { name: clientName, website: project.website },
       }));
     const existing = await payload.find({
+      overrideAccess: true,
       collection: "projects",
       locale: "de",
       fallbackLocale: false,
@@ -26,6 +29,7 @@ try {
     });
     if (!existing.totalDocs) {
       const created = await payload.create({
+        overrideAccess: true,
         collection: "projects",
         locale: "en",
         data: {
@@ -36,15 +40,17 @@ try {
         },
       });
       await payload.update({
+        overrideAccess: true,
         collection: "projects",
         id: created.id,
         locale: "de",
-        data: { summary: project.summary, description: project.description },
+        data: { summary: project.summary, description: project.description, _status: "published" },
       });
       console.log(`Created both languages: ${project.name}`);
     } else {
       const de = existing.docs[0];
       const en = await payload.findByID({
+        overrideAccess: true,
         collection: "projects",
         id: de.id,
         locale: "en",
@@ -59,16 +65,18 @@ try {
         de.description === project.description
       ) {
         await payload.update({
+          overrideAccess: true,
           collection: "projects",
           id: de.id,
           locale: "en",
-          data: englishProjects[project.slug],
+          data: { ...englishProjects[project.slug], _status: "published" },
         });
         console.log(`Added missing English translation: ${project.name}`);
       }
     }
   }
   const logos = await payload.find({
+    overrideAccess: true,
     collection: "media",
     locale: "de",
     fallbackLocale: false,
@@ -77,6 +85,7 @@ try {
   });
   for (const logo of logos.docs) {
     const en = await payload.findByID({
+      overrideAccess: true,
       collection: "media",
       id: logo.id,
       locale: "en",
@@ -84,6 +93,7 @@ try {
     });
     if (!en.alt)
       await payload.update({
+        overrideAccess: true,
         collection: "media",
         id: logo.id,
         locale: "en",

@@ -53,6 +53,7 @@ try {
     }),
   );
   const draft = await payload.create({
+    overrideAccess: true,
     collection: "projects",
     data: {
       name: "Unpublished test",
@@ -64,6 +65,10 @@ try {
     },
   });
   projectID = draft.id;
+  await assert.rejects(
+    payload.findVersions({ collection: "projects", overrideAccess: false }),
+    "Project history must remain admin-only under Payload 4",
+  );
   const { getProject, getProjects } = await import("../src/lib/projects");
   const { initialProjects } = await import("../src/lib/seed-data");
   const { englishProjects } = await import("../src/lib/seed-translations");
@@ -116,7 +121,12 @@ try {
   );
   await assert.rejects(payload.find({ collection: "users", overrideAccess: false }));
   await assert.rejects(payload.find({ collection: "contact-limits", overrideAccess: false }));
-  await payload.update({ collection: "projects", id: draft.id, data: { _status: "published" } });
+  await payload.update({
+    overrideAccess: true,
+    collection: "projects",
+    id: draft.id,
+    data: { _status: "published" },
+  });
   assert.equal(
     (
       await payload.find({
@@ -219,7 +229,8 @@ try {
   failure = error;
 } finally {
   globalThis.fetch = originalFetch;
-  if (projectID) await payload.delete({ collection: "projects", id: projectID });
+  if (projectID)
+    await payload.delete({ overrideAccess: true, collection: "projects", id: projectID });
   await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${key}`);
   await payload.destroy();
 }

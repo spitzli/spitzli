@@ -19,6 +19,7 @@ const urlField = (name: string, label: string): TextField => ({
 });
 
 export const Users: CollectionConfig = {
+  versions: false,
   slug: "users",
   labels: { singular: "Administrator", plural: "Administratoren" },
   admin: { useAsTitle: "email" },
@@ -43,6 +44,7 @@ export const Users: CollectionConfig = {
 };
 
 export const Clients: CollectionConfig = {
+  versions: false,
   slug: "clients",
   labels: { singular: "Kunde / Unternehmen", plural: "Kunden / Unternehmen" },
   admin: { useAsTitle: "name", defaultColumns: ["name", "website"] },
@@ -60,7 +62,7 @@ export const Projects: CollectionConfig = {
     useAsTitle: "name",
     defaultColumns: ["name", "client", "category", "_status", "sortOrder"],
   },
-  access: { ...managed, read: published },
+  access: { ...managed, read: published, readVersions: admin },
   versions: { drafts: true, maxPerDoc: 10 },
   defaultSort: "sortOrder",
   fields: [
@@ -159,6 +161,7 @@ export const Projects: CollectionConfig = {
 };
 
 export const Media: CollectionConfig = {
+  versions: false,
   slug: "media",
   labels: { singular: "Bild", plural: "Bilder" },
   access: { ...managed, read: () => true },
@@ -195,6 +198,7 @@ export const Media: CollectionConfig = {
 };
 
 export const ContactLimits: CollectionConfig = {
+  versions: false,
   slug: "contact-limits",
   dbName: "contact_limits",
   admin: { hidden: true },

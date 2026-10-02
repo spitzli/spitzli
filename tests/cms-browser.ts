@@ -25,6 +25,7 @@ try {
   const password = randomUUID();
   const email = `${randomUUID()}@example.com`;
   const user = await payload.create({
+    overrideAccess: true,
     collection: "users",
     context: { bootstrap: true },
     data: { name: "Temporary local test", email, password },
@@ -59,10 +60,13 @@ try {
   assert.equal(create.status(), 201, await create.text());
   projectID = (await create.json()).doc.id;
   assert.equal((await context.request.get(`${base}/projekte/${slug}`)).status(), 404);
-  const publish = await context.request.patch(`${base}/api/projects/${projectID}`, {
-    headers: { Origin: base },
-    data: { _status: "published" },
-  });
+  const publish = await context.request.patch(
+    `${base}/api/projects/${projectID}?publishAllLocales=true`,
+    {
+      headers: { Origin: base },
+      data: { _status: "published" },
+    },
+  );
   assert.equal(publish.status(), 200, await publish.text());
   await page.goto(`${base}/projekte/${slug}`);
   assert.match(
@@ -86,6 +90,16 @@ try {
   });
   assert.equal(germanOnly.status(), 201);
   germanOnlyID = (await germanOnly.json()).doc.id;
+  assert.equal(
+    (await page.goto(`${base}/en/projects/${slug}-de`))?.status(),
+    404,
+    "Publishing German must not publish the English draft",
+  );
+  const publishTranslations = await context.request.patch(
+    `${base}/api/projects/${germanOnlyID}?locale=de&publishAllLocales=true`,
+    { headers: { Origin: base }, data: { _status: "published" } },
+  );
+  assert.equal(publishTranslations.status(), 200, await publishTranslations.text());
   assert.equal((await page.goto(`${base}/en/projects/${slug}-de`))?.status(), 200);
   await page
     .getByText("A description is not yet available in this language.", { exact: true })
@@ -117,10 +131,12 @@ try {
 } catch (error) {
   failure = error;
 } finally {
-  if (projectID) await payload.delete({ collection: "projects", id: projectID });
-  if (germanOnlyID) await payload.delete({ collection: "projects", id: germanOnlyID });
-  if (mediaID) await payload.delete({ collection: "media", id: mediaID });
-  if (userID) await payload.delete({ collection: "users", id: userID });
+  if (projectID)
+    await payload.delete({ overrideAccess: true, collection: "projects", id: projectID });
+  if (germanOnlyID)
+    await payload.delete({ overrideAccess: true, collection: "projects", id: germanOnlyID });
+  if (mediaID) await payload.delete({ overrideAccess: true, collection: "media", id: mediaID });
+  if (userID) await payload.delete({ overrideAccess: true, collection: "users", id: userID });
   await browser.close();
   await payload.destroy();
 }

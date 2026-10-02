@@ -1,6 +1,6 @@
 # Spitzli Development
 
-Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwickler und Systemarchitekt. Next.js 16 / React 19, Payload CMS 3, PostgreSQL, Vercel Blob und turboSMTP. Öffentliches Repository: [spitzli/spitzli](https://github.com/spitzli/spitzli).
+Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwickler und Systemarchitekt. Next.js 16 / React 19, Payload CMS 4.0.0-canary.37 (Vorabversion), PostgreSQL, Vercel Blob und turboSMTP. Öffentliches Repository: [spitzli/spitzli](https://github.com/spitzli/spitzli).
 
 ## Aktueller Stand / Freigabe
 
@@ -12,7 +12,7 @@ Die bisherigen Dateien `index.html`, `CNAME`, `.nojekyll` und `assets/logo.png` 
 
 ## Lokal starten
 
-Node.js 22.x (lokal geprüft mit 22.22.3) und Docker. npm-Lockfile verwenden.
+Node.js 24.x (mindestens 24.15.0) und Docker. npm-Lockfile verwenden.
 
 ```sh
 npm ci
@@ -32,6 +32,12 @@ npm run dev
 Website: http://localhost:3000 · CMS: http://localhost:3000/admin
 
 Auf Linux-Systemen mit global installiertem libvips ggf. `SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm ci` verwenden. Keine globale Systembibliothek ändern.
+
+### Upgrade auf Payload 4
+
+Alle Payload-Pakete sind auf `4.0.0-canary.37` fixiert (Vorabversion). Node 24.15+ und TypeScript 6 sind erforderlich. Vor dem Deploy eine Datenbanksicherung erstellen und `npm run cms:migrate` gegen die richtige Umgebung ausführen. Die v4-Migration übernimmt bestehende Veröffentlichungszustände für DE und EN einschließlich der Versionen. Ein Rollback auf v3 erfordert die Sicherung.
+
+Neue Veröffentlichungen gelten in v4 zunächst nur für die aktive Sprache. Im Admin-Dropdown „Publish all locales“ wählen, wenn beide Sprachen veröffentlicht werden sollen. Seed-Daten veröffentlichen beide Übersetzungen ausdrücklich; Versionshistorien bleiben ausschließlich für Administratoren lesbar.
 
 ### Ersten Administrator anlegen
 
@@ -85,7 +91,7 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 
 ## Vercel
 
-1. Das bestehende Projekt **spitzli** im Team **Spitzli Development** ist mit `spitzli/spitzli` verbunden. Kein paralleles Projekt anlegen. Framework Next.js, Node 22.x, Build `npm run build`, Install `npm ci`; Functions laufen in `fra1`. Die Produktionsbranch bleibt `main`, der Umbau liegt bis zur Freigabe auf `feat/next-payload-portfolio`.
+1. Das bestehende Projekt **spitzli** im Team **Spitzli Development** ist mit `spitzli/spitzli` verbunden. Kein paralleles Projekt anlegen. Framework Next.js, Node 24.x, Build `npm run build`, Install `npm ci`; Functions laufen in `fra1`. Die Produktionsbranch ist `main`.
 2. Getrennte Ressourcen sind eingerichtet: `spitzli-db-production` / `spitzli-db-preview` (Neon Free, Frankfurt) und `spitzli-media-production` / `spitzli-media-preview` (öffentlicher Vercel Blob, Frankfurt). `DATABASE_URL` und `BLOB_READ_WRITE_TOKEN` sind ausschließlich mit dem jeweiligen Environment verbunden; unabhängige `PAYLOAD_SECRET`-Werte liegen als Vercel Secrets vor. Vercel Authentication schützt Previews. Niemals untrusted Branches mit Produktionssecrets versorgen.
 3. Alle Einträge aus `.env.example` prüfen. Produktions-`SITE_URL=https://spitzli.dev`, ohne Pfad. Preview-Deployments verwenden automatisch ihre `VERCEL_URL`; keine beliebigen Origin-Header werden akzeptiert.
 4. Migrationen vor dem ersten Start und vor Schemaänderungen aus einer vertrauenswürdigen Umgebung gegen die richtige Datenbank ausführen: `npm run cms:migrate`. Danach einmalig `cms:seed` und `cms:bootstrap`. Befehle funktionieren auch mit bereits gesetzten Umgebungsvariablen ohne lokale Env-Datei.
@@ -93,7 +99,7 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 6. Impressum prüfen, fehlende Angaben ergänzen, `LEGAL_REVIEWED=true` und `PRIVACY_REVIEWED=true` erst nach Freigabe setzen. `npm run check:production` zeigt fehlende Werte, ohne Secrets auszugeben.
 7. Upload/Neustart-Persistenz und echten turboSMTP-Versand prüfen, dann `CONTACT_ENABLED=true`. Erst danach die Domain an Vercel anbinden und GitHub Pages abschalten. Das öffentliche Portfolio auf der endgültigen Domain einschließlich Impressum, Datenschutz und Sitemap prüfen.
 
-Migrationsdateien sind eingecheckt. `alwaysInsertFields: true` hält das Medienschema mit und ohne Blob-Token identisch. Dateinamen werden von Payload verwaltet; keine zusätzlichen Blob-Zufallssuffixe, da diese die Zuordnung generierter Bildgrößen zerstören. Freigegebene Bilder werden direkt aus dem öffentlichen Blob Store ausgeliefert. Original und Kartenvariante des eigenen Logos wurden in beiden Stores geprüft.
+Migrationsdateien sind eingecheckt. Payload 4 registriert den Blob-Adapter unter `storage` und hält dessen Schema auch ohne Blob-Token identisch. Dateinamen werden von Payload verwaltet; keine zusätzlichen Blob-Zufallssuffixe, da diese die Zuordnung generierter Bildgrößen zerstören. Freigegebene Bilder werden direkt aus dem öffentlichen Blob Store ausgeliefert. Original und Kartenvariante des eigenen Logos wurden in beiden Stores geprüft.
 
 Kein automatisches Schema-Push (`push: false`), kein Schemawechsel durch einen bloßen Seitenaufruf. Neue Migrationen: `npm run payload -- migrate:create beschreibung`; Review, Backup, Migration, Deployment. Keine Down-/Reset-Befehle gegen Produktion ohne gesonderten Wiederherstellungsplan.
 
