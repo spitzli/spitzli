@@ -17,15 +17,15 @@ const layers = [
   },
   {
     id: "cloud",
-    title: "Google Cloud",
+    title: "Cloud & infrastructure",
     subtitle: "Deployment & operation",
-    text: "The system in operation: cloud architecture, Cloud Run, Firebase, access control and deployment. I keep the whole picture in view.",
+    text: "The system in operation: deployments, containers, access control and monitoring. The infrastructure fits the application.",
   },
 ] as const;
 
 export function SystemMap() {
   const { t } = useI18n();
-  const [selected, setSelected] = useState<(typeof layers)[number]["id"]>("cloud");
+  const [selected, setSelected] = useState<(typeof layers)[number]["id"]>("api");
   return (
     <fieldset className="system-map" aria-label={t("How I connect the layers")}>
       <p className="map-caption">{t("A system is more than its parts.")}</p>

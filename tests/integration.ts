@@ -12,6 +12,8 @@ Object.assign(process.env, {
   VERCEL: "",
   VERCEL_ENV: "",
   CONTACT_ENABLED: "true",
+  HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
+  HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
   CONTACT_EMAIL: "info@spitzli.dev",
   LEGAL_STREET: "Test",
   LEGAL_POSTCODE: "00000",
@@ -41,6 +43,7 @@ const slug = `test-${randomUUID()}`;
 const key = rateLimitKey(slug, "integration-test");
 let projectID: number | undefined;
 let failure: unknown;
+const originalFetch = globalThis.fetch;
 try {
   await assert.rejects(
     payload.create({
@@ -140,11 +143,22 @@ try {
     assert.equal(message.html, undefined);
     delivered++;
   };
+  let captchaCalls = 0;
+  let captchaMode: "valid" | "invalid" | "offline" = "valid";
+  globalThis.fetch = async (input, init) => {
+    assert.equal(input, "https://api.hcaptcha.com/siteverify");
+    assert.ok(init?.body instanceof URLSearchParams);
+    assert.equal(init.body.get("sitekey"), process.env.HCAPTCHA_SITE_KEY);
+    captchaCalls++;
+    if (captchaMode === "offline") throw new Error("simulated hCaptcha outage");
+    return Response.json({ success: captchaMode === "valid" });
+  };
   const valid = {
     name: "Ada Beispiel",
     email: "ada@example.com",
     message: "Ich möchte eine interne Anwendung entwickeln.",
     website: "",
+    captcha: "integration-test-token",
   };
   const request = (data: unknown, origin = "http://localhost:3000") =>
     new Request("http://localhost:3000/api/contact", {
@@ -170,6 +184,15 @@ try {
   assert.equal((await POST(request({ ...valid, message: "x".repeat(17000) }))).status, 413);
   assert.equal((await POST(request({ ...valid, website: "spam" }))).status, 200);
   assert.equal(delivered, 0);
+  assert.equal(captchaCalls, 0, "honeypot must not trigger a verification or mail");
+  assert.equal((await POST(request({ ...valid, captcha: "" }))).status, 400);
+  captchaMode = "invalid";
+  assert.equal((await POST(request(valid))).status, 400);
+  assert.equal(delivered, 0, "invalid CAPTCHA cannot send mail");
+  captchaMode = "offline";
+  assert.equal((await POST(request(valid))).status, 503);
+  assert.equal(delivered, 0, "CAPTCHA outage cannot send mail");
+  captchaMode = "valid";
   assert.equal((await POST(request(valid))).status, 200);
   assert.equal(delivered, 1);
   payload.sendEmail = async () => {
@@ -180,6 +203,11 @@ try {
     503,
     "never report success on transport failure",
   );
+  captchaMode = "invalid";
+  assert.equal((await POST(request(valid))).status, 400);
+  const callsBeforeLimit = captchaCalls;
+  assert.equal((await POST(request(valid))).status, 429);
+  assert.equal(captchaCalls, callsBeforeLimit, "rate limit applies before the vendor request");
   payload.sendEmail = realSend;
   process.env.CONTACT_ENABLED = "false";
   assert.equal((await POST(request(valid))).status, 503);
@@ -190,6 +218,7 @@ try {
 } catch (error) {
   failure = error;
 } finally {
+  globalThis.fetch = originalFetch;
   if (projectID) await payload.delete({ collection: "projects", id: projectID });
   await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${key}`);
   await payload.destroy();

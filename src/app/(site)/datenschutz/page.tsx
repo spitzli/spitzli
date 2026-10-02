@@ -10,124 +10,91 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export default async function Datenschutz() {
   const { locale, t } = await getI18n();
+  const pending = t("[To be confirmed before publication]");
   return (
     <main id="main" className="container legal-page">
       <h1>{t("Privacy policy")}</h1>
       {!legalReady && (
         <p className="legal-warning">
           {t(
-            "Draft for the planned Vercel deployment. Address, providers, data processing agreements, retention periods and international transfers must be reviewed before publication.",
+            "Draft — provider agreements, retention and transfer safeguards still require approval.",
           )}
         </p>
       )}
-      <h2>{t("1. Controller")}</h2>
+      <h2>{t("Controller")}</h2>
       <p>
-        Dominik Spitzli, Spitzli Development
+        Dominik Spitzli · Spitzli Development
         <br />
         {legal.street || t("[Business address to be added]")}
         <br />
         {legal.postcode || "[ZIP]"} {legal.city || t("[City]")},{" "}
         {legal.country === "Deutschland" ? t("Germany") : legal.country}
         <br />
-        {t("Email")}: <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={`mailto:${site.email}`}>{site.email}</a> ·{" "}
+        <Link href={localizePath("/impressum", locale)}>{t("Legal notice")}</Link>
       </p>
-      <p>
-        <Link href={localizePath("/impressum", locale)}>{t("Full legal notice")}</Link>
-      </p>
-      <h2>{t("2. Website hosting")}</h2>
+      <h2>{t("Hosting")}</h2>
       <p>
         {t(
-          "This website is hosted on Vercel. Requests involve technically necessary data, including IP address, time, requested URL, browser/device information and technical error data. Processing serves delivery, stability and security under Article 6(1)(f) GDPR.",
+          "Vercel Inc. hosts this website and its images. IP address, request time, URL and browser data are processed for delivery and security (Article 6(1)(f) GDPR).",
         )}
       </p>
       <p>
-        {t("Hosting and image storage: Vercel Inc. (Vercel and Vercel Blob).")}{" "}
+        {t("Log retention: {retention}", {
+          retention: process.env.PRIVACY_LOG_RETENTION || pending,
+        })}{" "}
         <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
           {t("Vercel privacy policy")}
         </a>
       </p>
       <p>
-        {t("Hosting log retention: {retention}", {
-          retention: process.env.PRIVACY_LOG_RETENTION || t("[To be confirmed before publication]"),
-        })}
-      </p>
-      <p>
         {t(
-          "CMS database: {provider}. Region: {region}. The database stores project content, administration data and the abuse-prevention counters described below, not contact messages.",
+          "{provider} ({region}) stores administrator accounts and pseudonymous spam-protection counters.",
           {
-            provider: process.env.PRIVACY_DATABASE_PROVIDER || t("[Provider to be added]"),
-            region: process.env.PRIVACY_DATABASE_REGION || t("[Region to be added]"),
+            provider: process.env.PRIVACY_DATABASE_PROVIDER || pending,
+            region: process.env.PRIVACY_DATABASE_REGION || pending,
           },
         )}
       </p>
-      <h2>{t("3. Contact by email and form")}</h2>
+      <h2>{t("Contact")}</h2>
       <p>
         {t(
-          "When you contact me, I process your name, email address and message to handle your enquiry. The legal basis is Article 6(1)(b) GDPR for contractual or pre-contractual enquiries and Article 6(1)(f) GDPR for other enquiries. Please do not send particularly sensitive data through the form.",
+          "Your name, email and message are used to answer your enquiry (Article 6(1)(b) GDPR for pre-contractual enquiries, otherwise Article 6(1)(f)). The form sends via turboSMTP; my mailbox provider is {provider}. Messages are deleted when no longer needed, subject to legal retention duties.",
+          { provider: process.env.PRIVACY_MAIL_PROVIDER || pending },
+        )}
+      </p>
+      <h2>{t("Spam protection & hCaptcha")}</h2>
+      <p>
+        {t(
+          "A hidden form field (honeypot) and a limit of five attempts per 15 minutes prevent spam (Article 6(1)(f) GDPR). Only a keyed IP hash, counter and expiry time are stored for this limit. Expired counters are deleted on the next form request.",
         )}
       </p>
       <p>
         {t(
-          "The form uses turboSMTP for delivery. Messages are received and handled in my mailbox with {provider}. Enquiries are not stored in the CMS. Emails are retained for as long as processing or statutory retention requirements demand, then deleted.",
-          { provider: process.env.PRIVACY_MAIL_PROVIDER || t("[Mailbox provider to be added]") },
-        )}
-      </p>
-      <h2>{t("4. Abuse prevention")}</h2>
-      <p>
-        {t(
-          "The form uses a hidden check field (honeypot) and a limit of five requests per 15 minutes. A keyed hash of the IP address is stored with a counter and expiry time. The IP address itself is not stored in the CMS database for this purpose. Expired counters are deleted on the next form request. Hosting logs are separate.",
+          "hCaptcha (Intuition Machines, Inc., USA) loads only after you activate it. It processes IP, browser and interaction data and may use browser storage to detect bots. The basis is your consent (Article 6(1)(a) GDPR and section 25(1) TDDDG). You can withdraw it with “Disable hCaptcha and reload” or contact me by email instead.",
         )}
       </p>
       <p>
-        {t(
-          "The legal basis is Article 6(1)(f) GDPR. My legitimate interest is protecting the form and mail delivery from spam and overload. No external CAPTCHA provider is used.",
-        )}
+        <a href="https://www.hcaptcha.com/privacy" target="_blank" rel="noopener noreferrer">
+          {t("hCaptcha privacy policy")}
+        </a>
       </p>
-      <h2>{t("5. Cookies, fonts and administration")}</h2>
+      <h2>{t("Cookies & links")}</h2>
       <p>
         {t(
-          "The public website uses no analytics or marketing cookies and no visitor tracking. Fonts are served locally, not fetched from Google Fonts. Images may be loaded from Vercel Blob.",
+          "Necessary cookies remember an explicitly chosen language for one year and an administrator login for up to two hours (section 25(2)(2) TDDDG; Article 6(1)(f) GDPR). I use no analytics. Fonts are local. Project links may contain source tags without visitor IDs; the destination’s privacy policy applies after opening a link.",
         )}
       </p>
+      <h2>{t("Transfers & your rights")}</h2>
       <p>
         {t(
-          "The initial language follows your browser preferences, with English as the fallback. When you explicitly choose a language, the technically necessary spitzli_locale cookie remembers that choice for one year. It contains only en or de, no visitor identifier. Storage is based on section 25(2)(2) TDDDG; processing serves the requested language setting under Article 6(1)(f) GDPR.",
+          "Safeguards for processing outside the EU/EEA (Articles 44 et seq. GDPR): {safeguards}",
+          { safeguards: process.env.PRIVACY_TRANSFERS || pending },
         )}
       </p>
       <p>
         {t(
-          "Signing into the protected CMS uses a technically necessary session cookie lasting up to two hours. Administrator accounts and login information are processed for secure site management. Storage is based on section 25(2)(2) TDDDG and processing on the legitimate interest in secure administration under Article 6(1)(f) GDPR.",
-        )}
-      </p>
-      <h2>{t("6. External links and UTM parameters")}</h2>
-      <p>
-        {t(
-          "Project links may include utm_source=spitzli.dev, utm_medium=portfolio and utm_campaign=reference. These identify the source of a link, not an individual visitor, and do not trigger visitor measurement on this website. Data is transferred to a linked provider only when you open its link. That provider’s privacy policy then applies.",
-        )}
-      </p>
-      <h2>{t("7. Providers and international transfers")}</h2>
-      <p>
-        {t(
-          "Hosting, database and email providers receive the data needed for their tasks. Where they act as processors, processing must be governed by agreements under Article 28 GDPR. Transfers outside the EU or EEA must also meet Articles 44 et seq. GDPR.",
-        )}
-      </p>
-      <p>
-        {t("Transfer safeguards agreed for this website: {safeguards}", {
-          safeguards:
-            process.env.PRIVACY_TRANSFERS ||
-            t("[Providers, locations and agreed safeguards to be confirmed]"),
-        })}
-      </p>
-      <h2>{t("8. Your rights")}</h2>
-      <p>
-        {t(
-          "Subject to the legal requirements, you have rights of access, rectification, erasure, restriction and data portability (Articles 15–20 GDPR). You may object to processing based on legitimate interests for reasons relating to your particular situation (Article 21 GDPR). Any consent may be withdrawn for the future.",
-        )}
-      </p>
-      <p>
-        {t("Contact:")} <a href={`mailto:${site.email}`}>{site.email}</a>.{" "}
-        {t(
-          "You may also complain to a data protection authority, particularly where you live, work or believe an infringement occurred (Article 77 GDPR).",
+          "Where applicable, you may request access, correction, deletion, restriction or data portability, object to processing based on legitimate interests, and withdraw consent for the future (Articles 15–21 GDPR). Contact me at the address above. You may also complain to a data protection authority, for example where you live or work (Article 77 GDPR).",
         )}
       </p>
     </main>

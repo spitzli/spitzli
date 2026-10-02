@@ -1,7 +1,13 @@
 // biome-ignore-all lint/suspicious/noControlCharactersInRegex: reject control/header injection at the trust boundary
 import { createHmac } from "node:crypto";
 
-export type ContactInput = { name: string; email: string; message: string; website: string };
+export type ContactInput = {
+  name: string;
+  email: string;
+  message: string;
+  website: string;
+  captcha: string;
+};
 export type ContactErrors = Partial<Record<keyof ContactInput, string>>;
 
 export function validateContact(value: unknown): { data?: ContactInput; errors: ContactErrors } {
@@ -15,6 +21,7 @@ export function validateContact(value: unknown): { data?: ContactInput; errors: 
     email: text("email"),
     message: text("message"),
     website: text("website"),
+    captcha: text("captcha"),
   };
   if (data.name.length < 2 || data.name.length > 100 || /[\r\n\x00-\x1f\x7f]/.test(data.name))
     errors.name = "Please enter a name with 2–100 characters.";
@@ -33,6 +40,8 @@ export function validateContact(value: unknown): { data?: ContactInput; errors: 
     errors.message = "Please write a message with 20–5,000 characters.";
   if (input.website !== undefined && typeof input.website !== "string")
     errors.website = "Invalid request.";
+  if (!data.captcha || data.captcha.length > 8192 || /\s/.test(data.captcha))
+    errors.captcha = "Please complete the security check.";
   return Object.keys(errors).length ? { errors } : { data, errors };
 }
 

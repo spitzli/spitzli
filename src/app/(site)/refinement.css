@@ -199,42 +199,6 @@
   font-size: 0.8125rem;
   margin-top: var(--space-xs);
 }
-.cloud-section {
-  display: grid;
-  gap: var(--space-xl);
-  padding: var(--space-xl) var(--space-lg);
-  background: var(--color-note-paper);
-  color: var(--color-note-ink);
-  border-radius: var(--radius-md);
-}
-.cloud-section h2 {
-  color: var(--color-note-ink);
-  font-family: var(--font-body);
-  letter-spacing: -0.045em;
-}
-.cloud-wordmark {
-  font: 500 var(--text-sm) / 1.5 var(--font-mono);
-  margin-bottom: var(--space-lg);
-  color: var(--color-note-muted);
-}
-.cloud-section .lede {
-  color: var(--color-note-ink);
-}
-.cloud-copy > p + p {
-  color: var(--color-note-muted);
-}
-.cloud-topics {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-lg);
-  margin-top: var(--space-lg);
-  font-size: var(--text-sm);
-}
-.cloud-topics li {
-  border-bottom: 1px solid var(--color-note-rule);
-  padding-block: var(--space-xs);
-}
 h2 {
   font-size: clamp(1.6rem, 2.6vw, 2.4rem);
   letter-spacing: -0.06em;
@@ -374,6 +338,34 @@ h4 {
   margin: 0;
   border: 0;
 }
+.contact-form .captcha-fieldset {
+  margin-block: var(--space-sm) var(--space-lg);
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--color-rule);
+}
+.captcha-fieldset legend {
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  padding-inline-end: var(--space-sm);
+}
+.captcha-fieldset .small-copy {
+  margin-bottom: var(--space-md);
+}
+.captcha-status {
+  min-height: 1.65em;
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+}
+.captcha-fieldset[aria-invalid="true"] .captcha-status {
+  color: var(--color-error);
+}
+.captcha-retry {
+  border: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  padding: 0;
+  font-size: var(--text-sm);
+}
 .contact-form button:disabled {
   cursor: not-allowed;
 }
@@ -457,9 +449,6 @@ h4 {
 }
 
 @media (min-width: 40rem) {
-  .cloud-section {
-    padding: var(--space-xl);
-  }
   .project-card-content {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: var(--space-xl);
@@ -531,17 +520,6 @@ h4 {
   .system-map {
     padding-inline-start: var(--space-lg);
   }
-  .cloud-section {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: var(--space-xl);
-    padding: var(--space-xl);
-  }
-  .cloud-section h2 {
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
-  }
-  .cloud-copy .lede {
-    font-size: var(--text-md);
-  }
   .about-section {
     grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.75fr);
     gap: var(--space-2xl);
@@ -568,9 +546,6 @@ h4 {
   .hero {
     gap: var(--space-2xl);
     padding-block: var(--space-3xl);
-  }
-  .cloud-section {
-    padding: var(--space-2xl);
   }
 }
 @media (min-width: 64rem) and (max-height: 40rem) {

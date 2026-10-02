@@ -1,3 +1,5 @@
+import { hasCaptchaConfig } from "./hcaptcha.mjs";
+
 export const site = {
   name: "Spitzli Development",
   owner: "Dominik Spitzli",
@@ -39,6 +41,7 @@ export const legalReady = Boolean(
 export function contactEnabled() {
   return (
     legalReady &&
+    hasCaptchaConfig() &&
     process.env.CONTACT_ENABLED === "true" &&
     [
       "SMTP_HOST",

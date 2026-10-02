@@ -68,14 +68,18 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 
 ## Kontakt und Datenschutz
 
-- POST `/api/contact`: Origin-Prüfung, JSON- und Größenprüfung (16 KiB, auch bei gestreamtem Body), serverseitige Feldvalidierung und Honeypot.
+- POST `/api/contact`: Origin-Prüfung, JSON- und Größenprüfung (16 KiB, auch bei gestreamtem Body), serverseitige Feldvalidierung, Honeypot und hCaptcha.
 - Gemeinsames PostgreSQL-Limit: fünf Versuche pro IP-Prüfwert und 15 Minuten, atomar über alle Instanzen hinweg. Keine In-Memory-Limits.
 - In Vercel ausschließlich der vom Edge gesetzte `x-vercel-forwarded-for`-Header. Außerhalb Vercels teilen sich Anfragen bewusst einen lokalen Bucket; für einen anderen Produktionshost zuerst dessen vertrauenswürdige Proxy-Konfiguration implementieren.
 - Gespeichert werden nur HMAC-IP-Prüfwert, Zähler und Zeitstempel. Abgelaufene Zähler werden bei der nächsten Anfrage entfernt. Keine Nachrichten oder E-Mail-Adressen im CMS; keine Formularinhalte in eigenen Logs.
 - Nachricht als Klartext an `CONTACT_EMAIL`, fester verifizierter Absender aus `SMTP_FROM`, Besucheradresse nur als Reply-To. Keine automatische Antwort an unbestätigte Besucheradressen.
 - TLS wird erzwungen: 465 direkt, 587/2525 STARTTLS. SMTP-Timeouts, Fehlerantwort statt falscher Versandbestätigung.
 - `CONTACT_ENABLED=true` erst nach vollständiger Freigabe setzen. Eine SMTP-Annahme ist kein Beweis für die Zustellung ins Postfach: SPF/DKIM/DMARC, Absenderfreigabe und einen echten Zustelltest vor Launch prüfen.
-- UTM nur an Website-Links: `utm_source=spitzli.dev&utm_medium=portfolio&utm_campaign=reference`. GitHub-/GitLab-/Codeberg-Links bleiben unverändert. Kein Analytics-SDK, keine externen Fonts, kein CAPTCHA-Drittanbieter.
+- hCaptcha (`@hcaptcha/react-hcaptcha`) lädt erst nach ausdrücklicher Aktivierung. Das kompakte Widget folgt DE/EN; optionale Sentry-/User-Journey-Funktionen und reCAPTCHA-Kompatibilität sind ausgeschaltet. Deaktivieren lädt die Seite neu, ohne eine Aktivierung zu speichern.
+- Sitekey in `HCAPTCHA_SITE_KEY` (öffentlich), Secret ausschließlich in `HCAPTCHA_SECRET`. Hostnamen im hCaptcha-Dashboard auf `spitzli.dev` und die benötigten eigenen Preview-Hosts beschränken. Der öffentliche Sitekey allein reicht nicht zur Aktivierung.
+- Vor jedem Mailversand prüft der Server nach Rate-Limiting den Token per form-encodiertem POST an `https://api.hcaptcha.com/siteverify`, einschließlich erwarteter Sitekey und vertrauenswürdiger Client-IP. Timeout, ungültige/abgelaufene/verbrauchte Tokens und fehlerhafte Antworten verhindern den Mailversand. Tokens werden nach jedem Sendeversuch clientseitig zurückgesetzt; keine Token-/Secret-Logs. Die Siteverify-Hostname-Angabe dient laut hCaptcha nicht zur Authentifizierung.
+- Offizielle hCaptcha-Testschlüssel sind in Produktion gesperrt. Lokale Browser- und Backendtests mocken das SDK bzw. Siteverify vollständig: keine Challenges automatisiert lösen und keine echten E-Mails senden. Für einen echten lokalen Widget-Test einen eigenen Entwicklungs-Hostname statt `localhost` verwenden.
+- UTM nur an Website-Links: `utm_source=spitzli.dev&utm_medium=portfolio&utm_campaign=reference`. GitHub-/GitLab-/Codeberg-Links bleiben unverändert. Keine eigene Webanalyse; Website-Schriftarten sind lokal.
 
 **Impressum und Datenschutzerklärung sind prüfpflichtige Entwürfe, keine Rechtsberatung.** Die Umgebungseinstellungen sind Veröffentlichungsschalter, kein automatischer Nachweis rechtlicher Konformität. Nur die bewusst zur Veröffentlichung bestimmten Kontaktdaten eintragen; niemals private Steuer-ID oder Steuernummer.
 

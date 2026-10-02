@@ -1,3 +1,5 @@
+import { hasCaptchaConfig } from "../src/lib/hcaptcha.mjs";
+
 export function missingEnvironment(env, production = false) {
   const missing = ["DATABASE_URL", "PAYLOAD_SECRET"].filter((key) => !env[key]);
   if (env.PAYLOAD_SECRET && env.PAYLOAD_SECRET.length < 32)
@@ -20,9 +22,17 @@ export function missingEnvironment(env, production = false) {
       "SMTP_USER",
       "SMTP_PASSWORD",
       "SMTP_FROM",
+      "HCAPTCHA_SITE_KEY",
+      "HCAPTCHA_SECRET",
     ]) {
       if (!env[key]?.trim()) missing.push(key);
     }
+    if (
+      env.HCAPTCHA_SITE_KEY &&
+      env.HCAPTCHA_SECRET &&
+      !hasCaptchaConfig({ ...env, VERCEL_ENV: "production" })
+    )
+      missing.push("hCaptcha (gültige Produktionsschlüssel erforderlich)");
     for (const key of ["LEGAL_REVIEWED", "PRIVACY_REVIEWED"])
       if (env[key] !== "true") missing.push(`${key}=true`);
     try {

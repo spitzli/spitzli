@@ -9,6 +9,7 @@ const valid = {
   email: "ada@example.com",
   message: "Ich möchte eine interne Anwendung entwickeln.",
   website: "",
+  captcha: "unit-test-token",
 };
 
 test("Contact boundary: lengths, objects, header injection and Unicode", async () => {
@@ -25,6 +26,10 @@ test("Contact boundary: lengths, objects, header injection and Unicode", async (
     { ...valid, message: "x".repeat(5001) },
     { ...valid, email: {} },
     { ...valid, website: {} },
+    { ...valid, captcha: "" },
+    { ...valid, captcha: {} },
+    { ...valid, captcha: "has whitespace" },
+    { ...valid, captcha: "x".repeat(8193) },
   ]) {
     assert.equal(validateContact(bad).data, undefined);
   }
@@ -69,6 +74,8 @@ test("Production stays blocked without legal, privacy, persistent storage and de
     "LEGAL_STREET",
     "BLOB_READ_WRITE_TOKEN",
     "SMTP_PASSWORD",
+    "HCAPTCHA_SITE_KEY",
+    "HCAPTCHA_SECRET",
     "PRIVACY_TRANSFERS",
     "LEGAL_REVIEWED=true",
   ])

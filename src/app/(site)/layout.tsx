@@ -65,9 +65,6 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
                   {t("Work")}
                   <span aria-hidden="true">↗</span>
                 </a>
-                <a href={`${home}#google-cloud`}>
-                  Google Cloud<span aria-hidden="true">↗</span>
-                </a>
                 <a href={`${home}#leistungen`}>
                   {t("Expertise")}
                   <span aria-hidden="true">↗</span>

@@ -4,6 +4,7 @@ import { getPayload } from "payload";
 import { translator } from "@/i18n";
 import { browserLocale } from "@/i18n/locale";
 import { rateLimitKey, readLimitedJSON, validateContact } from "@/lib/contact";
+import { verifyCaptcha } from "@/lib/hcaptcha.mjs";
 import { claimContactSlot } from "@/lib/rate-limit";
 import { contactEnabled, site } from "@/lib/site";
 
@@ -68,6 +69,16 @@ export async function POST(request: Request) {
       return reply({ error: t("Too many requests. Please try again in 15 minutes.") }, 429, {
         "Retry-After": "900",
       });
+    }
+    const captcha = await verifyCaptcha(data.captcha, ip);
+    if (captcha !== "verified") {
+      const error =
+        captcha === "rejected"
+          ? t("The security check is invalid or expired. Please complete it again.")
+          : t(
+              "The security check is temporarily unavailable. Please try again or email me directly.",
+            );
+      return reply({ error, fields: { captcha: error } }, captcha === "rejected" ? 400 : 503);
     }
     await payload.sendEmail({
       to: site.email,

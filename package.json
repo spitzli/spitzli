@@ -31,6 +31,7 @@
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@hcaptcha/react-hcaptcha": "^2.2.0",
     "@payloadcms/db-postgres": "3.90.1",
     "@payloadcms/email-nodemailer": "3.90.1",
     "@payloadcms/next": "3.90.1",

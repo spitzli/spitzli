@@ -2,7 +2,7 @@
   "source": "src/app/(site)/layout.tsx, tokens.css",
   "framework": "Next.js 16 + Payload 3",
   "fonts": ["Space Grotesk", "JetBrains Mono"],
-  "palette": "Dark graphite / restrained violet; light cloud-expertise section",
+  "palette": "Dark graphite / restrained violet; provider names appear only in the stack",
   "preserved": [
     "Brand logo",
     "Local fonts",

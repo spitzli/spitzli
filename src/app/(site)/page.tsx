@@ -28,7 +28,7 @@ const services = [
   ],
   [
     "Cloud & infrastructure",
-    "Broad Google Cloud knowledge, from architecture to deployment and operation. Cloud Run, Firebase, Docker, Kubernetes and self-hosting where they fit.",
+    "Cloud deployments, containers and self-hosting where they fit. From architecture and permissions to a maintainable day-to-day operation.",
   ],
   [
     "Automation & integrations",
@@ -86,36 +86,6 @@ export default async function Home() {
         <SystemMap />
       </section>
 
-      <section className="cloud-section container" id="google-cloud" aria-labelledby="cloud-title">
-        <div className="cloud-heading">
-          <p className="cloud-wordmark">Google Cloud</p>
-          <h2 id="cloud-title">
-            {t("Not just a service.")}
-            <br />
-            {t("The whole system.")}
-          </h2>
-        </div>
-        <div className="cloud-copy">
-          <p className="lede">
-            {t(
-              "Google Cloud is a focus of my work. I bring broad knowledge of the platform, beyond individual products.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Architecture, applications, identities, data and deployment belong together. I connect these pieces — with Cloud Run and Firebase, and with an eye on permissions, maintainability and day-to-day operation.",
-            )}
-          </p>
-          <ul className="cloud-topics">
-            <li>{t("Architecture")}</li>
-            <li>Cloud Run</li>
-            <li>Firebase</li>
-            <li>{t("Permissions")}</li>
-            <li>{t("Deployment & operation")}</li>
-          </ul>
-        </div>
-      </section>
-
       <section className="work-section container" id="projekte" aria-labelledby="work-title">
         <div className="section-heading">
           <h2 id="work-title">{t("Work, not promises.")}</h2>
@@ -168,7 +138,7 @@ export default async function Home() {
           </p>
           <p>
             {t(
-              "My experience includes website projects, backend and platform work for Luninora, and developer experience around turboSMTP. Google Cloud, understandable APIs and maintainable systems are particular interests.",
+              "My experience includes website projects, backend and platform work for Luninora, and developer experience around turboSMTP. I focus on understandable APIs and maintainable systems.",
             )}
           </p>
           <a className="text-link" href={site.github} target="_blank" rel="noopener noreferrer">
@@ -203,7 +173,11 @@ export default async function Home() {
           </a>
           <p className="contact-note">{t("Your message goes straight to me.")}</p>
         </div>
-        <ContactForm enabled={contactEnabled()} email={site.email} />
+        <ContactForm
+          enabled={contactEnabled()}
+          email={site.email}
+          siteKey={process.env.HCAPTCHA_SITE_KEY?.trim() || ""}
+        />
       </section>
     </main>
   );

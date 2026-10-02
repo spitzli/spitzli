@@ -81,13 +81,23 @@ try {
     "true",
   );
   assert.match(await page.locator("#system-explanation").innerText(), /Datenmodelle/);
-  await page.getByRole("button", { name: /Google Cloud/ }).focus();
+  await page.getByRole("button", { name: /Cloud & Infrastruktur/ }).focus();
   await page.keyboard.press("Enter");
   assert.equal(
-    await page.getByRole("button", { name: /Google Cloud/ }).getAttribute("aria-pressed"),
+    await page.getByRole("button", { name: /Cloud & Infrastruktur/ }).getAttribute("aria-pressed"),
     "true",
   );
   assert.equal(await page.getByRole("form", { name: "Kontaktformular" }).count(), 1);
+  assert.equal(
+    await page.locator(".rail-nav").getByText("Google Cloud", { exact: true }).count(),
+    0,
+  );
+  assert.equal(await page.locator("#google-cloud").count(), 0);
+  assert.equal(
+    await page.locator(".stack").getByText("Google Cloud / Cloud Run", { exact: true }).count(),
+    1,
+  );
+  assert.equal(await page.locator(".form-privacy").innerText(), "Datenschutzerklärung.");
   assert.equal(await page.getByRole("button", { name: "Anfrage senden" }).isDisabled(), true);
   await page.getByRole("link", { name: "English", exact: true }).click();
   await page.waitForURL(`${base}/en`);
