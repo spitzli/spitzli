@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import nodemailer from "nodemailer";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { Clients, ContactLimits, Media, Projects, Users } from "./src/collections";
@@ -52,7 +53,7 @@ export default buildConfig({
           defaultFromAddress: process.env.SMTP_FROM || "",
           defaultFromName: "Spitzli Development",
           skipVerify: true,
-          transportOptions: {
+          transport: nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: Number(process.env.SMTP_PORT || 587),
             secure: process.env.SMTP_PORT === "465",
@@ -63,7 +64,7 @@ export default buildConfig({
             socketTimeout: 15000,
             disableFileAccess: true,
             disableUrlAccess: true,
-          },
+          }),
         }),
       }
     : {}),

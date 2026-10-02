@@ -6,7 +6,7 @@ Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwick
 
 Der Auftritt enthält vier bestätigte Referenzen: turboSMTP / serverSMTP, Stall Eichenbruch, Imke Folkerts und Luninora. Keine erfundenen Beschäftigungszeiträume, Kennzahlen oder Kundenlogo-Freigaben. Keine fremden Logos oder Screenshots sind eingebunden.
 
-**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Der Vercel-Produktionsbuild wird ohne diese Angaben abgebrochen. Nichtproduktive Deployments sind `noindex`. Das Kontaktformular bleibt sichtbar; ohne Versand-/Datenschutzfreigabe sind die Eingaben und der Versand mit einem eindeutigen Hinweis deaktiviert. Der direkte E-Mail-Kontakt bleibt verfügbar.
+**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Das CMS kann vor dieser Freigabe bereitgestellt werden; die Website bleibt `noindex` und das Formular deaktiviert. Nichtproduktive Deployments sind `noindex`. Das Kontaktformular bleibt sichtbar; ohne Versand-/Datenschutzfreigabe sind die Eingaben und der Versand mit einem eindeutigen Hinweis deaktiviert. Der direkte E-Mail-Kontakt bleibt verfügbar.
 
 Die bisherigen Dateien `index.html`, `CNAME`, `.nojekyll` und `assets/logo.png` bleiben bis zur Domainumstellung erhalten. Next.js liefert die alte HTML-Seite nicht aus. GitHub Pages bedient bis zum geplanten Hosting-Wechsel weiterhin den Platzhalter. Kein DNS-Wechsel durch dieses Projekt.
 
@@ -54,7 +54,7 @@ Alle CMS-Benutzer sind Administratoren. Es gibt bewusst keine Kundenkonten. Logi
 
 Im Adminbereich unter **Website-Einstellungen** Firmenname, Inhaber, Kontaktadresse, Anschrift, Telefonnummer, USt-ID und Datenschutzangaben pflegen. Die Kontaktadresse ist zugleich Empfänger des Formulars. Änderungen erscheinen ohne Deployment in Impressum, Datenschutzhinweisen und Kontaktbereich. Nur Administratoren dürfen die Global lesen oder ändern; öffentliche Seiten lesen sie serverseitig. SMTP-Zugangsdaten stehen niemals im CMS.
 
-Die Migration übernimmt einmalig die bisherigen `LEGAL_*`, `PRIVACY_*` und `CONTACT_EMAIL`-Werte, sofern sie noch gesetzt sind; andernfalls die bisher veröffentlichten Stammdaten und keine Freigaben. Erst nach `npm run cms:migrate` diese alten Variablen in Vercel entfernen. `.env.example` enthält nur noch technische Einstellungen. Produktion prüft sowohl die technischen Variablen als auch die vollständigen CMS-Angaben und Freigaben.
+Die Migration übernimmt einmalig die bisherigen `LEGAL_*`, `PRIVACY_*` und `CONTACT_EMAIL`-Werte, sofern sie noch gesetzt sind; andernfalls die bisher veröffentlichten Stammdaten und keine Freigaben. Erst nach `npm run cms:migrate` diese alten Variablen in Vercel entfernen. `.env.example` enthält nur noch technische Einstellungen. Der Build prüft die technischen Variablen; SMTP/hCaptcha sind bei aktiviertem Formular erforderlich. `npm run check:production` prüft zusätzlich die vollständigen CMS-Angaben und Freigaben vor dem öffentlichen Launch.
 
 SMTP: `pro.eu.turbo-smtp.com`, Port `465`, implizites TLS; Consumer Key als `SMTP_USER`, Consumer Secret als `SMTP_PASSWORD`. `SMTP_FROM` bleibt der technisch freigegebene Absender.
 

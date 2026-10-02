@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node --env-file-if-exists=.env.local scripts/check-env.mjs && node --env-file-if-exists=.env.local --import tsx scripts/check-site.ts && next build",
+    "build": "node --env-file-if-exists=.env.local scripts/check-env.mjs && next build",
     "start": "next start",
     "check": "node scripts/compile-messages.mjs --check && biome check . && tsc --noEmit",
     "format": "biome check --write .",
@@ -37,11 +37,12 @@
     "@payloadcms/next": "4.0.0-canary.37",
     "@payloadcms/storage-vercel-blob": "4.0.0-canary.37",
     "graphql": "^16.11.0",
-    "next": "16.3.5",
+    "next": "16.3.8",
     "payload": "4.0.0-canary.37",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.4",
+    "nodemailer": "10.0.13"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
@@ -58,6 +59,7 @@
     "dompurify": "^3.4.15",
     "@esbuild-kit/core-utils": {
       "esbuild": "^0.25.12"
-    }
+    },
+    "nodemailer": "$nodemailer"
   }
 }

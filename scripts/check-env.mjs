@@ -8,16 +8,21 @@ export function missingEnvironment(env, production = false) {
     for (const key of [
       "SITE_URL",
       "BLOB_READ_WRITE_TOKEN",
-      "SMTP_HOST",
-      "SMTP_USER",
-      "SMTP_PASSWORD",
-      "SMTP_FROM",
-      "HCAPTCHA_SITE_KEY",
-      "HCAPTCHA_SECRET",
+      ...(env.CONTACT_ENABLED === "true"
+        ? [
+            "SMTP_HOST",
+            "SMTP_USER",
+            "SMTP_PASSWORD",
+            "SMTP_FROM",
+            "HCAPTCHA_SITE_KEY",
+            "HCAPTCHA_SECRET",
+          ]
+        : []),
     ]) {
       if (!env[key]?.trim()) missing.push(key);
     }
     if (
+      env.CONTACT_ENABLED === "true" &&
       env.HCAPTCHA_SITE_KEY &&
       env.HCAPTCHA_SECRET &&
       !hasCaptchaConfig({ ...env, VERCEL_ENV: "production" })
