@@ -42,7 +42,8 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "sharp": "^0.35.4",
-    "nodemailer": "10.0.13"
+    "nodemailer": "10.0.13",
+    "@payloadcms/translations": "4.0.0-canary.37"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

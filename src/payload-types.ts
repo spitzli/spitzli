@@ -178,7 +178,7 @@ export interface Project {
   client?: (number | null) | Client;
   summary: string;
   /**
-   * Absätze mit Leerzeile trennen. Keine HTML-Eingabe.
+   * Separate paragraphs with a blank line. Do not enter HTML.
    */
   description?: string | null;
   image?: (number | null) | Media;
@@ -205,7 +205,7 @@ export interface Project {
       }[]
     | null;
   /**
-   * Optional; nur bestätigte Zeiträume angeben.
+   * Optional; enter confirmed dates only.
    */
   period?: string | null;
   projectStatus?: ('unspecified' | 'development' | 'live' | 'completed' | 'archived') | null;
@@ -223,7 +223,7 @@ export interface Media {
   id: number;
   alt: string;
   /**
-   * Bilder werden öffentlich gespeichert. Keine vertraulichen Dateien oder ungeklärten Kundenlogos hochladen.
+   * Images are stored publicly. Do not upload confidential files or client logos without permission.
    */
   rightsConfirmed: boolean;
   prefix?: string | null;

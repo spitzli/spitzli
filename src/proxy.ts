@@ -1,17 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { browserLocale, internalPath, isLocale, localeCookie, localizePath } from "./i18n/locale";
+import { internalPath, isLocale, localeCookie, localizePath } from "./i18n/locale";
 
 export function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const [, prefix, ...segments] = url.pathname.split("/");
   const preference = request.cookies.get(localeCookie)?.value;
-  const detected = isLocale(preference)
-    ? preference
-    : browserLocale(request.headers.get("accept-language"));
+  const detected = isLocale(preference) ? preference : "en";
   if (!isLocale(prefix)) {
     url.pathname = localizePath(internalPath(url.pathname), detected);
     const response = NextResponse.redirect(url, 307);
-    response.headers.set("Vary", "Accept-Language, Cookie");
+    response.headers.set("Vary", "Cookie");
     response.headers.set("Cache-Control", "private, no-store");
     return response;
   }

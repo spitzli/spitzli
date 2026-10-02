@@ -15,7 +15,7 @@ await mkdir("test-results", { recursive: true });
 try {
   for (const width of [320, 375, 414, 768, 1280, 1920]) {
     await page.setViewportSize({ width, height: 900 });
-    const response = await page.goto(base);
+    const response = await page.goto(`${base}/de`);
     assert.equal(response?.status(), 200);
     await page.evaluate(() => document.fonts.ready);
     assert.equal(await page.locator(".project-card").count(), 4);

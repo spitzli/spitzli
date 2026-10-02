@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { en } from "@payloadcms/translations/languages/en";
 import nodemailer from "nodemailer";
 import { buildConfig } from "payload";
 import sharp from "sharp";
@@ -27,10 +28,11 @@ export default buildConfig({
     importMap: { baseDir: dirname },
     meta: { titleSuffix: "— Spitzli Development" },
   },
+  i18n: { fallbackLanguage: "en", supportedLanguages: { en } },
   localization: {
     locales: [
       { label: "English", code: "en" },
-      { label: "Deutsch", code: "de" },
+      { label: "German", code: "de" },
     ],
     defaultLocale: "en",
     fallback: true,

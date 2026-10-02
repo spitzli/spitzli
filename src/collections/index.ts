@@ -15,13 +15,13 @@ const urlField = (name: string, label: string): TextField => ({
   label,
   type: "text",
   validate: (value: unknown) =>
-    !value || isPublicURL(value) || "Bitte eine öffentliche HTTPS-URL ohne Zugangsdaten angeben.",
+    !value || isPublicURL(value) || "Enter a public HTTPS URL without credentials.",
 });
 
 export const Users: CollectionConfig = {
   versions: false,
   slug: "users",
-  labels: { singular: "Administrator", plural: "Administratoren" },
+  labels: { singular: "Administrator", plural: "Administrators" },
   admin: { useAsTitle: "email" },
   auth: {
     maxLoginAttempts: 5,
@@ -35,7 +35,7 @@ export const Users: CollectionConfig = {
       ({ operation, req }) => {
         // Also blocks Payload's public create-first-user endpoint on an empty database.
         if (operation === "create" && !req.user && req.context.bootstrap !== true) {
-          throw new APIError("Administratoren werden ausschließlich intern angelegt.", 403);
+          throw new APIError("Administrators can only be created internally.", 403);
         }
       },
     ],
@@ -46,7 +46,7 @@ export const Users: CollectionConfig = {
 export const Clients: CollectionConfig = {
   versions: false,
   slug: "clients",
-  labels: { singular: "Kunde / Unternehmen", plural: "Kunden / Unternehmen" },
+  labels: { singular: "Client / company", plural: "Clients / companies" },
   admin: { useAsTitle: "name", defaultColumns: ["name", "website"] },
   access: { ...managed, read: admin },
   fields: [
@@ -57,7 +57,7 @@ export const Clients: CollectionConfig = {
 
 export const Projects: CollectionConfig = {
   slug: "projects",
-  labels: { singular: "Projekt", plural: "Projekte" },
+  labels: { singular: "Project", plural: "Projects" },
   admin: {
     useAsTitle: "name",
     defaultColumns: ["name", "client", "category", "_status", "sortOrder"],
@@ -75,12 +75,12 @@ export const Projects: CollectionConfig = {
       index: true,
       validate: (value: unknown) =>
         (typeof value === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) ||
-        "Nur Kleinbuchstaben, Ziffern und Bindestriche.",
+        "Use lowercase letters, numbers and hyphens only.",
     },
-    { name: "client", label: "Kunde / Unternehmen", type: "relationship", relationTo: "clients" },
+    { name: "client", label: "Client / company", type: "relationship", relationTo: "clients" },
     {
       name: "summary",
-      label: "Kurzbeschreibung",
+      label: "Summary",
       type: "textarea",
       localized: true,
       required: true,
@@ -88,45 +88,45 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "description",
-      label: "Ausführliche Beschreibung",
+      label: "Description",
       type: "textarea",
       localized: true,
       maxLength: 12000,
-      admin: { description: "Absätze mit Leerzeile trennen. Keine HTML-Eingabe." },
+      admin: { description: "Separate paragraphs with a blank line. Do not enter HTML." },
     },
-    { name: "image", label: "Freigegebenes Logo / Bild", type: "upload", relationTo: "media" },
+    { name: "image", label: "Approved logo / image", type: "upload", relationTo: "media" },
     {
       name: "category",
-      label: "Kategorie",
+      label: "Category",
       type: "select",
       required: true,
       options: [
-        "Webentwicklung",
-        "Webapps",
-        "APIs & Plattformen",
-        "Cloud & Infrastruktur",
+        { label: "Web development", value: "Webentwicklung" },
+        { label: "Web apps", value: "Webapps" },
+        { label: "APIs & platforms", value: "APIs & Plattformen" },
+        { label: "Cloud & infrastructure", value: "Cloud & Infrastruktur" },
         "Developer Experience",
         "Open Source",
       ],
     },
     {
       name: "technologies",
-      label: "Technologien",
+      label: "Technologies",
       type: "array",
       maxRows: 16,
       fields: [{ name: "name", type: "text", required: true, maxLength: 40 }],
     },
-    urlField("website", "Projekt-URL"),
-    urlField("repository", "Öffentliches Repository"),
+    urlField("website", "Project URL"),
+    urlField("repository", "Public repository"),
     {
       name: "links",
-      label: "Weitere Links",
+      label: "Additional links",
       type: "array",
       maxRows: 16,
       fields: [
         {
           name: "label",
-          label: "Bezeichnung",
+          label: "Label",
           type: "text",
           required: true,
           maxLength: 48,
@@ -137,33 +137,33 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "period",
-      label: "Zeitraum",
+      label: "Period",
       type: "text",
       maxLength: 60,
-      admin: { description: "Optional; nur bestätigte Zeiträume angeben." },
+      admin: { description: "Optional; enter confirmed dates only." },
     },
     {
       name: "projectStatus",
-      label: "Projektstatus",
+      label: "Project status",
       type: "select",
       options: [
-        { label: "Nicht anzeigen", value: "unspecified" },
-        { label: "In Entwicklung", value: "development" },
+        { label: "Do not display", value: "unspecified" },
+        { label: "In development", value: "development" },
         { label: "Live", value: "live" },
-        { label: "Abgeschlossen", value: "completed" },
-        { label: "Archiviert", value: "archived" },
+        { label: "Completed", value: "completed" },
+        { label: "Archived", value: "archived" },
       ],
       defaultValue: "unspecified",
     },
-    { name: "featured", label: "Hervorheben", type: "checkbox", defaultValue: false },
-    { name: "sortOrder", label: "Sortierung", type: "number", defaultValue: 10, required: true },
+    { name: "featured", label: "Featured", type: "checkbox", defaultValue: false },
+    { name: "sortOrder", label: "Sort order", type: "number", defaultValue: 10, required: true },
   ],
 };
 
 export const Media: CollectionConfig = {
   versions: false,
   slug: "media",
-  labels: { singular: "Bild", plural: "Bilder" },
+  labels: { singular: "Image", plural: "Images" },
   access: { ...managed, read: () => true },
   upload: {
     staticDir: "media",
@@ -176,7 +176,7 @@ export const Media: CollectionConfig = {
   fields: [
     {
       name: "alt",
-      label: "Alternativtext",
+      label: "Alternative text",
       type: "text",
       required: true,
       maxLength: 240,
@@ -184,14 +184,14 @@ export const Media: CollectionConfig = {
     },
     {
       name: "rightsConfirmed",
-      label: "Ich darf dieses Bild / Logo öffentlich verwenden.",
+      label: "I have permission to publish this image / logo.",
       type: "checkbox",
       required: true,
       validate: (value: unknown) =>
-        value === true || "Vor dem Upload muss die Nutzungsfreigabe vorliegen.",
+        value === true || "Confirm permission to publish before uploading.",
       admin: {
         description:
-          "Bilder werden öffentlich gespeichert. Keine vertraulichen Dateien oder ungeklärten Kundenlogos hochladen.",
+          "Images are stored publicly. Do not upload confidential files or client logos without permission.",
       },
     },
   ],

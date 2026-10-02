@@ -47,7 +47,7 @@ try {
   });
   assert.equal(deniedSettings.status, 403);
   await page.goto(`${base}/admin/globals/website-settings`);
-  await page.getByLabel("Firmenname", { exact: false }).waitFor();
+  await page.getByLabel("Company name", { exact: false }).waitFor();
   const settingsUpdate = await context.request.post(`${base}/api/globals/website-settings`, {
     headers: { Origin: base },
     data: {
@@ -69,8 +69,8 @@ try {
     data: originalSettings,
   });
   await page.goto(`${base}/admin`);
-  await page.getByRole("link", { name: "Projekte", exact: true }).first().waitFor();
-  await page.getByRole("link", { name: "Show all Projekte", exact: true }).click();
+  await page.getByRole("link", { name: "Projects", exact: true }).first().waitFor();
+  await page.getByRole("link", { name: "Show all Projects", exact: true }).click();
   await page.waitForURL("**/admin/collections/projects");
   await page.getByText("turboSMTP / serverSMTP", { exact: true }).first().waitFor();
   await page.getByText("Loading...", { exact: true }).first().waitFor({ state: "hidden" });

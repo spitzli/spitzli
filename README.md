@@ -73,7 +73,7 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 ## Sprachen und Gettext
 
 - Öffentliche URLs: `/en`, `/de`, `/en/projects/<slug>`, `/de/projekte/<slug>`, `/en/legal-notice`, `/de/impressum`, `/en/privacy`, `/de/datenschutz`.
-- Alte unpräfixierte Links bleiben erhalten und führen zur passenden Sprachfassung. Die erste Auswahl richtet sich nach `Accept-Language` (einschließlich Gewichtung); nicht unterstützte Sprachen fallen auf Englisch zurück.
+- Alte unpräfixierte Links bleiben erhalten und führen zur passenden Sprachfassung. Ohne explizite Sprachwahl startet die Website immer auf Englisch, unabhängig von der Browsersprache. Deutsch bleibt über den Sprachschalter verfügbar. Der Adminbereich verwendet englische Beschriftungen.
 - Die sichtbaren DE-/EN-Links wechseln die aktuelle Seite. Erst eine ausdrückliche Auswahl setzt das notwendige Cookie `spitzli_locale` (ein Jahr, nur `en`/`de`). Ein erster Besuch setzt kein Sprachcookie.
 - UI-, Formular-, Fehler- und Rechtstexte liegen in **`locales/en.po` und `locales/de.po`**. Nach Änderungen `npm run i18n:compile`; Dev/Build kompiliert automatisch. Generierte JSON-Dateien nicht direkt ändern. CI prüft beide Kataloge, Pluralformen, Platzhalter und Synchronität.
 - Das CMS hat native englische/deutsche Inhaltsvarianten für Projektbeschreibungen, zusätzliche Linkbeschriftungen und Bild-Alternativtexte. Englisch ist die CMS-Standardsprache und inhaltliche Rückfallsprache. Fehlt auch die englische Beschreibung, zeigt die Website das ausdrücklich an, statt zu scheitern oder Inhalte zu erfinden.

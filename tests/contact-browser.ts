@@ -154,7 +154,7 @@ try {
   page.on("pageerror", (error) => pageErrors.push(error.message));
   for (const width of [320, 375, 414, 768]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto(url);
+    await page.goto(`${url}/de`);
     await page.getByRole("button", { name: "Anfrage senden" }).waitFor();
     assert.equal(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),

@@ -36,9 +36,9 @@ test("Native locale routes preserve old links, explicit preference and internal 
   const req = (path: string, headers: Record<string, string> = {}) =>
     new NextRequest(`https://spitzli.dev${path}`, { headers });
   const first = proxy(req("/", { "accept-language": "de-DE" }));
-  assert.equal(first.headers.get("location"), "https://spitzli.dev/de");
+  assert.equal(first.headers.get("location"), "https://spitzli.dev/en");
   assert.equal(first.headers.get("set-cookie"), null, "no cookie without an explicit choice");
-  assert.match(first.headers.get("vary") || "", /Accept-Language/);
+  assert.match(first.headers.get("vary") || "", /Cookie/);
   assert.equal(
     proxy(req("/impressum", { "accept-language": "fr" })).headers.get("location"),
     "https://spitzli.dev/en/legal-notice",
@@ -48,6 +48,10 @@ test("Native locale routes preserve old links, explicit preference and internal 
       "location",
     ),
     "https://spitzli.dev/en",
+  );
+  assert.equal(
+    proxy(req("/", { cookie: "spitzli_locale=de" })).headers.get("location"),
+    "https://spitzli.dev/de",
   );
   const explicit = proxy(req("/de/impressum?language=de"));
   assert.match(explicit.headers.get("set-cookie") || "", /spitzli_locale=de/);

@@ -91,8 +91,8 @@ export async function POST(request: Request) {
       to: settings.email,
       from: { name: settings.name, address: process.env.SMTP_FROM || settings.email },
       replyTo: data.email,
-      subject: "Projektanfrage über spitzli.dev",
-      text: `Name: ${data.name}\nE-Mail: ${data.email}\n\n${data.message}`,
+      subject: "Project enquiry via spitzli.dev",
+      text: `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
     });
     return reply({ ok: true });
   } catch {
