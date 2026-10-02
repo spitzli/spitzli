@@ -7,6 +7,7 @@ import { rateLimitKey, readLimitedJSON, validateContact } from "@/lib/contact";
 import { verifyCaptcha } from "@/lib/hcaptcha.mjs";
 import { claimContactSlot } from "@/lib/rate-limit";
 import { contactEnabled, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -19,11 +20,17 @@ export async function POST(request: Request) {
     return reply({ error: t("Requests from this origin are not allowed.") }, 403);
   if (request.headers.get("content-type")?.split(";")[0].trim() !== "application/json")
     return reply({ error: t("JSON is required.") }, 415);
-  if (!contactEnabled())
+  let settings: Awaited<ReturnType<typeof getSiteSettings>>;
+  try {
+    settings = await getSiteSettings();
+  } catch {
+    return reply({ error: t("The request could not be read.") }, 503);
+  }
+  if (!contactEnabled(settings))
     return reply(
       {
         error: t("The form is currently unavailable. Please email {email} directly.", {
-          email: site.email,
+          email: settings.email,
         }),
       },
       503,
@@ -81,8 +88,8 @@ export async function POST(request: Request) {
       return reply({ error, fields: { captcha: error } }, captcha === "rejected" ? 400 : 503);
     }
     await payload.sendEmail({
-      to: site.email,
-      from: { name: site.name, address: process.env.SMTP_FROM || site.email },
+      to: settings.email,
+      from: { name: settings.name, address: process.env.SMTP_FROM || settings.email },
       replyTo: data.email,
       subject: "Projektanfrage über spitzli.dev",
       text: `Name: ${data.name}\nE-Mail: ${data.email}\n\n${data.message}`,
@@ -94,7 +101,7 @@ export async function POST(request: Request) {
     return reply(
       {
         error: t("The message could not be sent. Please email {email} directly.", {
-          email: site.email,
+          email: settings.email,
         }),
       },
       503,

@@ -1,7 +1,10 @@
 import type { MetadataRoute } from "next";
-import { legalReady, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export default function robots(): MetadataRoute.Robots {
+export const dynamic = "force-dynamic";
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const site = await getSiteSettings();
+  const legalReady = site.legalReady;
   const production = process.env.VERCEL_ENV === "production" && legalReady;
   return {
     rules: {

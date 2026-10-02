@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { languageAlternates, localizePath } from "@/i18n/locale";
 import { getI18n } from "@/i18n/server";
-import { legal, legalReady, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getI18n();
@@ -10,6 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export default async function Datenschutz() {
   const { locale, t } = await getI18n();
+  const site = await getSiteSettings();
+  const legal = site;
+  const legalReady = site.legalReady;
   const pending = t("[To be confirmed before publication]");
   return (
     <main id="main" className="container legal-page">
@@ -23,7 +26,7 @@ export default async function Datenschutz() {
       )}
       <h2>{t("Controller")}</h2>
       <p>
-        Dominik Spitzli · Spitzli Development
+        {site.owner} · {site.name}
         <br />
         {legal.street || t("[Business address to be added]")}
         <br />
@@ -41,7 +44,7 @@ export default async function Datenschutz() {
       </p>
       <p>
         {t("Log retention: {retention}", {
-          retention: process.env.PRIVACY_LOG_RETENTION || pending,
+          retention: site.logRetention || pending,
         })}{" "}
         <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">
           {t("Vercel privacy policy")}
@@ -51,8 +54,8 @@ export default async function Datenschutz() {
         {t(
           "{provider} ({region}) stores administrator accounts and pseudonymous spam-protection counters.",
           {
-            provider: process.env.PRIVACY_DATABASE_PROVIDER || pending,
-            region: process.env.PRIVACY_DATABASE_REGION || pending,
+            provider: site.databaseProvider || pending,
+            region: site.databaseRegion || pending,
           },
         )}
       </p>
@@ -60,7 +63,7 @@ export default async function Datenschutz() {
       <p>
         {t(
           "Your name, email and message are used to answer your enquiry (Article 6(1)(b) GDPR for pre-contractual enquiries, otherwise Article 6(1)(f)). The form sends via turboSMTP; my mailbox provider is {provider}. Messages are deleted when no longer needed, subject to legal retention duties.",
-          { provider: process.env.PRIVACY_MAIL_PROVIDER || pending },
+          { provider: site.mailProvider || pending },
         )}
       </p>
       <h2>{t("Spam protection & hCaptcha")}</h2>
@@ -89,7 +92,7 @@ export default async function Datenschutz() {
       <p>
         {t(
           "Safeguards for processing outside the EU/EEA (Articles 44 et seq. GDPR): {safeguards}",
-          { safeguards: process.env.PRIVACY_TRANSFERS || pending },
+          { safeguards: site.transfers || pending },
         )}
       </p>
       <p>

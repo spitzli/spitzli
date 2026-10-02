@@ -2,10 +2,31 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import AxeBuilder from "@axe-core/playwright";
+import { getPayload } from "payload";
 import { chromium } from "playwright";
+import config from "../payload.config";
 
 if (!["localhost", "127.0.0.1"].includes(new URL(process.env.DATABASE_URL || "").hostname))
   throw new Error("Requires local test database.");
+const payload = await getPayload({ config });
+const originalSettings = await payload.findGlobal({
+  slug: "website-settings",
+  overrideAccess: true,
+});
+await payload.updateGlobal({
+  slug: "website-settings",
+  overrideAccess: true,
+  data: {
+    ...originalSettings,
+    legalReviewed: true,
+    privacyReviewed: true,
+    databaseProvider: "test",
+    databaseRegion: "test",
+    logRetention: "test",
+    mailProvider: "test",
+    transfers: "test",
+  },
+});
 const url = "http://localhost:3107";
 const server = spawn(
   process.execPath,
@@ -21,16 +42,6 @@ const server = spawn(
       CONTACT_ENABLED: "true",
       HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
       HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
-      LEGAL_STREET: "Test",
-      LEGAL_POSTCODE: "00000",
-      LEGAL_CITY: "Test",
-      LEGAL_REVIEWED: "true",
-      PRIVACY_REVIEWED: "true",
-      PRIVACY_DATABASE_PROVIDER: "test",
-      PRIVACY_DATABASE_REGION: "test",
-      PRIVACY_LOG_RETENTION: "test",
-      PRIVACY_MAIL_PROVIDER: "test",
-      PRIVACY_TRANSFERS: "test",
       SMTP_HOST: "127.0.0.1",
       SMTP_USER: "test",
       SMTP_PASSWORD: "test",
@@ -270,4 +281,12 @@ try {
 } finally {
   await browser.close();
   server.kill("SIGTERM");
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: originalSettings,
+  });
+  await payload.destroy();
 }
+
+process.exit(0);

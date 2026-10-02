@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { languageAlternates } from "@/i18n/locale";
 import { getI18n } from "@/i18n/server";
-import { legal, legalReady, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getI18n();
@@ -9,6 +9,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export default async function Impressum() {
   const { t } = await getI18n();
+  const site = await getSiteSettings();
+  const legal = site;
+  const legalReady = site.legalReady;
   return (
     <main id="main" className="container legal-page">
       <h1>{t("Legal notice")}</h1>
@@ -21,9 +24,9 @@ export default async function Impressum() {
       )}
       <h2>{t("Information under section 5 DDG")}</h2>
       <address>
-        <strong>Spitzli Development</strong>
+        <strong>{site.name}</strong>
         <br />
-        {t("Owner: Dominik Spitzli")}
+        {t("Owner: Dominik Spitzli").replace("Dominik Spitzli", site.owner)}
         <br />
         {t("Sole proprietor")}
         <br />
@@ -69,7 +72,7 @@ export default async function Impressum() {
       <p>
         {t(
           "Dominik Spitzli is responsible for this website’s content. Project and company names describe my work. Linked websites are operated by their respective providers.",
-        )}
+        ).replace("Dominik Spitzli", site.owner)}
       </p>
     </main>
   );

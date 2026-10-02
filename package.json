@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node --env-file-if-exists=.env.local scripts/check-env.mjs && next build",
+    "build": "node --env-file-if-exists=.env.local scripts/check-env.mjs && node --env-file-if-exists=.env.local --import tsx scripts/check-site.ts && next build",
     "start": "next start",
     "check": "node scripts/compile-messages.mjs --check && biome check . && tsc --noEmit",
     "format": "biome check --write .",
@@ -22,7 +22,7 @@
     "cms:migrate": "node --env-file-if-exists=.env.local --import tsx scripts/migrate.ts",
     "cms:seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
     "cms:bootstrap": "node --env-file-if-exists=.env.local --import tsx scripts/bootstrap.ts",
-    "check:production": "node --env-file-if-exists=.env.local scripts/check-env.mjs --production",
+    "check:production": "node --env-file-if-exists=.env.local scripts/check-env.mjs --production && node --env-file-if-exists=.env.local --import tsx scripts/check-site.ts --production",
     "test:contact-ui": "tsx --env-file-if-exists=.env.local tests/contact-browser.ts",
     "i18n:compile": "node scripts/compile-messages.mjs",
     "prebuild": "npm run i18n:compile",

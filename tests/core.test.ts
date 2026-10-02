@@ -66,18 +66,15 @@ test("Portfolio links: HTTPS only, fixed UTM, preserve query/anchor and reposito
   assert.throws(() => referenceURL("javascript:alert(1)"));
 });
 
-test("Production stays blocked without legal, privacy, persistent storage and delivery configuration", () => {
+test("Production stays blocked without persistent storage and delivery configuration", () => {
   const dev = { DATABASE_URL: "postgresql://localhost/db", PAYLOAD_SECRET: "a".repeat(48) };
   assert.equal(missingEnvironment(dev).length, 0);
   const missing = missingEnvironment(dev, true);
   for (const key of [
-    "LEGAL_STREET",
     "BLOB_READ_WRITE_TOKEN",
     "SMTP_PASSWORD",
     "HCAPTCHA_SITE_KEY",
     "HCAPTCHA_SECRET",
-    "PRIVACY_TRANSFERS",
-    "LEGAL_REVIEWED=true",
   ])
     assert.ok(missing.includes(key));
   assert.ok(missingEnvironment({ ...dev, PAYLOAD_SECRET: "weak" }).length);

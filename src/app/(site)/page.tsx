@@ -5,7 +5,8 @@ import { SystemMap } from "@/components/SystemMap";
 import { languageAlternates } from "@/i18n/locale";
 import { getI18n } from "@/i18n/server";
 import { getProjects } from "@/lib/projects";
-import { contactEnabled, site } from "@/lib/site";
+import { contactEnabled } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,6 +53,7 @@ const stack = [
 ];
 
 export default async function Home() {
+  const site = await getSiteSettings();
   const { locale, t } = await getI18n();
   const projects = await getProjects(locale);
   return (
@@ -174,7 +176,7 @@ export default async function Home() {
           <p className="contact-note">{t("Your message goes straight to me.")}</p>
         </div>
         <ContactForm
-          enabled={contactEnabled()}
+          enabled={contactEnabled(site)}
           email={site.email}
           siteKey={process.env.HCAPTCHA_SITE_KEY?.trim() || ""}
         />

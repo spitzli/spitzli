@@ -14,17 +14,6 @@ Object.assign(process.env, {
   CONTACT_ENABLED: "true",
   HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
   HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
-  CONTACT_EMAIL: "info@spitzli.dev",
-  LEGAL_STREET: "Test",
-  LEGAL_POSTCODE: "00000",
-  LEGAL_CITY: "Test",
-  LEGAL_REVIEWED: "true",
-  PRIVACY_REVIEWED: "true",
-  PRIVACY_DATABASE_PROVIDER: "test",
-  PRIVACY_DATABASE_REGION: "test",
-  PRIVACY_LOG_RETENTION: "test",
-  PRIVACY_MAIL_PROVIDER: "test",
-  PRIVACY_TRANSFERS: "test",
   SMTP_HOST: "127.0.0.1",
   SMTP_USER: "test",
   SMTP_PASSWORD: "test",
@@ -33,6 +22,10 @@ Object.assign(process.env, {
 });
 const { default: config } = await import("../payload.config");
 const payload = await getPayload({ config });
+const originalSettings = await payload.findGlobal({
+  slug: "website-settings",
+  overrideAccess: true,
+});
 assert.ok(
   payload.config.collections
     .find((collection) => collection.slug === "media")
@@ -45,6 +38,28 @@ let projectID: number | undefined;
 let failure: unknown;
 const originalFetch = globalThis.fetch;
 try {
+  await assert.rejects(
+    payload.updateGlobal({
+      slug: "website-settings",
+      overrideAccess: false,
+      data: { email: "attacker@example.com" },
+    }),
+  );
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: {
+      ...originalSettings,
+      email: "cms-recipient@example.com",
+      legalReviewed: true,
+      privacyReviewed: true,
+      databaseProvider: "test",
+      databaseRegion: "test",
+      logRetention: "test",
+      mailProvider: "test",
+      transfers: "test",
+    },
+  });
   await assert.rejects(
     payload.create({
       collection: "users",
@@ -148,7 +163,7 @@ try {
   let delivered = 0;
   const realSend = payload.sendEmail;
   payload.sendEmail = async (message) => {
-    assert.equal(message.to, "info@spitzli.dev");
+    assert.equal(message.to, "cms-recipient@example.com");
     assert.equal(message.replyTo, "ada@example.com");
     assert.equal(message.html, undefined);
     delivered++;
@@ -229,6 +244,11 @@ try {
   failure = error;
 } finally {
   globalThis.fetch = originalFetch;
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: originalSettings,
+  });
   if (projectID)
     await payload.delete({ overrideAccess: true, collection: "projects", id: projectID });
   await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${key}`);

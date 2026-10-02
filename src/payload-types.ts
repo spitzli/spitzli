@@ -93,8 +93,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de') | ('en' | 'de')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'website-settings': WebsiteSetting;
+  };
+  globalsSelect: {
+    'website-settings': WebsiteSettingsSelect<false> | WebsiteSettingsSelect<true>;
+  };
   locale: 'en' | 'de';
   widgets: {
     collections: CollectionsWidget;
@@ -498,6 +502,60 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-settings".
+ */
+export interface WebsiteSetting {
+  id: number;
+  name: string;
+  owner: string;
+  email: string;
+  street: string;
+  postcode: string;
+  city: string;
+  country: string;
+  phone?: string | null;
+  vatID?: string | null;
+  businessID?: string | null;
+  register?: string | null;
+  databaseProvider?: string | null;
+  databaseRegion?: string | null;
+  logRetention?: string | null;
+  mailProvider?: string | null;
+  transfers?: string | null;
+  legalReviewed?: boolean | null;
+  privacyReviewed?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-settings_select".
+ */
+export interface WebsiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  owner?: T;
+  email?: T;
+  street?: T;
+  postcode?: T;
+  city?: T;
+  country?: T;
+  phone?: T;
+  vatID?: T;
+  businessID?: T;
+  register?: T;
+  databaseProvider?: T;
+  databaseRegion?: T;
+  logRetention?: T;
+  mailProvider?: T;
+  transfers?: T;
+  legalReviewed?: T;
+  privacyReviewed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

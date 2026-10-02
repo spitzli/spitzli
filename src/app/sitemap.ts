@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
 import { locales, localizePath } from "@/i18n/locale";
 import { getProjects } from "@/lib/projects";
-import { legalReady, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const site = await getSiteSettings();
+  const legalReady = site.legalReady;
   if (!legalReady || process.env.VERCEL_ENV !== "production") return [];
   const projects = await getProjects("en");
   return locales.flatMap((locale) => [

@@ -8,16 +8,6 @@ export function missingEnvironment(env, production = false) {
     for (const key of [
       "SITE_URL",
       "BLOB_READ_WRITE_TOKEN",
-      "LEGAL_STREET",
-      "LEGAL_POSTCODE",
-      "LEGAL_CITY",
-      "LEGAL_COUNTRY",
-      "CONTACT_EMAIL",
-      "PRIVACY_DATABASE_PROVIDER",
-      "PRIVACY_DATABASE_REGION",
-      "PRIVACY_LOG_RETENTION",
-      "PRIVACY_MAIL_PROVIDER",
-      "PRIVACY_TRANSFERS",
       "SMTP_HOST",
       "SMTP_USER",
       "SMTP_PASSWORD",
@@ -33,8 +23,6 @@ export function missingEnvironment(env, production = false) {
       !hasCaptchaConfig({ ...env, VERCEL_ENV: "production" })
     )
       missing.push("hCaptcha (gültige Produktionsschlüssel erforderlich)");
-    for (const key of ["LEGAL_REVIEWED", "PRIVACY_REVIEWED"])
-      if (env[key] !== "true") missing.push(`${key}=true`);
     try {
       const url = new URL(env.SITE_URL);
       if (

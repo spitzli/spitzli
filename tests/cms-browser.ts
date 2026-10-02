@@ -13,6 +13,10 @@ if (
 )
   throw new Error("CMS tests require a local website and database.");
 const payload = await getPayload({ config });
+const originalSettings = await payload.findGlobal({
+  slug: "website-settings",
+  overrideAccess: true,
+});
 const browser = await chromium.launch();
 const context = await browser.newContext();
 const page = await context.newPage();
@@ -36,6 +40,34 @@ try {
     headers: { Origin: base },
   });
   assert.equal(login.status(), 200);
+  const deniedSettings = await fetch(`${base}/api/globals/website-settings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: "attacker@example.com" }),
+  });
+  assert.equal(deniedSettings.status, 403);
+  await page.goto(`${base}/admin/globals/website-settings`);
+  await page.getByLabel("Firmenname", { exact: false }).waitFor();
+  const settingsUpdate = await context.request.post(`${base}/api/globals/website-settings`, {
+    headers: { Origin: base },
+    data: {
+      email: "cms-live@example.com",
+      vatID: "DE123456789",
+      name: "CMS Company",
+      owner: "CMS Owner",
+    },
+  });
+  assert.equal(settingsUpdate.status(), 200, await settingsUpdate.text());
+  await page.goto(`${base}/de/impressum`);
+  await page.getByText("CMS Company", { exact: true }).first().waitFor();
+  await page.getByRole("link", { name: "cms-live@example.com", exact: true }).waitFor();
+  assert.match(await page.locator("main").innerText(), /DE123456789/);
+  assert.match(await page.locator("main").innerText(), /CMS Owner/);
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: originalSettings,
+  });
   await page.goto(`${base}/admin`);
   await page.getByRole("link", { name: "Projekte", exact: true }).first().waitFor();
   await page.getByRole("link", { name: "Show all Projekte", exact: true }).click();
@@ -131,6 +163,11 @@ try {
 } catch (error) {
   failure = error;
 } finally {
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: originalSettings,
+  });
   if (projectID)
     await payload.delete({ overrideAccess: true, collection: "projects", id: projectID });
   if (germanOnlyID)

@@ -6,11 +6,17 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { Clients, ContactLimits, Media, Projects, Users } from "./src/collections";
+import { WebsiteSettings } from "./src/globals/WebsiteSettings";
 import { site } from "./src/lib/site";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const origin = site.url;
-const smtp = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
+const smtp = Boolean(
+  process.env.SMTP_HOST &&
+    process.env.SMTP_USER &&
+    process.env.SMTP_PASSWORD &&
+    process.env.SMTP_FROM,
+);
 
 export default buildConfig({
   serverURL: origin,
@@ -28,6 +34,7 @@ export default buildConfig({
     defaultLocale: "en",
     fallback: true,
   },
+  globals: [WebsiteSettings],
   collections: [Users, Clients, Projects, Media, ContactLimits],
   db: postgresAdapter({
     pool: {
@@ -42,7 +49,7 @@ export default buildConfig({
   ...(smtp
     ? {
         email: nodemailerAdapter({
-          defaultFromAddress: process.env.SMTP_FROM || site.email,
+          defaultFromAddress: process.env.SMTP_FROM || "",
           defaultFromName: "Spitzli Development",
           skipVerify: true,
           transportOptions: {

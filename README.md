@@ -50,6 +50,14 @@ Es gibt **keine öffentliche Registrierung**, auch nicht auf einer leeren Datenb
 
 Alle CMS-Benutzer sind Administratoren. Es gibt bewusst keine Kundenkonten. Login-Sperre nach fünf Fehlversuchen, Sitzungslaufzeit zwei Stunden. Passwortzurücksetzung benötigt konfiguriertes SMTP.
 
+### Website-Einstellungen
+
+Im Adminbereich unter **Website-Einstellungen** Firmenname, Inhaber, Kontaktadresse, Anschrift, Telefonnummer, USt-ID und Datenschutzangaben pflegen. Die Kontaktadresse ist zugleich Empfänger des Formulars. Änderungen erscheinen ohne Deployment in Impressum, Datenschutzhinweisen und Kontaktbereich. Nur Administratoren dürfen die Global lesen oder ändern; öffentliche Seiten lesen sie serverseitig. SMTP-Zugangsdaten stehen niemals im CMS.
+
+Die Migration übernimmt einmalig die bisherigen `LEGAL_*`, `PRIVACY_*` und `CONTACT_EMAIL`-Werte, sofern sie noch gesetzt sind; andernfalls die bisher veröffentlichten Stammdaten und keine Freigaben. Erst nach `npm run cms:migrate` diese alten Variablen in Vercel entfernen. `.env.example` enthält nur noch technische Einstellungen. Produktion prüft sowohl die technischen Variablen als auch die vollständigen CMS-Angaben und Freigaben.
+
+SMTP: `pro.eu.turbo-smtp.com`, Port `465`, implizites TLS; Consumer Key als `SMTP_USER`, Consumer Secret als `SMTP_PASSWORD`. `SMTP_FROM` bleibt der technisch freigegebene Absender.
+
 ### Projekte pflegen
 
 1. Unter **Kunden / Unternehmen** einen Eintrag erstellen, z.B. turboSMTP.
@@ -78,7 +86,7 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 - Gemeinsames PostgreSQL-Limit: fünf Versuche pro IP-Prüfwert und 15 Minuten, atomar über alle Instanzen hinweg. Keine In-Memory-Limits.
 - In Vercel ausschließlich der vom Edge gesetzte `x-vercel-forwarded-for`-Header. Außerhalb Vercels teilen sich Anfragen bewusst einen lokalen Bucket; für einen anderen Produktionshost zuerst dessen vertrauenswürdige Proxy-Konfiguration implementieren.
 - Gespeichert werden nur HMAC-IP-Prüfwert, Zähler und Zeitstempel. Abgelaufene Zähler werden bei der nächsten Anfrage entfernt. Keine Nachrichten oder E-Mail-Adressen im CMS; keine Formularinhalte in eigenen Logs.
-- Nachricht als Klartext an `CONTACT_EMAIL`, fester verifizierter Absender aus `SMTP_FROM`, Besucheradresse nur als Reply-To. Keine automatische Antwort an unbestätigte Besucheradressen.
+- Nachricht als Klartext an die Kontaktadresse aus **Website-Einstellungen**, fester verifizierter Absender aus `SMTP_FROM`, Besucheradresse nur als Reply-To. Keine automatische Antwort an unbestätigte Besucheradressen.
 - TLS wird erzwungen: 465 direkt, 587/2525 STARTTLS. SMTP-Timeouts, Fehlerantwort statt falscher Versandbestätigung.
 - `CONTACT_ENABLED=true` erst nach vollständiger Freigabe setzen. Eine SMTP-Annahme ist kein Beweis für die Zustellung ins Postfach: SPF/DKIM/DMARC, Absenderfreigabe und einen echten Zustelltest vor Launch prüfen.
 - hCaptcha (`@hcaptcha/react-hcaptcha`) lädt erst nach ausdrücklicher Aktivierung. Das kompakte Widget folgt DE/EN; optionale Sentry-/User-Journey-Funktionen und reCAPTCHA-Kompatibilität sind ausgeschaltet. Deaktivieren lädt die Seite neu, ohne eine Aktivierung zu speichern.
@@ -87,7 +95,7 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 - Offizielle hCaptcha-Testschlüssel sind in Produktion gesperrt. Lokale Browser- und Backendtests mocken das SDK bzw. Siteverify vollständig: keine Challenges automatisiert lösen und keine echten E-Mails senden. Für einen echten lokalen Widget-Test einen eigenen Entwicklungs-Hostname statt `localhost` verwenden.
 - UTM nur an Website-Links: `utm_source=spitzli.dev&utm_medium=portfolio&utm_campaign=reference`. GitHub-/GitLab-/Codeberg-Links bleiben unverändert. Keine eigene Webanalyse; Website-Schriftarten sind lokal.
 
-**Impressum und Datenschutzerklärung sind prüfpflichtige Entwürfe, keine Rechtsberatung.** Die Umgebungseinstellungen sind Veröffentlichungsschalter, kein automatischer Nachweis rechtlicher Konformität. Nur die bewusst zur Veröffentlichung bestimmten Kontaktdaten eintragen; niemals private Steuer-ID oder Steuernummer.
+**Impressum und Datenschutzerklärung sind prüfpflichtige Entwürfe, keine Rechtsberatung.** Die CMS-Freigaben sind Veröffentlichungsschalter, kein automatischer Nachweis rechtlicher Konformität. Nur die bewusst zur Veröffentlichung bestimmten Kontaktdaten eintragen; niemals private Steuer-ID oder Steuernummer.
 
 ## Vercel
 
@@ -95,8 +103,8 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 2. Getrennte Ressourcen sind eingerichtet: `spitzli-db-production` / `spitzli-db-preview` (Neon Free, Frankfurt) und `spitzli-media-production` / `spitzli-media-preview` (öffentlicher Vercel Blob, Frankfurt). `DATABASE_URL` und `BLOB_READ_WRITE_TOKEN` sind ausschließlich mit dem jeweiligen Environment verbunden; unabhängige `PAYLOAD_SECRET`-Werte liegen als Vercel Secrets vor. Vercel Authentication schützt Previews. Niemals untrusted Branches mit Produktionssecrets versorgen.
 3. Alle Einträge aus `.env.example` prüfen. Produktions-`SITE_URL=https://spitzli.dev`, ohne Pfad. Preview-Deployments verwenden automatisch ihre `VERCEL_URL`; keine beliebigen Origin-Header werden akzeptiert.
 4. Migrationen vor dem ersten Start und vor Schemaänderungen aus einer vertrauenswürdigen Umgebung gegen die richtige Datenbank ausführen: `npm run cms:migrate`. Danach einmalig `cms:seed` und `cms:bootstrap`. Befehle funktionieren auch mit bereits gesetzten Umgebungsvariablen ohne lokale Env-Datei.
-5. Datenbank-Backups und Wiederherstellung einrichten, Auftragsverarbeitungsverträge und Verarbeitungsorte prüfen. Tatsächliche Anbieter, Log-Aufbewahrung, E-Mail-Postfachanbieter und Transfergarantien in den `PRIVACY_*`-Feldern eintragen.
-6. Impressum prüfen, fehlende Angaben ergänzen, `LEGAL_REVIEWED=true` und `PRIVACY_REVIEWED=true` erst nach Freigabe setzen. `npm run check:production` zeigt fehlende Werte, ohne Secrets auszugeben.
+5. Datenbank-Backups und Wiederherstellung einrichten, Auftragsverarbeitungsverträge und Verarbeitungsorte prüfen. Tatsächliche Anbieter, Log-Aufbewahrung, E-Mail-Postfachanbieter und Transfergarantien unter **Website-Einstellungen** im CMS eintragen.
+6. Impressum prüfen, fehlende Angaben ergänzen, die CMS-Schalter **Impressum geprüft und freigegeben** und **Datenschutzhinweise geprüft und freigegeben** erst nach Prüfung aktivieren. `npm run check:production` zeigt fehlende Werte, ohne Secrets auszugeben.
 7. Upload/Neustart-Persistenz und echten turboSMTP-Versand prüfen, dann `CONTACT_ENABLED=true`. Erst danach die Domain an Vercel anbinden und GitHub Pages abschalten. Das öffentliche Portfolio auf der endgültigen Domain einschließlich Impressum, Datenschutz und Sitemap prüfen.
 
 Migrationsdateien sind eingecheckt. Payload 4 registriert den Blob-Adapter unter `storage` und hält dessen Schema auch ohne Blob-Token identisch. Dateinamen werden von Payload verwaltet; keine zusätzlichen Blob-Zufallssuffixe, da diese die Zuordnung generierter Bildgrößen zerstören. Freigegebene Bilder werden direkt aus dem öffentlichen Blob Store ausgeliefert. Original und Kartenvariante des eigenen Logos wurden in beiden Stores geprüft.

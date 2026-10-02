@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { LanguageProvider } from "@/i18n/client";
 import { localizePath } from "@/i18n/locale";
 import { getI18n } from "@/i18n/server";
-import { legalReady, site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/jetbrains-mono";
 import "./styles.css";
@@ -14,13 +14,18 @@ import "./refinement.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, t } = await getI18n();
-  const title = t("Spitzli Development — Software, APIs & Cloud");
+  const site = await getSiteSettings();
+  const legalReady = site.legalReady;
+  const title = t("Spitzli Development — Software, APIs & Cloud").replace(
+    "Spitzli Development",
+    site.name,
+  );
   const description = t(
     "I develop web applications, APIs and cloud infrastructure. Dominik Spitzli — independent software developer and system architect.",
   );
   return {
     metadataBase: new URL(site.url),
-    title: { default: title, template: "%s — Spitzli Development" },
+    title: { default: title, template: `%s — ${site.name}` },
     description,
     openGraph: {
       type: "website",
@@ -43,6 +48,8 @@ export const viewport: Viewport = { themeColor: "#141318", colorScheme: "dark" }
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
   const { locale, t } = await getI18n();
+  const site = await getSiteSettings();
+  const legalReady = site.legalReady;
   const path = (await headers()).get("x-spitzli-path") || "/";
   const home = localizePath("/", locale);
   return (
@@ -56,9 +63,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
             <header className="site-header">
               <Link className="brand" href={home} aria-label={t("Spitzli Development — home")}>
                 <Image src="/logo.png" width={44} height={44} alt="" priority />
-                <span>
-                  Spitzli<span className="brand-detail">Development</span>
-                </span>
+                <span>{site.name}</span>
               </Link>
               <nav className="rail-nav" aria-label={t("Main navigation")}>
                 <a href={`${home}#projekte`}>
@@ -120,10 +125,12 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
                 <p className="footer-signoff">
                   {t("One project. Direct contact.")}
                   <br />
-                  <strong>Dominik Spitzli</strong>
+                  <strong>{site.owner}</strong>
                 </p>
                 <div className="footer-meta">
-                  <p>© {new Date().getFullYear()} Spitzli Development</p>
+                  <p>
+                    © {new Date().getFullYear()} {site.name}
+                  </p>
                   <nav aria-label={t("Legal information")}>
                     <Link href={localizePath("/impressum", locale)}>{t("Legal notice")}</Link>
                     <Link href={localizePath("/datenschutz", locale)}>{t("Privacy")}</Link>
