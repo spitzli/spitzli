@@ -1,7 +1,76 @@
 // biome-ignore-all lint/style/noNonNullAssertion: Shared SSO fixtures assert responses before reading required fields.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { configurePayloadSSO, intersectRoles, validateIdentity } from "../src/lib/payload-sso";
+import {
+  adminSSORedirect,
+  configurePayloadSSO,
+  intersectRoles,
+  safeAdminReturnTo,
+  validateIdentity,
+} from "../src/lib/payload-sso";
+
+test("admin return targets reject external URLs, encoded escapes and native auth loops", () => {
+  for (const path of [
+    "/admin",
+    "/admin/collections/pages/42?locale=de&depth=0",
+    "/admin/globals/settings#title",
+  ]) {
+    assert.equal(safeAdminReturnTo(path), path);
+  }
+  for (const path of [
+    undefined,
+    [],
+    "https://evil.test/admin",
+    "//evil.test/admin",
+    "/administrator",
+    "/admin/../../outside",
+    "/admin//login",
+    "/admin/../login",
+    "/admin\\evil",
+    "/admin/%2f/evil",
+    "/admin/%5cevil",
+    "/admin/%252flogin",
+    "/admin/%00",
+    "/admin/%",
+    "/admin/login",
+    "/admin/%6cogin",
+    "/admin/login/nested?redirect=/admin",
+    "/admin/logout",
+    "/admin/reset/token",
+    "/admin/forgot",
+    "/admin/create-first-user",
+    "/admin/unauthorized",
+    "/admin/\nlogin",
+  ]) {
+    assert.equal(safeAdminReturnTo(path), null, String(path));
+  }
+});
+
+test("only enforced sites bypass native login and local account management", () => {
+  assert.equal(
+    adminSSORedirect(true, ["login"], { redirect: "?locale=de" }),
+    "/api/sso/login?returnTo=%2Fadmin%3Flocale%3Dde",
+  );
+  const target = "/admin/collections/pages/42?locale=de";
+  assert.equal(
+    adminSSORedirect(true, ["login"], { redirect: target }),
+    `/api/sso/login?${new URLSearchParams({ returnTo: target })}`,
+  );
+  for (const route of ["login", "forgot", "reset", "create-first-user"]) {
+    assert.equal(adminSSORedirect(false, [route]), null);
+    assert.equal(
+      adminSSORedirect(true, [route], { redirect: "//evil.test" }),
+      "/api/sso/login?returnTo=%2Fadmin",
+    );
+  }
+  for (const segments of [["account"], ["collections", "users", "42"]]) {
+    assert.equal(adminSSORedirect(true, segments), "/admin");
+    assert.equal(adminSSORedirect(false, segments), null);
+  }
+  for (const segments of [[], ["globals", "settings"], ["logout"], ["unauthorized"]]) {
+    assert.equal(adminSSORedirect(true, segments), null);
+  }
+});
 
 const now = 1_800_000_000;
 const claims = {
@@ -173,8 +242,10 @@ test("OIDC flow verifies signed identity, introspects every request, and never l
     },
   } as never;
   const sso = configurePayloadSSO({ ...options, getPayload: async () => payload });
-  const begin = async () => {
-    const login = await sso.login(new Request(`${options.appOrigin}/api/sso/login`));
+  const begin = async (returnTo = "") => {
+    const login = await sso.login(
+      new Request(`${options.appOrigin}/api/sso/login?${new URLSearchParams({ returnTo })}`),
+    );
     assert.equal(login.status, 302);
     const location = new URL(login.headers.get("location")!);
     assert.equal(location.searchParams.get("code_challenge_method"), "S256");
@@ -191,7 +262,20 @@ test("OIDC flow verifies signed identity, introspects every request, and never l
       },
     );
   };
-  const callback = await sso.callback(await begin());
+  const target = "/admin/collections/pages/42?locale=de&depth=0";
+  const requested = await begin(target);
+  // Only the encrypted flow controls this target, never callback query parameters.
+  const callback = await sso.callback(
+    new Request(`${requested.url}&returnTo=https://evil.test`, requested),
+  );
+  assert.equal(callback.headers.get("location"), `${options.appOrigin}${target}`);
+  for (const invalid of ["//evil.test", "/admin/login", "/outside"]) {
+    assert.equal(
+      (await sso.callback(await begin(invalid))).headers.get("location"),
+      `${options.appOrigin}/admin`,
+    );
+  }
+  introspections = 1;
   assert.equal(callback.status, 302);
   assert.ok(
     callback.headers
