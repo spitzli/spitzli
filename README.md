@@ -1,84 +1,22 @@
 # Spitzli Development
 
-Persönlicher Auftritt von **Dominik Spitzli**, selbstständiger Softwareentwickler und Systemarchitekt. Next.js 16 / React 19, Payload CMS 4.0.0-canary.37 (Vorabversion), PostgreSQL, Vercel Blob und turboSMTP. Öffentliches Repository: [spitzli/spitzli](https://github.com/spitzli/spitzli).
+Next.js frontend for spitzli.dev. Content is managed centrally at https://cms.webdock.dev/admin; this repository no longer contains Payload, an admin UI, CMS migrations, seed data or upload credentials.
 
-## Aktueller Stand / Freigabe
+## Configuration
 
-Der Auftritt enthält vier bestätigte Referenzen: turboSMTP / serverSMTP, Stall Eichenbruch, Imke Folkerts und Luninora. Keine erfundenen Beschäftigungszeiträume, Kennzahlen oder Kundenlogo-Freigaben. Keine fremden Logos oder Screenshots sind eingebunden.
+Use Node.js 24 and `npm ci`. Copy `.env.example` to `.env.local`, supply a site-scoped CMS integration key, then run `npm run dev`. The CMS must be reachable for content pages; failures are surfaced rather than replaced with sample content.
 
-**Noch nicht zum Livegang freigegeben:** Die Geschäftsanschrift, USt-IdNr. und öffentliche Kontaktadresse `info@spitzli.dev` sind hinterlegt. Offen sind turboSMTP-Zugang und Absenderfreigabe sowie die abschließende Prüfung der Rechtstexte, Speicherfristen und Übermittlungsgarantien. Das CMS kann vor dieser Freigabe bereitgestellt werden; die Website bleibt `noindex` und das Formular deaktiviert. Nichtproduktive Deployments sind `noindex`. Das Kontaktformular bleibt sichtbar; ohne Versand-/Datenschutzfreigabe sind die Eingaben und der Versand mit einem eindeutigen Hinweis deaktiviert. Der direkte E-Mail-Kontakt bleibt verfügbar.
+- `CMS_URL=https://cms.webdock.dev`, `CMS_SITE_KEY=spitzli`, `CMS_API_KEY`: server-only content access. Never expose the key through `NEXT_PUBLIC_*`.
+- Requests use `Authorization: integrations API-Key <key>` against `/api/content/v1/sites/spitzli/settings`, `/projects?locale=en|de`, and `/projects/<slug>?locale=en|de`. Content is fetched without caching. Missing projects return 404; other CMS errors fail closed.
+- The central API must filter published content, sort by sortOrder/name, populate client/media at depth 1, and resolve localized content with English fallback. Existing media URLs must remain available after migration.
+- `DATABASE_URL` and the legacy-named `PAYLOAD_SECRET` remain exclusively for the existing `contact_limits` PostgreSQL table and IP HMAC. Keep their existing environment-specific values for continuity. The frontend never reads old CMS tables. Restrict the database account to this table once cutover is verified; do not delete the old database while this dependency remains.
+- SMTP and hCaptcha remain local server responsibilities. Public company details, recipient email, legal and privacy approvals come from the central site settings.
 
-Die bisherigen Dateien `index.html`, `CNAME`, `.nojekyll` und `assets/logo.png` bleiben bis zur Domainumstellung erhalten. Next.js liefert die alte HTML-Seite nicht aus. GitHub Pages bedient bis zum geplanten Hosting-Wechsel weiterhin den Platzhalter. Kein DNS-Wechsel durch dieses Projekt.
+Deploy only after the production content export has been imported and verified in both languages, media URLs checked, and the scoped key installed. No frontend CMS migrations or bootstrap commands are needed. Keep the source export/database for rollback. Upload storage credentials belong to the central CMS only.
 
-## Lokal starten
+## Languages
 
-Node.js 24.x (mindestens 24.15.0) und Docker. npm-Lockfile verwenden.
-
-```sh
-npm ci
-cp .env.example .env.local
-# DB_PASSWORD / DATABASE_URL auf dasselbe eigene Passwort setzen.
-# PAYLOAD_SECRET mit mindestens 32 zufälligen Zeichen setzen, z.B.:
-openssl rand -hex 48
-# Ausgabe ausschließlich in .env.local eintragen, nicht committen.
-chmod 600 .env.local
-
-docker compose --env-file .env.local up -d --wait
-npm run cms:migrate
-npm run cms:seed
-npm run dev
-```
-
-Website: http://localhost:3000 · CMS: http://localhost:3000/admin
-
-Auf Linux-Systemen mit global installiertem libvips ggf. `SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm ci` verwenden. Keine globale Systembibliothek ändern.
-
-### Upgrade auf Payload 4
-
-Alle Payload-Pakete sind auf `4.0.0-canary.37` fixiert (Vorabversion). Node 24.15+ und TypeScript 6 sind erforderlich. Vor dem Deploy eine Datenbanksicherung erstellen und `npm run cms:migrate` gegen die richtige Umgebung ausführen. Die v4-Migration übernimmt bestehende Veröffentlichungszustände für DE und EN einschließlich der Versionen. Ein Rollback auf v3 erfordert die Sicherung.
-
-Neue Veröffentlichungen gelten in v4 zunächst nur für die aktive Sprache. Im Admin-Dropdown „Publish all locales“ wählen, wenn beide Sprachen veröffentlicht werden sollen. Seed-Daten veröffentlichen beide Übersetzungen ausdrücklich; Versionshistorien bleiben ausschließlich für Administratoren lesbar.
-
-### Ersten Administrator anlegen
-
-Es gibt **keine öffentliche Registrierung**, auch nicht auf einer leeren Datenbank. Der First-User-Endpoint ist zusätzlich durch einen Hook gesperrt.
-
-1. `ADMIN_EMAIL` und ein zufälliges `ADMIN_PASSWORD` (mindestens 16 Zeichen) in `.env.local` eintragen.
-2. `npm run cms:bootstrap` ausführen. Das Skript verweigert den Lauf, sobald ein Administrator existiert.
-3. `ADMIN_PASSWORD` aus der Datei entfernen; das Passwort in einem Passwortmanager aufbewahren.
-4. In `/admin` anmelden. Weitere Administratoren dürfen nur angemeldete Administratoren anlegen.
-
-Alle CMS-Benutzer sind Administratoren. Es gibt bewusst keine Kundenkonten. Login-Sperre nach fünf Fehlversuchen, Sitzungslaufzeit zwei Stunden. Passwortzurücksetzung benötigt konfiguriertes SMTP.
-
-### Website-Einstellungen
-
-Im Adminbereich unter **Website-Einstellungen** Firmenname, Inhaber, Kontaktadresse, Anschrift, Telefonnummer, USt-ID und Datenschutzangaben pflegen. Die Kontaktadresse ist zugleich Empfänger des Formulars. Änderungen erscheinen ohne Deployment in Impressum, Datenschutzhinweisen und Kontaktbereich. Nur Administratoren dürfen die Global lesen oder ändern; öffentliche Seiten lesen sie serverseitig. SMTP-Zugangsdaten stehen niemals im CMS.
-
-Die Migration übernimmt einmalig die bisherigen `LEGAL_*`, `PRIVACY_*` und `CONTACT_EMAIL`-Werte, sofern sie noch gesetzt sind; andernfalls die bisher veröffentlichten Stammdaten und keine Freigaben. Erst nach `npm run cms:migrate` diese alten Variablen in Vercel entfernen. `.env.example` enthält nur noch technische Einstellungen. Der Build prüft die technischen Variablen; SMTP/hCaptcha sind bei aktiviertem Formular erforderlich. `npm run check:production` prüft zusätzlich die vollständigen CMS-Angaben und Freigaben vor dem öffentlichen Launch.
-
-SMTP: `pro.eu.turbo-smtp.com`, Port `465`, implizites TLS; Consumer Key als `SMTP_USER`, Consumer Secret als `SMTP_PASSWORD`. `SMTP_FROM` bleibt der technisch freigegebene Absender.
-
-### Projekte pflegen
-
-1. Unter **Kunden / Unternehmen** einen Eintrag erstellen, z.B. turboSMTP.
-2. Unter **Projekte** ein oder mehrere Projekte diesem Unternehmen zuordnen, z.B. Developer Hub, MCP Server, CLI oder API-Tooling.
-3. Beschreibung, Kategorie, Technologien, Zeitraum, Projektstatus, Website, Repository und beliebig bis zu 16 Zusatzlinks pflegen. Niedrigere Sortierungszahlen stehen zuerst; „Hervorheben“ betont die Karte.
-4. Entwurf speichern oder veröffentlichen. Nur veröffentlichte Projekte erscheinen öffentlich. Änderungen werden beim nächsten Seitenaufruf sichtbar, ohne neuen Build.
-5. Ein Bild ist optional. Nur freigegebene Rasterbilder bis 3 MiB hochladen; Nutzungsrechte und Alternativtext sind Pflicht. Uploads sind **öffentliche Assets**, auch wenn das Projekt noch ein Entwurf ist. Keine vertraulichen Bilder hochladen.
-
-Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen nur für veröffentlichte Projekte serverseitig auf. Für turboSMTP sind keine noch unbestätigten Einzelprojekt-URLs erfunden worden.
-
-`cms:seed` ist wiederholbar: Es erstellt nur fehlende Einträge und überschreibt keine CMS-Änderungen oder Veröffentlichungsentscheidungen.
-
-## Sprachen und Gettext
-
-- Öffentliche URLs: `/en`, `/de`, `/en/projects/<slug>`, `/de/projekte/<slug>`, `/en/legal-notice`, `/de/impressum`, `/en/privacy`, `/de/datenschutz`.
-- Alte unpräfixierte Links bleiben erhalten und führen zur passenden Sprachfassung. Ohne explizite Sprachwahl startet die Website immer auf Englisch, unabhängig von der Browsersprache. Deutsch bleibt über den Sprachschalter verfügbar. Der Adminbereich verwendet englische Beschriftungen.
-- Die sichtbaren DE-/EN-Links wechseln die aktuelle Seite. Erst eine ausdrückliche Auswahl setzt das notwendige Cookie `spitzli_locale` (ein Jahr, nur `en`/`de`). Ein erster Besuch setzt kein Sprachcookie.
-- UI-, Formular-, Fehler- und Rechtstexte liegen in **`locales/en.po` und `locales/de.po`**. Nach Änderungen `npm run i18n:compile`; Dev/Build kompiliert automatisch. Generierte JSON-Dateien nicht direkt ändern. CI prüft beide Kataloge, Pluralformen, Platzhalter und Synchronität.
-- Das CMS hat native englische/deutsche Inhaltsvarianten für Projektbeschreibungen, zusätzliche Linkbeschriftungen und Bild-Alternativtexte. Englisch ist die CMS-Standardsprache und inhaltliche Rückfallsprache. Fehlt auch die englische Beschreibung, zeigt die Website das ausdrücklich an, statt zu scheitern oder Inhalte zu erfinden.
-- `cms:seed` legt beide Fassungen an oder ergänzt nur fehlende englische Übersetzungen unveränderter, bereits veröffentlichter Startreferenzen. Redaktionelle Änderungen und Entwürfe bleiben unangetastet.
-- Die Lokalisierungsmigration kopiert vorhandene deutsche Texte, Linktitel, Alt-Texte und historische Versionen vor der Schemaumstellung. Vor Anwendung ein Backup erstellen. Ein verlustbehaftetes `down` ist gesperrt; für einen Rollback das geprüfte Backup wiederherstellen.
+Existing `/en` and `/de` pages, project details, legal notice, privacy pages and old URL redirects are preserved. UI translations live in `locales/en.po` and `locales/de.po`; `npm run i18n:compile` generates the catalogs. Project translations and image alt text are edited in the central CMS.
 
 ## Kontakt und Datenschutz
 
@@ -97,48 +35,15 @@ Der Kundenkatalog ist nicht öffentlich abrufbar. Die Website löst Kundennamen 
 
 **Impressum und Datenschutzerklärung sind prüfpflichtige Entwürfe, keine Rechtsberatung.** Die CMS-Freigaben sind Veröffentlichungsschalter, kein automatischer Nachweis rechtlicher Konformität. Nur die bewusst zur Veröffentlichung bestimmten Kontaktdaten eintragen; niemals private Steuer-ID oder Steuernummer.
 
-## Vercel
-
-1. Das bestehende Projekt **spitzli** im Team **Spitzli Development** ist mit `spitzli/spitzli` verbunden. Kein paralleles Projekt anlegen. Framework Next.js, Node 24.x, Build `npm run build`, Install `npm ci`; Functions laufen in `fra1`. Die Produktionsbranch ist `main`.
-2. Getrennte Ressourcen sind eingerichtet: `spitzli-db-production` / `spitzli-db-preview` (Neon Free, Frankfurt) und `spitzli-media-production` / `spitzli-media-preview` (öffentlicher Vercel Blob, Frankfurt). `DATABASE_URL` und `BLOB_READ_WRITE_TOKEN` sind ausschließlich mit dem jeweiligen Environment verbunden; unabhängige `PAYLOAD_SECRET`-Werte liegen als Vercel Secrets vor. Vercel Authentication schützt Previews. Niemals untrusted Branches mit Produktionssecrets versorgen.
-3. Alle Einträge aus `.env.example` prüfen. Produktions-`SITE_URL=https://spitzli.dev`, ohne Pfad. Preview-Deployments verwenden automatisch ihre `VERCEL_URL`; keine beliebigen Origin-Header werden akzeptiert.
-4. Migrationen vor dem ersten Start und vor Schemaänderungen aus einer vertrauenswürdigen Umgebung gegen die richtige Datenbank ausführen: `npm run cms:migrate`. Danach einmalig `cms:seed` und `cms:bootstrap`. Befehle funktionieren auch mit bereits gesetzten Umgebungsvariablen ohne lokale Env-Datei.
-5. Datenbank-Backups und Wiederherstellung einrichten, Auftragsverarbeitungsverträge und Verarbeitungsorte prüfen. Tatsächliche Anbieter, Log-Aufbewahrung, E-Mail-Postfachanbieter und Transfergarantien unter **Website-Einstellungen** im CMS eintragen.
-6. Impressum prüfen, fehlende Angaben ergänzen, die CMS-Schalter **Impressum geprüft und freigegeben** und **Datenschutzhinweise geprüft und freigegeben** erst nach Prüfung aktivieren. `npm run check:production` zeigt fehlende Werte, ohne Secrets auszugeben.
-7. Upload/Neustart-Persistenz und echten turboSMTP-Versand prüfen, dann `CONTACT_ENABLED=true`. Erst danach die Domain an Vercel anbinden und GitHub Pages abschalten. Das öffentliche Portfolio auf der endgültigen Domain einschließlich Impressum, Datenschutz und Sitemap prüfen.
-
-Migrationsdateien sind eingecheckt. Payload 4 registriert den Blob-Adapter unter `storage` und hält dessen Schema auch ohne Blob-Token identisch. Dateinamen werden von Payload verwaltet; keine zusätzlichen Blob-Zufallssuffixe, da diese die Zuordnung generierter Bildgrößen zerstören. Freigegebene Bilder werden direkt aus dem öffentlichen Blob Store ausgeliefert. Original und Kartenvariante des eigenen Logos wurden in beiden Stores geprüft.
-
-Kein automatisches Schema-Push (`push: false`), kein Schemawechsel durch einen bloßen Seitenaufruf. Neue Migrationen: `npm run payload -- migrate:create beschreibung`; Review, Backup, Migration, Deployment. Keine Down-/Reset-Befehle gegen Produktion ohne gesonderten Wiederherstellungsplan.
-
 ## Checks
 
 ```sh
-npm run check             # Biome + TypeScript
-npm test                  # Validierung, sichere Links, Produktionsgate
-npm run test:integration  # lokale DB: Zugriff, Entwürfe, paralleles Limit, gemockter Mailversand
+npm run check
+npm test
 npm run build
-npm start                 # zweites Terminal, nur lokal für die folgenden Tests
-npm run test:browser       # 320/375/414/768/1280/1920 px, axe, Filter, Routen
-npm run test:cms           # temporärer Admin, CMS/REST, Entwürfe, Links und Bildfreigabe
-npm run test:contact-ui    # isolierter lokaler Server; Versand vollständig abgefangen
-npm audit
+npm run check:production
 ```
 
-Browser installieren: `npx playwright install chromium` (unter Linux ggf. dessen Systemabhängigkeiten). Tests verweigern entfernte Datenbanken/Hosts. Temporäre Testdatensätze werden wieder gelöscht; echte SMTP-E-Mails werden nicht versendet. Screenshots landen im ignorierten `test-results/`.
+`test:integration` requires a disposable local database with the existing `contact_limits` schema. It checks concurrent limits, expiry and contact delivery with CMS, hCaptcha and mail mocked. It refuses remote databases and sends no email. The table schema is documented in `scripts/contact-limits.sql`; apply it only to a new local test database. Existing deployed databases already have it.
 
-DOMPurify und das alte esbuild aus Drizzles Loader sind auf gepatchte transitive Versionen eingeschränkt (`overrides`). Build, Migrationen und CMS müssen nach Änderungen dieser Overrides erneut geprüft werden.
-
-## Struktur
-
-- `src/app/(site)/`: öffentliche Seiten, native Locale-Einstiegsroute und Kontakt-Endpoint
-- `src/i18n/`, `locales/`, `src/proxy.ts`: Gettext, Sprachpräferenz, Locale-URLs und Metadaten
-- `design.md`, `src/app/(site)/refinement.css`: gemeinsame Gestaltungsrichtung und nichtdestruktive Design-Erweiterung
-- `src/app/(payload)/`: Payload-Admin und REST-API
-- `src/collections/`: Administratoren, Kunden, Projekte, Medien, interne Limit-Zähler
-- `src/lib/`: Inhalte, URL-Validierung, Kontaktschutz und Konfiguration
-- `src/migrations/`: versioniertes PostgreSQL-Schema
-- `tokens.css`: lokale Design-Tokens
-- `scripts/`: Migration, idempotentes Seeding und gesperrter Admin-Bootstrap
-
-Der Quellcode ist öffentlich einsehbar. Daraus folgt keine Freigabe fremder Marken, Logos oder Kundeninhalte.
+`test:browser` checks the running local frontend; `test:contact-ui` starts an isolated local frontend and mock CMS. Neither should target production. CMS authorization and draft isolation are tested in the central CMS repository.

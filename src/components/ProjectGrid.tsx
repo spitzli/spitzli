@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import type { Project } from "@/content-types";
 import { categoryMessage } from "@/i18n";
 import { useI18n } from "@/i18n/client";
 import { localizePath } from "@/i18n/locale";
 import { referenceURL } from "@/lib/links";
-import type { Project } from "@/payload-types";
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   const { locale, t, ngettext } = useI18n();

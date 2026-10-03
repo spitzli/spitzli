@@ -1,4 +1,4 @@
-import type { WebsiteSetting } from "../payload-types";
+import type { WebsiteSetting } from "../content-types";
 import { hasCaptchaConfig } from "./hcaptcha.mjs";
 
 export const site = {

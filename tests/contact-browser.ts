@@ -1,32 +1,36 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { createServer } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 import AxeBuilder from "@axe-core/playwright";
-import { getPayload } from "payload";
 import { chromium } from "playwright";
-import config from "../payload.config";
 
-if (!["localhost", "127.0.0.1"].includes(new URL(process.env.DATABASE_URL || "").hostname))
-  throw new Error("Requires local test database.");
-const payload = await getPayload({ config });
-const originalSettings = await payload.findGlobal({
-  slug: "website-settings",
-  overrideAccess: true,
+const cms = createServer((request, response) => {
+  response.setHeader("Content-Type", "application/json");
+  response.end(
+    JSON.stringify(
+      request.url?.includes("/settings")
+        ? {
+            name: "Test",
+            owner: "Test Owner",
+            email: "test@example.com",
+            street: "Test 1",
+            postcode: "12345",
+            city: "Test",
+            country: "Deutschland",
+            legalReviewed: true,
+            privacyReviewed: true,
+            databaseProvider: "test",
+            databaseRegion: "test",
+            logRetention: "test",
+            mailProvider: "test",
+            transfers: "test",
+          }
+        : [],
+    ),
+  );
 });
-await payload.updateGlobal({
-  slug: "website-settings",
-  overrideAccess: true,
-  data: {
-    ...originalSettings,
-    legalReviewed: true,
-    privacyReviewed: true,
-    databaseProvider: "test",
-    databaseRegion: "test",
-    logRetention: "test",
-    mailProvider: "test",
-    transfers: "test",
-  },
-});
+await new Promise<void>((resolve) => cms.listen(3108, "127.0.0.1", resolve));
 const url = "http://localhost:3107";
 const server = spawn(
   process.execPath,
@@ -39,6 +43,9 @@ const server = spawn(
       VERCEL_ENV: "",
       NODE_ENV: "production",
       SITE_URL: url,
+      CMS_URL: "http://127.0.0.1:3108",
+      CMS_SITE_KEY: "spitzli",
+      CMS_API_KEY: "test",
       CONTACT_ENABLED: "true",
       HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
       HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
@@ -281,12 +288,5 @@ try {
 } finally {
   await browser.close();
   server.kill("SIGTERM");
-  await payload.updateGlobal({
-    slug: "website-settings",
-    overrideAccess: true,
-    data: originalSettings,
-  });
-  await payload.destroy();
+  cms.close();
 }
-
-process.exit(0);

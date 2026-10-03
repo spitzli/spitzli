@@ -1,10 +1,9 @@
 import { isIP } from "node:net";
-import config from "@payload-config";
-import { getPayload } from "payload";
 import { translator } from "@/i18n";
 import { browserLocale } from "@/i18n/locale";
 import { rateLimitKey, readLimitedJSON, validateContact } from "@/lib/contact";
 import { verifyCaptcha } from "@/lib/hcaptcha.mjs";
+import { mailTransport } from "@/lib/mail";
 import { claimContactSlot } from "@/lib/rate-limit";
 import { contactEnabled, site } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -71,8 +70,7 @@ export async function POST(request: Request) {
       503,
     );
   try {
-    const payload = await getPayload({ config });
-    if (!(await claimContactSlot(payload, rateLimitKey(ip, process.env.PAYLOAD_SECRET || "")))) {
+    if (!(await claimContactSlot(rateLimitKey(ip, process.env.PAYLOAD_SECRET || "")))) {
       return reply({ error: t("Too many requests. Please try again in 15 minutes.") }, 429, {
         "Retry-After": "900",
       });
@@ -87,7 +85,7 @@ export async function POST(request: Request) {
             );
       return reply({ error, fields: { captcha: error } }, captcha === "rejected" ? 400 : 503);
     }
-    await payload.sendEmail({
+    await mailTransport.sendMail({
       to: settings.email,
       from: { name: settings.name, address: process.env.SMTP_FROM || settings.email },
       replyTo: data.email,

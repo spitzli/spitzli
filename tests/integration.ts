@@ -1,17 +1,17 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { sql } from "@payloadcms/db-postgres";
-import { getPayload } from "payload";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { rateLimitKey } from "../src/lib/contact";
-import { claimContactSlot } from "../src/lib/rate-limit";
 
 if (!["localhost", "127.0.0.1"].includes(new URL(process.env.DATABASE_URL || "").hostname))
   throw new Error("Integration tests require a local disposable database.");
-// Synthetic values never leave this local test process; mail delivery is mocked below.
 Object.assign(process.env, {
   VERCEL: "",
   VERCEL_ENV: "",
   CONTACT_ENABLED: "true",
+  CMS_URL: "http://127.0.0.1:3108",
+  CMS_SITE_KEY: "spitzli",
+  CMS_API_KEY: "test",
   HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
   HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
   SMTP_HOST: "127.0.0.1",
@@ -20,157 +20,49 @@ Object.assign(process.env, {
   SMTP_FROM: "sender@example.com",
   SITE_URL: "http://localhost:3000",
 });
-const { default: config } = await import("../payload.config");
-const payload = await getPayload({ config });
-const originalSettings = await payload.findGlobal({
-  slug: "website-settings",
-  overrideAccess: true,
-});
-assert.ok(
-  payload.config.collections
-    .find((collection) => collection.slug === "media")
-    ?.fields.some((field) => "name" in field && field.name === "_objectKey"),
-  "Blob schema fields must exist even without a storage token",
-);
-const slug = `test-${randomUUID()}`;
-const key = rateLimitKey(slug, "integration-test");
-let projectID: number | undefined;
-let failure: unknown;
+const { contactPool, claimContactSlot } = await import("../src/lib/rate-limit");
+const { mailTransport } = await import("../src/lib/mail");
+const settings = {
+  name: "Test",
+  owner: "Test Owner",
+  email: "cms-recipient@example.com",
+  street: "Test 1",
+  postcode: "12345",
+  city: "Test",
+  country: "Deutschland",
+  legalReviewed: true,
+  privacyReviewed: true,
+  databaseProvider: "test",
+  databaseRegion: "test",
+  logRetention: "test",
+  mailProvider: "test",
+  transfers: "test",
+};
+const key = rateLimitKey(randomUUID(), "integration-test");
 const originalFetch = globalThis.fetch;
+let failure: unknown;
 try {
-  await assert.rejects(
-    payload.updateGlobal({
-      slug: "website-settings",
-      overrideAccess: false,
-      data: { email: "attacker@example.com" },
-    }),
-  );
-  await payload.updateGlobal({
-    slug: "website-settings",
-    overrideAccess: true,
-    data: {
-      ...originalSettings,
-      email: "cms-recipient@example.com",
-      legalReviewed: true,
-      privacyReviewed: true,
-      databaseProvider: "test",
-      databaseRegion: "test",
-      logRetention: "test",
-      mailProvider: "test",
-      transfers: "test",
-    },
-  });
-  await assert.rejects(
-    payload.create({
-      collection: "users",
-      overrideAccess: true,
-      data: { email: "uninvited@example.com", password: randomUUID(), name: "Blocked" },
-    }),
-  );
-  const draft = await payload.create({
-    overrideAccess: true,
-    collection: "projects",
-    data: {
-      name: "Unpublished test",
-      slug,
-      category: "Webapps",
-      summary: "Private draft",
-      _status: "draft",
-      sortOrder: 999,
-    },
-  });
-  projectID = draft.id;
-  await assert.rejects(
-    payload.findVersions({ collection: "projects", overrideAccess: false }),
-    "Project history must remain admin-only under Payload 4",
-  );
-  const { getProject, getProjects } = await import("../src/lib/projects");
-  const { initialProjects } = await import("../src/lib/seed-data");
-  const { englishProjects } = await import("../src/lib/seed-translations");
-  for (const expected of initialProjects) {
-    assert.equal(
-      (await getProject(expected.slug, "de"))?.summary,
-      expected.summary,
-      "German seed content preserved",
-    );
-    assert.equal(
-      (await getProject(expected.slug, "en"))?.summary,
-      englishProjects[expected.slug].summary,
-      "English CMS translation",
-    );
-  }
-  assert.equal(await getProject(slug), null);
-  assert.equal(
-    (await getProjects()).some((project) => project.slug === slug),
-    false,
-  );
-  await assert.rejects(payload.find({ collection: "clients", overrideAccess: false }));
-  assert.equal(
-    (
-      await payload.find({
-        collection: "projects",
-        overrideAccess: false,
-        where: { slug: { equals: slug } },
-      })
-    ).totalDocs,
-    0,
-  );
-  assert.equal(
-    (
-      await payload.find({
-        collection: "projects",
-        overrideAccess: false,
-        draft: true,
-        where: { slug: { equals: slug } },
-      })
-    ).totalDocs,
-    0,
-  );
-  await assert.rejects(
-    payload.update({
-      collection: "projects",
-      id: draft.id,
-      overrideAccess: false,
-      data: { name: "Unauthenticated edit" },
-    }),
-  );
-  await assert.rejects(payload.find({ collection: "users", overrideAccess: false }));
-  await assert.rejects(payload.find({ collection: "contact-limits", overrideAccess: false }));
-  await payload.update({
-    overrideAccess: true,
-    collection: "projects",
-    id: draft.id,
-    data: { _status: "published" },
-  });
-  assert.equal(
-    (
-      await payload.find({
-        collection: "projects",
-        overrideAccess: false,
-        where: { slug: { equals: slug } },
-      })
-    ).totalDocs,
-    1,
-  );
-  const slots = await Promise.all(Array.from({ length: 20 }, () => claimContactSlot(payload, key)));
+  const slots = await Promise.all(Array.from({ length: 20 }, () => claimContactSlot(key)));
   assert.equal(slots.filter(Boolean).length, 5, "atomic limit across concurrent calls");
-  await payload.db.drizzle.execute(
-    sql`UPDATE contact_limits SET expires_at = now() - interval '1 minute' WHERE key = ${key}`,
+  await contactPool.query(
+    "UPDATE contact_limits SET expires_at = now() - interval '1 minute' WHERE key = $1",
+    [key],
   );
-  assert.equal(await claimContactSlot(payload, key), true, "expired bucket resets");
-
+  assert.equal(await claimContactSlot(key), true, "expired bucket resets");
   const { POST } = await import("../src/app/(site)/api/contact/route");
   let delivered = 0;
-  const realSend = payload.sendEmail;
-  payload.sendEmail = async (message) => {
+  const realSend = mailTransport.sendMail;
+  mailTransport.sendMail = async (message) => {
     assert.equal(message.to, "cms-recipient@example.com");
     assert.equal(message.replyTo, "ada@example.com");
     assert.equal(message.html, undefined);
     delivered++;
+    return {} as SMTPTransport.SentMessageInfo;
   };
   let captchaCalls = 0;
   let captchaMode: "valid" | "invalid" | "offline" = "valid";
   globalThis.fetch = async (input, init) => {
+    if (String(input).includes("/api/content/v1/")) return Response.json(settings);
     assert.equal(input, "https://api.hcaptcha.com/siteverify");
     assert.ok(init?.body instanceof URLSearchParams);
     assert.equal(init.body.get("sitekey"), process.env.HCAPTCHA_SITE_KEY);
@@ -192,7 +84,7 @@ try {
       body: JSON.stringify(data),
     });
   const localKey = rateLimitKey("127.0.0.1", process.env.PAYLOAD_SECRET || "");
-  await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${localKey}`);
+  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [localKey]);
   assert.equal((await POST(request(valid, "https://other.example"))).status, 403);
   const invalidEnglish = await POST(request({ ...valid, message: "x" }));
   assert.equal(invalidEnglish.status, 400);
@@ -220,7 +112,7 @@ try {
   captchaMode = "valid";
   assert.equal((await POST(request(valid))).status, 200);
   assert.equal(delivered, 1);
-  payload.sendEmail = async () => {
+  mailTransport.sendMail = async () => {
     throw new Error("simulated mail failure");
   };
   assert.equal(
@@ -233,26 +125,17 @@ try {
   const callsBeforeLimit = captchaCalls;
   assert.equal((await POST(request(valid))).status, 429);
   assert.equal(captchaCalls, callsBeforeLimit, "rate limit applies before the vendor request");
-  payload.sendEmail = realSend;
+  mailTransport.sendMail = realSend;
   process.env.CONTACT_ENABLED = "false";
   assert.equal((await POST(request(valid))).status, 503);
-  await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${localKey}`);
-  console.log(
-    "PASS: admin isolation, drafts, published reads, concurrent limiter, expiry, contact validation and mocked mail delivery.",
-  );
+  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [localKey]);
+  console.log("PASS: concurrent limiter, expiry, contact validation and mocked mail delivery.");
 } catch (error) {
   failure = error;
 } finally {
   globalThis.fetch = originalFetch;
-  await payload.updateGlobal({
-    slug: "website-settings",
-    overrideAccess: true,
-    data: originalSettings,
-  });
-  if (projectID)
-    await payload.delete({ overrideAccess: true, collection: "projects", id: projectID });
-  await payload.db.drizzle.execute(sql`DELETE FROM contact_limits WHERE key = ${key}`);
-  await payload.destroy();
+  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [key]);
+  await contactPool.end();
 }
 if (failure) console.error(failure);
 process.exit(failure ? 1 : 0);

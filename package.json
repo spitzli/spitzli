@@ -15,13 +15,6 @@
     "test": "tsx --test tests/*.test.ts",
     "test:integration": "tsx --env-file-if-exists=.env.local tests/integration.ts",
     "test:browser": "tsx --env-file-if-exists=.env.local tests/browser.ts",
-    "test:cms": "tsx --env-file-if-exists=.env.local tests/cms-browser.ts",
-    "payload": "node --env-file-if-exists=.env.local --import tsx node_modules/payload/bin.js",
-    "cms:types": "npm run payload -- generate:types",
-    "cms:importmap": "npm run payload -- generate:importmap",
-    "cms:migrate": "node --env-file-if-exists=.env.local --import tsx scripts/migrate.ts",
-    "cms:seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
-    "cms:bootstrap": "node --env-file-if-exists=.env.local --import tsx scripts/bootstrap.ts",
     "check:production": "node --env-file-if-exists=.env.local scripts/check-env.mjs --production && node --env-file-if-exists=.env.local --import tsx scripts/check-site.ts --production",
     "test:contact-ui": "tsx --env-file-if-exists=.env.local tests/contact-browser.ts",
     "i18n:compile": "node scripts/compile-messages.mjs",
@@ -32,35 +25,23 @@
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/space-grotesk": "^5.2.10",
     "@hcaptcha/react-hcaptcha": "^2.2.0",
-    "@payloadcms/db-postgres": "4.0.0-canary.37",
-    "@payloadcms/email-nodemailer": "4.0.0-canary.37",
-    "@payloadcms/next": "4.0.0-canary.37",
-    "@payloadcms/storage-vercel-blob": "4.0.0-canary.37",
-    "graphql": "^16.11.0",
     "next": "16.3.8",
-    "payload": "4.0.0-canary.37",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "sharp": "^0.35.4",
     "nodemailer": "10.0.13",
-    "@payloadcms/translations": "4.0.0-canary.37"
+    "pg": "^8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@biomejs/biome": "^2.4.0",
     "@types/node": "^24.0.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "gettext-parser": "^9.1.1",
     "playwright": "^1.58.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "dompurify": "^3.4.15",
-    "@esbuild-kit/core-utils": {
-      "esbuild": "^0.25.12"
-    },
-    "nodemailer": "$nodemailer"
   }
 }

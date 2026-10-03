@@ -1,10 +1,9 @@
-import config from "@payload-config";
-import { getPayload } from "payload";
 import { cache } from "react";
+import type { WebsiteSetting } from "../content-types";
+import { getContent } from "./cms";
 import { legalReady, site } from "./site";
 
 export const getSiteSettings = cache(async () => {
-  const payload = await getPayload({ config });
-  const settings = await payload.findGlobal({ slug: "website-settings", overrideAccess: true });
+  const settings = await getContent<WebsiteSetting>("settings");
   return { ...site, ...settings, legalReady: legalReady(settings) };
 });

@@ -6,19 +6,29 @@
       "!!node_modules",
       "!!.next",
       "!!.vercel",
-      "!!src/payload-types.ts",
       "!!src/i18n/messages",
-      "!!src/migrations",
-      "!!src/app/(payload)/admin/importMap.js",
       "!!index.html",
       "!!assets",
       "!!public"
     ]
   },
-  "formatter": { "enabled": true, "indentStyle": "space", "lineWidth": 100 },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
   "linter": {
     "enabled": true,
-    "rules": { "preset": "recommended", "style": { "noDescendingSpecificity": "off" } }
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "noDescendingSpecificity": "off"
+      }
+    }
   },
-  "css": { "parser": { "cssModules": false } }
+  "css": {
+    "parser": {
+      "cssModules": false
+    }
+  }
 }

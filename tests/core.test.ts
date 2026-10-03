@@ -67,15 +67,16 @@ test("Portfolio links: HTTPS only, fixed UTM, preserve query/anchor and reposito
 });
 
 test("Production stays blocked without persistent storage and delivery configuration", () => {
-  const dev = { DATABASE_URL: "postgresql://localhost/db", PAYLOAD_SECRET: "a".repeat(48) };
+  const dev = {
+    CMS_URL: "https://cms.webdock.dev",
+    CMS_SITE_KEY: "spitzli",
+    CMS_API_KEY: "test",
+    DATABASE_URL: "postgresql://localhost/db",
+    PAYLOAD_SECRET: "a".repeat(48),
+  };
   assert.equal(missingEnvironment(dev).length, 0);
   const missing = missingEnvironment({ ...dev, CONTACT_ENABLED: "true" }, true);
-  for (const key of [
-    "BLOB_READ_WRITE_TOKEN",
-    "SMTP_PASSWORD",
-    "HCAPTCHA_SITE_KEY",
-    "HCAPTCHA_SECRET",
-  ])
+  for (const key of ["SMTP_PASSWORD", "HCAPTCHA_SITE_KEY", "HCAPTCHA_SECRET"])
     assert.ok(missing.includes(key));
   assert.ok(missingEnvironment({ ...dev, PAYLOAD_SECRET: "weak" }).length);
 });
@@ -87,7 +88,9 @@ test("Production CMS can start while the contact form is disabled", () => {
         DATABASE_URL: "postgresql://localhost/db",
         PAYLOAD_SECRET: "a".repeat(48),
         SITE_URL: "https://spitzli.dev",
-        BLOB_READ_WRITE_TOKEN: "test",
+        CMS_URL: "https://cms.webdock.dev",
+        CMS_SITE_KEY: "spitzli",
+        CMS_API_KEY: "test",
         CONTACT_ENABLED: "false",
       },
       true,
