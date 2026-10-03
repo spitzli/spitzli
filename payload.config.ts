@@ -14,6 +14,9 @@ import { site } from "./src/lib/site";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const origin = site.url;
+const serverURL =
+  process.env.VERCEL_ENV === "preview" ? origin : process.env.NEXT_PUBLIC_SERVER_URL || origin;
+const trustedOrigins = [...new Set([origin, serverURL])];
 const smtp = Boolean(
   process.env.SMTP_HOST &&
     process.env.SMTP_USER &&
@@ -22,7 +25,7 @@ const smtp = Boolean(
 );
 
 export default buildConfig({
-  serverURL: origin,
+  serverURL,
   secret: process.env.PAYLOAD_SECRET || "",
   admin: {
     user: "users",
@@ -90,8 +93,8 @@ export default buildConfig({
   sharp,
   upload: { limits: { fileSize: 3 * 1024 * 1024 }, abortOnLimit: true },
   graphQL: { disable: true },
-  csrf: [origin],
-  cors: [origin],
+  csrf: trustedOrigins,
+  cors: trustedOrigins,
   maxDepth: 2,
   typescript: { outputFile: path.resolve(dirname, "src/payload-types.ts") },
 });

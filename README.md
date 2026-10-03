@@ -7,6 +7,7 @@ Next.js website with its own Payload 4 CMS at `/admin`. Content, accounts, draft
 Use Node.js 24 and `npm ci`. Copy `.env.example` to `.env.local`, configure the restricted instance database role and run `npm run dev`.
 
 - `DATABASE_URL`: pooled runtime connection for the `spitzli` role; `DATABASE_URL_UNPOOLED`: direct migration connection for that same role.
+- `SITE_URL`: canonical website origin. `NEXT_PUBLIC_SERVER_URL`: optional separate CMS origin; Vercel previews use their own deployment origin. Both explicit website and CMS origins are trusted for CMS CSRF/CORS.
 - `PAYLOAD_SECRET`: instance authentication secret and contact IP HMAC key. Preserve it across moves.
 - `OPERATOR_EMAIL`: protected operator account. Customers cannot change its identity, grant its role, or delete it.
 - `BLOB_READ_WRITE_TOKEN`: current Blob store. Imported media is copied without re-encoding under `instances/spitzli`, with original dimensions, filenames and derivatives preserved. New uploads receive an instance-owned UUID path.
