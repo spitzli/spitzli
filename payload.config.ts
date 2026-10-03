@@ -12,6 +12,8 @@ import { WebsiteSettings } from "./src/globals/WebsiteSettings";
 import { isOperator, protectContent, protectUsers } from "./src/lib/instance-users";
 import { site } from "./src/lib/site";
 
+export { sso } from "./src/lib/sso";
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const origin = site.url;
 const serverURL =
@@ -29,6 +31,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || "",
   admin: {
     user: "users",
+    components: { beforeLogin: ["/src/components/sso-login#SSOLogin"] },
     importMap: { baseDir: dirname },
     meta: { titleSuffix: "— Spitzli Development" },
   },

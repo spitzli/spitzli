@@ -7,6 +7,8 @@ import {
   type TextField,
 } from "payload";
 import { isPublicURL } from "../lib/links";
+import { authSubjectField } from "../lib/payload-sso";
+import { sso } from "../lib/sso";
 
 const admin = ({ req }: { req: PayloadRequest }): boolean => Boolean(req.user);
 const published: Access = ({ req }) => (req.user ? true : { _status: { equals: "published" } });
@@ -25,6 +27,11 @@ export const Users: CollectionConfig = {
   labels: { singular: "Administrator", plural: "Administrators" },
   admin: { useAsTitle: "email" },
   auth: {
+    strategies: sso ? [sso.strategy] : [],
+    disableLocalStrategy:
+      process.env.WEBDOCK_SSO_ENFORCE === "true"
+        ? { enableFields: true, optionalPassword: true }
+        : undefined,
     maxLoginAttempts: 5,
     lockTime: 15 * 60 * 1000,
     tokenExpiration: 2 * 60 * 60,
@@ -32,7 +39,9 @@ export const Users: CollectionConfig = {
   },
   access: { ...managed, read: admin, admin },
   hooks: {
+    ...sso?.hooks,
     beforeOperation: [
+      ...(sso?.hooks.beforeOperation || []),
       ({ operation, req }) => {
         // Also blocks Payload's public create-first-user endpoint on an empty database.
         if (operation === "create" && !req.user && req.context.bootstrap !== true) {
@@ -41,7 +50,7 @@ export const Users: CollectionConfig = {
       },
     ],
   },
-  fields: [{ name: "name", type: "text", required: true }],
+  fields: [authSubjectField, { name: "name", type: "text", required: true }],
 };
 
 export const Clients: CollectionConfig = {
