@@ -135,17 +135,17 @@ try {
   const register = await page.request.post(`${base}/api/users/first-register`, {
     data: { email: "uninvited@example.com", password: "NotARealPassword-12345", name: "Blocked" },
   });
-  assert.ok([404, 405].includes(register.status()), `public bootstrap: ${register.status()}`);
+  assert.ok([401, 403].includes(register.status()), `public bootstrap: ${register.status()}`);
   for (const path of ["/api/users", "/api/clients", "/api/contact-limits"]) {
     const response = await page.request.get(base + path);
-    assert.ok(response.status() === 404, `private API ${path}: ${response.status()}`);
+    assert.ok([401, 403].includes(response.status()), `private API ${path}: ${response.status()}`);
   }
   assert.equal((await page.request.get(`${base}/robots.txt`)).status(), 200);
   const adminResponse = await page.goto(`${base}/admin`);
-  assert.equal(adminResponse?.status(), 404);
+  assert.equal(adminResponse?.status(), 200);
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: 6 widths, accessibility, filters, detail/legal pages, 404, removed CMS API and admin routes.",
+    "PASS: 6 widths, accessibility, filters, detail/legal pages, 404, protected CMS APIs and admin entry.",
   );
 } finally {
   await browser.close();

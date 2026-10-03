@@ -1,22 +1,24 @@
 # Spitzli Development
 
-Next.js frontend for spitzli.dev. Content is managed centrally at https://cms.webdock.dev/admin; this repository no longer contains Payload, an admin UI, CMS migrations, seed data or upload credentials.
+Next.js website with its own Payload 4 CMS at `/admin`. Content, accounts, drafts and settings live in the `spitzli` schema of the shared Neon database; its database role cannot read other instances.
 
 ## Configuration
 
-Use Node.js 24 and `npm ci`. Copy `.env.example` to `.env.local`, supply a site-scoped CMS integration key, then run `npm run dev`. The CMS must be reachable for content pages; failures are surfaced rather than replaced with sample content.
+Use Node.js 24 and `npm ci`. Copy `.env.example` to `.env.local`, configure the restricted instance database role and run `npm run dev`.
 
-- `CMS_URL=https://cms.webdock.dev`, `CMS_SITE_KEY=spitzli`, `CMS_API_KEY`: server-only content access. Never expose the key through `NEXT_PUBLIC_*`.
-- Requests use `Authorization: integrations API-Key <key>` against `/api/content/v1/sites/spitzli/settings`, `/projects?locale=en|de`, and `/projects/<slug>?locale=en|de`. Content is fetched without caching. Missing projects return 404; other CMS errors fail closed.
-- The central API must filter published content, sort by sortOrder/name, populate client/media at depth 1, and resolve localized content with English fallback. Existing media URLs must remain available after migration.
-- `DATABASE_URL` and the legacy-named `PAYLOAD_SECRET` remain exclusively for the existing `contact_limits` PostgreSQL table and IP HMAC. Keep their existing environment-specific values for continuity. The frontend never reads old CMS tables. Restrict the database account to this table once cutover is verified; do not delete the old database while this dependency remains.
-- SMTP and hCaptcha remain local server responsibilities. Public company details, recipient email, legal and privacy approvals come from the central site settings.
+- `DATABASE_URL`: pooled runtime connection for the `spitzli` role; `DATABASE_URL_UNPOOLED`: direct migration connection for that same role.
+- `PAYLOAD_SECRET`: instance authentication secret and contact IP HMAC key. Preserve it across moves.
+- `OPERATOR_EMAIL`: protected operator account. Customers cannot change its identity, grant its role, or delete it.
+- `BLOB_READ_WRITE_TOKEN`: current Blob store. Imported media is copied without re-encoding under `instances/spitzli`, with original dimensions, filenames and derivatives preserved. New uploads receive an instance-owned UUID path.
+- SMTP and hCaptcha remain local server responsibilities. Public details, recipient email and legal approvals are edited under Website settings.
 
-Deploy only after the production content export has been imported and verified in both languages, media URLs checked, and the scoped key installed. No frontend CMS migrations or bootstrap commands are needed. Keep the source export/database for rollback. Upload storage credentials belong to the central CMS only.
+Apply only `src/migrations-instance` using `npm run cms:migrate`; automatic schema push is disabled. Bootstrap the first administrator using `OPERATOR_EMAIL`, `ADMIN_PASSWORD` and `npm run cms:bootstrap`. Use the protected operator email. Seed sample content only in disposable development databases with `npm run cms:seed`.
+
+The one-time importer (`INSTANCE_IMPORT=spitzli npm run cms:import -- <archive.json>`) reads the archived central export without changing the source database. It requires an empty destination, restores existing account password hashes and resequences numeric IDs. Run `npm run cms:verify -- <archive.json>` to compare the archive with the instance. Keep exports and source databases for rollback. Deploy only after comparing locale content, drafts, version history, media URLs and access controls.
 
 ## Languages
 
-Existing `/en` and `/de` pages, project details, legal notice, privacy pages and old URL redirects are preserved. UI translations live in `locales/en.po` and `locales/de.po`; `npm run i18n:compile` generates the catalogs. Project translations and image alt text are edited in the central CMS.
+Existing `/en` and `/de` pages, project details, legal notice, privacy pages and old URL redirects are preserved. UI translations live in `locales/en.po` and `locales/de.po`; `npm run i18n:compile` generates the catalogs. Project translations and image alt text are edited in this instance’s CMS.
 
 ## Kontakt und Datenschutz
 
@@ -44,6 +46,6 @@ npm run build
 npm run check:production
 ```
 
-`test:integration` requires a disposable local database with the existing `contact_limits` schema. It checks concurrent limits, expiry and contact delivery with CMS, hCaptcha and mail mocked. It refuses remote databases and sends no email. The table schema is documented in `scripts/contact-limits.sql`; apply it only to a new local test database. Existing deployed databases already have it.
+`test:integration` requires a migrated, seeded disposable local database. It checks concurrent limits, expiry and contact delivery with hCaptcha and mail mocked. It refuses remote databases and sends no email.
 
-`test:browser` checks the running local frontend; `test:contact-ui` starts an isolated local frontend and mock CMS. Neither should target production. CMS authorization and draft isolation are tested in the central CMS repository.
+`test:browser` checks the running local website; `test:contact-ui` starts an isolated local frontend against the seeded local CMS database. `test:cms` exercises admin workflows. Never target production with these mutating tests.

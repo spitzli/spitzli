@@ -19,7 +19,16 @@
     "test:contact-ui": "tsx --env-file-if-exists=.env.local tests/contact-browser.ts",
     "i18n:compile": "node scripts/compile-messages.mjs",
     "prebuild": "npm run i18n:compile",
-    "predev": "npm run i18n:compile"
+    "predev": "npm run i18n:compile",
+    "test:cms": "tsx --env-file-if-exists=.env.local tests/cms-browser.ts",
+    "payload": "node --env-file-if-exists=.env.local --import tsx node_modules/payload/bin.js",
+    "cms:types": "npm run payload -- generate:types",
+    "cms:importmap": "npm run payload -- generate:importmap",
+    "cms:migrate": "node --env-file-if-exists=.env.local --import tsx scripts/migrate.ts",
+    "cms:bootstrap": "node --env-file-if-exists=.env.local --import tsx scripts/bootstrap.ts",
+    "cms:seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
+    "cms:import": "node --env-file-if-exists=.env.instance --import tsx scripts/import-instance.ts",
+    "cms:verify": "node --env-file-if-exists=.env.instance --import tsx scripts/verify-instance.ts"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
@@ -29,7 +38,15 @@
     "nodemailer": "10.0.13",
     "pg": "^8.23.1",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "@payloadcms/db-postgres": "4.0.0-canary.37",
+    "@payloadcms/email-nodemailer": "4.0.0-canary.37",
+    "@payloadcms/next": "4.0.0-canary.37",
+    "@payloadcms/storage-vercel-blob": "4.0.0-canary.37",
+    "graphql": "^16.11.0",
+    "payload": "4.0.0-canary.37",
+    "sharp": "^0.35.4",
+    "@payloadcms/translations": "4.0.0-canary.37"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
@@ -43,5 +60,12 @@
     "playwright": "^1.58.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "dompurify": "^3.4.15",
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.12"
+    },
+    "nodemailer": "$nodemailer"
   }
 }

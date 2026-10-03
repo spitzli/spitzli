@@ -9,7 +9,11 @@
       "!!src/i18n/messages",
       "!!index.html",
       "!!assets",
-      "!!public"
+      "!!public",
+      "!!src/payload-types.ts",
+      "!!src/migrations-instance",
+      "!!src/app/(payload)/admin/importMap.js",
+      "!!.backups"
     ]
   },
   "formatter": {

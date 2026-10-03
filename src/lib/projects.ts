@@ -1,8 +1,9 @@
+import config from "@payload-config";
+import { getPayload } from "payload";
 import { cache } from "react";
-import type { Project } from "../content-types";
 import { translator } from "../i18n";
 import type { Locale } from "../i18n/locale";
-import { getContent } from "./cms";
+import type { Project } from "../payload-types";
 
 function presentProject(project: Project, locale: Locale): Project {
   return {
@@ -22,14 +23,31 @@ function presentProject(project: Project, locale: Locale): Project {
 }
 
 export const getProjects = cache(async (locale: Locale = "en") => {
-  const projects = await getContent<Project[]>(`projects?locale=${locale}`);
-  return projects.map((project) => presentProject(project, locale));
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "projects",
+    locale,
+    fallbackLocale: "en",
+    // Resolve client names only through published projects; the client directory stays private.
+    overrideAccess: true,
+    depth: 1,
+    where: { _status: { equals: "published" } },
+    sort: ["sortOrder", "name"],
+    pagination: false,
+  });
+  return result.docs.map((project) => presentProject(project, locale));
 });
 
 export const getProject = cache(async (slug: string, locale: Locale = "en") => {
-  const project = await getContent<Project | null>(
-    `projects/${encodeURIComponent(slug)}?locale=${locale}`,
-    true,
-  );
-  return project ? presentProject(project, locale) : null;
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "projects",
+    locale,
+    fallbackLocale: "en",
+    overrideAccess: true,
+    depth: 1,
+    limit: 1,
+    where: { and: [{ slug: { equals: slug } }, { _status: { equals: "published" } }] },
+  });
+  return result.docs[0] ? presentProject(result.docs[0], locale) : null;
 });

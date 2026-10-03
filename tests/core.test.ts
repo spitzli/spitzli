@@ -68,9 +68,7 @@ test("Portfolio links: HTTPS only, fixed UTM, preserve query/anchor and reposito
 
 test("Production stays blocked without persistent storage and delivery configuration", () => {
   const dev = {
-    CMS_URL: "https://cms.webdock.dev",
-    CMS_SITE_KEY: "spitzli",
-    CMS_API_KEY: "test",
+    OPERATOR_EMAIL: "dominik@spitzli.dev",
     DATABASE_URL: "postgresql://localhost/db",
     PAYLOAD_SECRET: "a".repeat(48),
   };
@@ -88,9 +86,7 @@ test("Production CMS can start while the contact form is disabled", () => {
         DATABASE_URL: "postgresql://localhost/db",
         PAYLOAD_SECRET: "a".repeat(48),
         SITE_URL: "https://spitzli.dev",
-        CMS_URL: "https://cms.webdock.dev",
-        CMS_SITE_KEY: "spitzli",
-        CMS_API_KEY: "test",
+        OPERATOR_EMAIL: "dominik@spitzli.dev",
         CONTACT_ENABLED: "false",
       },
       true,

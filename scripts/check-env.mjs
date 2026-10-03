@@ -1,31 +1,7 @@
 import { hasCaptchaConfig } from "../src/lib/hcaptcha.mjs";
 
 export function missingEnvironment(env, production = false) {
-  const missing = [
-    "CMS_URL",
-    "CMS_SITE_KEY",
-    "CMS_API_KEY",
-    "DATABASE_URL",
-    "PAYLOAD_SECRET",
-  ].filter((key) => !env[key]);
-  if (env.CMS_SITE_KEY && env.CMS_SITE_KEY !== "spitzli") missing.push("CMS_SITE_KEY (spitzli)");
-  if (env.CMS_URL) {
-    try {
-      const url = new URL(env.CMS_URL);
-      if (
-        (url.protocol !== "https:" &&
-          !(url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname))) ||
-        url.username ||
-        url.password ||
-        url.pathname !== "/" ||
-        url.search ||
-        url.hash
-      )
-        missing.push("CMS_URL (HTTPS-Origin oder lokaler Testserver)");
-    } catch {
-      missing.push("CMS_URL (gültige URL)");
-    }
-  }
+  const missing = ["DATABASE_URL", "PAYLOAD_SECRET", "OPERATOR_EMAIL"].filter((key) => !env[key]);
   if (env.PAYLOAD_SECRET && env.PAYLOAD_SECRET.length < 32)
     missing.push("PAYLOAD_SECRET (mindestens 32 Zeichen)");
   if (production) {

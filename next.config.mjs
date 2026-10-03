@@ -1,4 +1,6 @@
-export default {
+import { withPayload } from "@payloadcms/next/withPayload";
+
+export default withPayload({
   poweredByHeader: false,
   async headers() {
     return [
@@ -19,4 +21,4 @@ export default {
       { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
     ];
   },
-};
+});

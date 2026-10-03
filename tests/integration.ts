@@ -9,9 +9,7 @@ Object.assign(process.env, {
   VERCEL: "",
   VERCEL_ENV: "",
   CONTACT_ENABLED: "true",
-  CMS_URL: "http://127.0.0.1:3108",
-  CMS_SITE_KEY: "spitzli",
-  CMS_API_KEY: "test",
+  OPERATOR_EMAIL: "dominik@spitzli.dev",
   HCAPTCHA_SITE_KEY: "10000000-ffff-ffff-ffff-000000000001",
   HCAPTCHA_SECRET: "0x0000000000000000000000000000000000000000",
   SMTP_HOST: "127.0.0.1",
@@ -38,14 +36,130 @@ const settings = {
   mailProvider: "test",
   transfers: "test",
 };
+const { getPayload } = await import("payload");
+const { default: config } = await import("../payload.config");
+const payload = await getPayload({ config });
+const originalSettings = await payload.findGlobal({
+  slug: "website-settings",
+  overrideAccess: true,
+});
+await payload.updateGlobal({ slug: "website-settings", overrideAccess: true, data: settings });
 const key = rateLimitKey(randomUUID(), "integration-test");
 const originalFetch = globalThis.fetch;
 let failure: unknown;
+const accountIDs: number[] = [];
+const realPayloadEmail = payload.email.sendEmail;
 try {
+  const operator = await payload.create({
+    collection: "users",
+    overrideAccess: true,
+    context: { bootstrap: true },
+    data: {
+      email: `${randomUUID()}@example.com`,
+      name: "Operator test",
+      password: randomUUID(),
+      role: "operator",
+    },
+  });
+  accountIDs.push(operator.id);
+  const customer = await payload.create({
+    collection: "users",
+    overrideAccess: true,
+    context: { bootstrap: true },
+    data: {
+      email: `${randomUUID()}@example.com`,
+      name: "Customer test",
+      password: randomUUID(),
+      role: "admin",
+    },
+  });
+  accountIDs.push(customer.id);
+  const user = { ...customer, collection: "users" as const };
+  const recoveryEmails: { to: unknown; html: unknown }[] = [];
+  payload.email.sendEmail = async (message) => {
+    recoveryEmails.push({ to: message.to, html: message.html });
+    return {};
+  };
+  const token = await payload.forgotPassword({
+    collection: "users",
+    data: { email: operator.email },
+  });
+  assert.ok(token, "Recovery returns a token to the trusted local API");
+  assert.equal(recoveryEmails.length, 1, "One recovery email was mocked");
+  assert.equal(recoveryEmails[0].to, operator.email);
+  assert.ok(String(recoveryEmails[0].html).includes(token), "Email carries the actual reset token");
+  await assert.rejects(
+    payload.resetPassword({
+      collection: "users",
+      overrideAccess: false,
+      data: { token: randomUUID(), password: randomUUID() },
+    }),
+  );
+  const recoveredPassword = randomUUID();
+  await payload.resetPassword({
+    collection: "users",
+    overrideAccess: false,
+    data: { token, password: recoveredPassword },
+  });
+  const login = await payload.login({
+    collection: "users",
+    data: { email: operator.email, password: recoveredPassword },
+  });
+  assert.equal(login.user?.role, "operator", "Recovered operator can authenticate");
+  await assert.rejects(
+    payload.resetPassword({
+      collection: "users",
+      overrideAccess: false,
+      data: { token, password: randomUUID() },
+    }),
+  );
+  await assert.rejects(
+    payload.update({
+      collection: "users",
+      id: operator.id,
+      user,
+      overrideAccess: true,
+      context: { recoveryOperation: "resetPassword", authRecovery: true },
+      data: { password: randomUUID() },
+    }),
+  );
+
+  await assert.rejects(
+    payload.update({
+      collection: "users",
+      id: operator.id,
+      user,
+      overrideAccess: false,
+      data: { password: randomUUID() },
+    }),
+  );
+  await assert.rejects(
+    payload.delete({ collection: "users", id: operator.id, user, overrideAccess: false }),
+  );
+  const attemptedPromotion = await payload.update({
+    collection: "users",
+    id: customer.id,
+    user,
+    overrideAccess: false,
+    data: { role: "operator" },
+  });
+  assert.equal(attemptedPromotion.role, "admin", "Customer cannot promote their role");
+  await assert.rejects(
+    payload.create({
+      collection: "users",
+      overrideAccess: true,
+      data: {
+        email: `${randomUUID()}@example.com`,
+        name: "Blocked",
+        password: randomUUID(),
+        role: "admin",
+      },
+    }),
+  );
   const slots = await Promise.all(Array.from({ length: 20 }, () => claimContactSlot(key)));
   assert.equal(slots.filter(Boolean).length, 5, "atomic limit across concurrent calls");
   await contactPool.query(
-    "UPDATE contact_limits SET expires_at = now() - interval '1 minute' WHERE key = $1",
+    "UPDATE spitzli.contact_limits SET expires_at = now() - interval '1 minute' WHERE key = $1",
     [key],
   );
   assert.equal(await claimContactSlot(key), true, "expired bucket resets");
@@ -62,7 +176,6 @@ try {
   let captchaCalls = 0;
   let captchaMode: "valid" | "invalid" | "offline" = "valid";
   globalThis.fetch = async (input, init) => {
-    if (String(input).includes("/api/content/v1/")) return Response.json(settings);
     assert.equal(input, "https://api.hcaptcha.com/siteverify");
     assert.ok(init?.body instanceof URLSearchParams);
     assert.equal(init.body.get("sitekey"), process.env.HCAPTCHA_SITE_KEY);
@@ -84,7 +197,7 @@ try {
       body: JSON.stringify(data),
     });
   const localKey = rateLimitKey("127.0.0.1", process.env.PAYLOAD_SECRET || "");
-  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [localKey]);
+  await contactPool.query("DELETE FROM spitzli.contact_limits WHERE key = $1", [localKey]);
   assert.equal((await POST(request(valid, "https://other.example"))).status, 403);
   const invalidEnglish = await POST(request({ ...valid, message: "x" }));
   assert.equal(invalidEnglish.status, 400);
@@ -128,14 +241,25 @@ try {
   mailTransport.sendMail = realSend;
   process.env.CONTACT_ENABLED = "false";
   assert.equal((await POST(request(valid))).status, 503);
-  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [localKey]);
-  console.log("PASS: concurrent limiter, expiry, contact validation and mocked mail delivery.");
+  await contactPool.query("DELETE FROM spitzli.contact_limits WHERE key = $1", [localKey]);
+  console.log(
+    "PASS: protected operator recovery with mocked email, access controls, concurrent limiter and contact delivery.",
+  );
 } catch (error) {
   failure = error;
 } finally {
   globalThis.fetch = originalFetch;
-  await contactPool.query("DELETE FROM contact_limits WHERE key = $1", [key]);
+  payload.email.sendEmail = realPayloadEmail;
+  await contactPool.query("DELETE FROM spitzli.contact_limits WHERE key = $1", [key]);
   await contactPool.end();
+  await payload.updateGlobal({
+    slug: "website-settings",
+    overrideAccess: true,
+    data: originalSettings,
+  });
+  for (const id of accountIDs)
+    await payload.db.deleteOne({ collection: "users", where: { id: { equals: id } } });
+  await payload.destroy();
 }
 if (failure) console.error(failure);
 process.exit(failure ? 1 : 0);
