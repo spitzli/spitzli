@@ -27,7 +27,8 @@ export function proxy(request: NextRequest) {
     return response;
   }
   const path = internalPath(`/${segments.join("/")}`);
-  if (/^\/(api|admin|_next)(\/|$)/.test(path)) return new NextResponse(null, { status: 404 });
+  if (/^\/(api|admin|cms|system|_next)(\/|$)/.test(path))
+    return new NextResponse(null, { status: 404 });
   const headers = new Headers(request.headers);
   headers.set("x-spitzli-locale", prefix);
   headers.set("x-spitzli-path", path);
@@ -39,4 +40,6 @@ export function proxy(request: NextRequest) {
   return NextResponse.next({ request: { headers } });
 }
 
-export const config = { matcher: ["/((?!api(?:/|$)|admin(?:/|$)|_next(?:/|$)|.*\\..*).*)"] };
+export const config = {
+  matcher: ["/((?!api(?:/|$)|admin(?:/|$)|cms(?:/|$)|system(?:/|$)|_next(?:/|$)|.*\\..*).*)"],
+};

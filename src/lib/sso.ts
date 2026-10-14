@@ -5,7 +5,7 @@ export const sso: ReturnType<typeof configurePayloadSSO> | null = process.env.WE
   ? configurePayloadSSO({
       getPayload: async () =>
         getPayload({ config: (await import("../../payload.config")).default }),
-      successPath: "/admin",
+      successPath: "/cms",
       logoutPath: "/admin/login",
     })
   : null;

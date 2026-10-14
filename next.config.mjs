@@ -18,6 +18,8 @@ export default withPayload({
         ],
       },
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      { source: "/cms/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      { source: "/system/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
       { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
     ];
   },

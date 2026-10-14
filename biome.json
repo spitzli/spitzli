@@ -12,9 +12,10 @@
       "!!public",
       "!!src/payload-types.ts",
       "!!src/migrations-instance",
-      "!!src/app/(payload)/admin/importMap.js",
+      "!!src/app/(payload)/system/importMap.js",
       "!!.backups",
-      "!!src/lib/payload-sso.ts"
+      "!!src/lib/payload-sso.ts",
+      "!!src/webdock-cms"
     ]
   },
   "formatter": {

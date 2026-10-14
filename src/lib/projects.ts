@@ -5,7 +5,7 @@ import { translator } from "../i18n";
 import type { Locale } from "../i18n/locale";
 import type { Project } from "../payload-types";
 
-function presentProject(project: Project, locale: Locale): Project {
+export function presentProject(project: Project, locale: Locale): Project {
   return {
     ...project,
     summary:

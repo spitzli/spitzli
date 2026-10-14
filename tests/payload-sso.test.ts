@@ -12,6 +12,10 @@ import {
 test("admin return targets reject external URLs, encoded escapes and native auth loops", () => {
   for (const path of [
     "/admin",
+    "/cms",
+    "/system",
+    "/cms/preview?module=projects&id=1&locale=de",
+    "/system/collections/projects",
     "/admin/collections/pages/42?locale=de&depth=0",
     "/admin/globals/settings#title",
   ]) {
@@ -23,6 +27,16 @@ test("admin return targets reject external URLs, encoded escapes and native auth
     "https://evil.test/admin",
     "//evil.test/admin",
     "/administrator",
+    "/cms-other",
+    "/system-other",
+    "/cmsystem",
+    "/systematic",
+    "/cms/../outside",
+    "/system/../outside",
+    "/cms/../../outside",
+    "/system/%252flogin",
+    "/cms/%2f/evil",
+    "/system/login",
     "/admin/../../outside",
     "/admin//login",
     "/admin/../login",

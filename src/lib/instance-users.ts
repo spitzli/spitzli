@@ -169,7 +169,7 @@ export function protectUsers(
   };
 }
 
-/** Keep each collection's existing public read rules; block read-only accounts from writes. */
+/** Preserve existing rules while applying the central CMS role permissions to writes. */
 export function protectContent<T extends CollectionConfig | GlobalConfig>(config: T): T {
   const access = { ...config.access };
   for (const operation of ["create", "update", "delete"] as const) {
@@ -177,7 +177,22 @@ export function protectContent<T extends CollectionConfig | GlobalConfig>(config
       (access as Record<string, Access>)[operation] ||
       (({ req }: { req: PayloadRequest }) => Boolean(req.user));
     (access as Record<string, Access>)[operation] = (args) =>
-      actor(args.req)?.role === "reader" ? false : existing(args);
+      (operation === "delete" ? canManageUsers(args) : canEditContent(args))
+        ? existing(args)
+        : false;
   }
-  return { ...config, access };
+  return {
+    ...config,
+    access,
+    hooks: {
+      ...config.hooks,
+      beforeOperation: [
+        ({ operation, req }: { operation: string; req: PayloadRequest }) => {
+          if (operation === "restoreVersion" && !canManageUsers({ req }))
+            throw new APIError("An administrator is required to restore content versions.", 403);
+        },
+        ...(config.hooks?.beforeOperation || []),
+      ],
+    },
+  } as T;
 }

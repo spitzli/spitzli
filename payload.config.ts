@@ -28,11 +28,15 @@ const smtp = Boolean(
 
 export default buildConfig({
   serverURL,
+  routes: { admin: "/system" },
   secret: process.env.PAYLOAD_SECRET || "",
   admin: {
     user: "users",
     components: { beforeLogin: ["/src/components/sso-login#SSOLogin"] },
-    importMap: { baseDir: dirname },
+    importMap: {
+      baseDir: dirname,
+      importMapFile: path.resolve(dirname, "src/app/(payload)/system/importMap.js"),
+    },
     meta: { titleSuffix: "— Spitzli Development" },
   },
   i18n: { fallbackLanguage: "en", supportedLanguages: { en } },

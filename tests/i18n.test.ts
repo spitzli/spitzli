@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { unstable_doesMiddlewareMatch } from "next/experimental/testing/server";
 import { NextRequest } from "next/server";
 import { catalogs, translator } from "../src/i18n";
 import { browserLocale, internalPath, localizePath } from "../src/i18n/locale";
-import { proxy } from "../src/proxy";
+import { config, proxy } from "../src/proxy";
 
 test("Browser language, weights and English fallback", () => {
   for (const [input, expected] of [
@@ -64,4 +65,23 @@ test("Native locale routes preserve old links, explicit preference and internal 
   assert.equal(proxy(req("/de/admin")).status, 404);
   assert.equal(localizePath("/projekte/luninora", "en"), "/en/projects/luninora");
   assert.equal(internalPath("/legal-notice"), "/impressum");
+});
+
+test("CMS and system paths bypass localization and cannot be accessed through a locale prefix", () => {
+  for (const path of [
+    "/cms",
+    "/cms/preview",
+    "/system",
+    "/system/collections/projects",
+    "/admin/login",
+  ]) {
+    assert.equal(unstable_doesMiddlewareMatch({ config, nextConfig: {}, url: path }), false);
+    for (const locale of ["en", "de"]) {
+      assert.equal(proxy(new NextRequest(`https://spitzli.dev/${locale}${path}`)).status, 404);
+    }
+  }
+  assert.equal(
+    unstable_doesMiddlewareMatch({ config, nextConfig: {}, url: "/en/projects/example" }),
+    true,
+  );
 });

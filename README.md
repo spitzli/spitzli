@@ -1,6 +1,6 @@
 # Spitzli Development
 
-Next.js website with its own Payload 4 CMS at `/admin`. Content, accounts, drafts and settings live in the `spitzli` schema of the shared Neon database; its database role cannot read other instances.
+Next.js website with its own CMS at `/cms`. Legacy `/admin` links redirect to `/cms`; the technical `/system` console is restricted to operators. Content, accounts, drafts and settings live in the `spitzli` schema of the shared Neon database; its database role cannot read other instances.
 
 ## Configuration
 
@@ -19,7 +19,9 @@ The one-time importer (`INSTANCE_IMPORT=spitzli npm run cms:import -- <archive.j
 
 ## Languages
 
-Existing `/en` and `/de` pages, project details, legal notice, privacy pages and old URL redirects are preserved. UI translations live in `locales/en.po` and `locales/de.po`; `npm run i18n:compile` generates the catalogs. Project translations and image alt text are edited in this instance’s CMS.
+Existing `/en` and `/de` pages, project details, legal notice, privacy pages and old URL redirects are preserved. UI translations live in `locales/en.po` and `locales/de.po`; `npm run i18n:compile` generates the catalogs. Project translations and image alt text are edited in this instance’s CMS. Account and access management link to the central Webdock account service. Saved project drafts can be previewed through the authenticated `/cms/preview` route; public project pages remain published-only.
+
+The shared CMS source is vendored in `src/webdock-cms` from `webdock/packages/cms-ui/src`. Site-specific modules are allowlisted in `src/lib/cms.ts`. The existing registered SSO logout URI `/admin/login` remains in use and redirects back to the CMS.
 
 ## Kontakt und Datenschutz
 
