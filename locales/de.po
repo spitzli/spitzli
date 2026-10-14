@@ -520,6 +520,9 @@ msgstr "E-Mail"
 msgid "Phone"
 msgstr "Telefon"
 
+msgid "Preview — privacy information is being reviewed before publication."
+msgstr "Vorschau — die Datenschutzhinweise werden vor der Veröffentlichung abschließend geprüft."
+
 msgid "VAT identification number"
 msgstr "Umsatzsteuer-Identifikationsnummer"
 

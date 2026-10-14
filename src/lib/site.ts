@@ -12,10 +12,9 @@ export const site = {
     "Ich entwickle Webanwendungen, APIs und Cloud-Infrastruktur. Dominik Spitzli — selbstständiger Softwareentwickler und Systemarchitekt.",
 };
 
-export function legalReady(settings: Partial<WebsiteSetting>) {
+export function legalNoticeReady(settings: Partial<WebsiteSetting>) {
   return Boolean(
     settings.legalReviewed &&
-      settings.privacyReviewed &&
       [
         settings.name,
         settings.owner,
@@ -24,6 +23,15 @@ export function legalReady(settings: Partial<WebsiteSetting>) {
         settings.postcode,
         settings.city,
         settings.country,
+      ].every((value) => value?.trim()),
+  );
+}
+
+export function legalReady(settings: Partial<WebsiteSetting>) {
+  return Boolean(
+    legalNoticeReady(settings) &&
+      settings.privacyReviewed &&
+      [
         settings.databaseProvider,
         settings.databaseRegion,
         settings.logRetention,

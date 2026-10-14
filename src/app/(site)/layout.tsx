@@ -115,9 +115,11 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
             <div className="site-content">
               {!legalReady && (
                 <aside className="preview-notice container">
-                  {t(
-                    "Preview — legal and privacy information is being reviewed before publication.",
-                  )}
+                  {site.legalNoticeReady
+                    ? t("Preview — privacy information is being reviewed before publication.")
+                    : t(
+                        "Preview — legal and privacy information is being reviewed before publication.",
+                      )}
                 </aside>
               )}
               {children}

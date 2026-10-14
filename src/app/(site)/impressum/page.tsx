@@ -11,7 +11,7 @@ export default async function Impressum() {
   const { t } = await getI18n();
   const site = await getSiteSettings();
   const legal = site;
-  const legalReady = site.legalReady;
+  const legalReady = site.legalNoticeReady;
   return (
     <main id="main" className="container legal-page">
       <h1>{t("Legal notice")}</h1>
@@ -42,7 +42,7 @@ export default async function Impressum() {
         {legal.phone && (
           <>
             <br />
-            {t("Phone")}: {legal.phone}
+            {t("Phone")}: <a href={`tel:${legal.phone.replace(/\s/g, "")}`}>{legal.phone}</a>
           </>
         )}
       </p>

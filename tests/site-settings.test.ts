@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { legalReady } from "../src/lib/site";
+import { contactEnabled, legalNoticeReady, legalReady } from "../src/lib/site";
 
 test("CMS publication approval requires company, address, contact and privacy settings", () => {
   const settings = {
@@ -23,4 +23,10 @@ test("CMS publication approval requires company, address, contact and privacy se
   assert.equal(legalReady({ ...settings, legalReviewed: false }), false);
   assert.equal(legalReady({ ...settings, email: "" }), false);
   assert.equal(legalReady({ ...settings, transfers: " " }), false);
+  const legalOnly = { ...settings, privacyReviewed: false, transfers: "" };
+  assert.equal(legalNoticeReady(legalOnly), true);
+  assert.equal(legalReady(legalOnly), false);
+  assert.equal(contactEnabled(legalOnly), false);
+  assert.equal(legalNoticeReady({ ...legalOnly, street: " " }), false);
+  assert.equal(legalNoticeReady({ ...legalOnly, legalReviewed: false }), false);
 });
